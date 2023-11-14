@@ -62,7 +62,7 @@ paths:
                 type: object
                 $ref: '#/components/schemas/ForbiddenError'
 
-  /users/{usereid}:
+  /users/{userid}:
     get:
       operationId: retrive-user-details
       description: Retrive specific user's information
