@@ -15,12 +15,22 @@ In this phase, each team member has contributed to the development of an API sch
 - Events API: Developed by [Hari Sriya Pelluri]. This API handles the retrieving, creating and updating events happening in and around the NEU Boston campus.
 - Housing API: Created by [Kavya Rachana Malluvalasa]. It provides information on all the available off-campus housing options in and around Boston along with option to save and retrieve from the listing.
 - Discussion Forum API: Crafted by [Raveena Ingale], this API facilitates the posting and management of discussion threads.
-- User API: Developed by [Team Member Name], enabling one-on-one chat functionality among students.
+- User API: Developed by [Sai Krishna Reddy Gaddam], this API simplifies user interactions—retrieve details, update information, sign up, log in, and delete users.
 
 ## Installation and Setup
 To set up the project in its current state:
 
 Clone the repository: git clone [https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project]
+
+To view the domain model or API schemas: navigate to apiSchema in the root folder
+
+## Future Development
+1) Creation of Database Schemas
+2) Creation of Rest APIs
+3) Creation of User-Friendly User Interface
+4) Implement Unit Test Cases
+5) Creation of CI/CD Pipelines
+6) Deploy the Application to Azure Cloud
 
 
 
