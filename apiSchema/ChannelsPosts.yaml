@@ -1,0 +1,377 @@
+openapi: 3.0.0
+info:
+  title: Channel and Post API
+  version: 1.0.0
+  description: API for creating, managing, and interacting with channels, posts, and comments.
+
+servers:
+- url: http://localhost:3000
+  description: Local development server
+
+paths:
+  /channels:
+    post:
+      summary: Create a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+      responses:
+        '201':
+          description: Channel created successfully
+          content:
+            application/json:
+              example:
+                message: Channel created successfully
+
+    get:
+      summary: Get all channels
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                channels: [{title: "Channel1", moderator: [...], posts: [...]}, {title: "Channel2", moderator: [...], posts: [...]}, ...]
+
+  /channels/{channel_id}:
+    get:
+      summary: Get details of a specific channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                title: "Channel1"
+                moderator: [...]
+                posts: [...]
+
+    put:
+      summary: Update details of a specific channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+      responses:
+        '200':
+          description: Channel updated successfully
+          content:
+            application/json:
+              example:
+                message: Channel updated successfully
+
+    delete:
+      summary: Delete a specific channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Channel deleted successfully
+    
+  /channels/{channel_id}/posts:
+    get:
+      summary: Create a post on a specific channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              example:
+                message: Post created successfully
+
+  /channels/{channel_id}/posts/{post_id}:
+    get:
+      summary: Get details of a specific post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                title: "PostTitle"
+                content: "<html><body><h1>Hey Guys!</h1> <p>lorem</p></body></html>"
+                upvotes: 10
+                comments: [...]
+                reported: false
+                postId: 1
+                author: {...}
+                createdAt: "2023-11-13T00:00:00Z"
+                updatedAt: "2023-11-13T12:34:56Z"
+                deletedAt: null
+                tag: [...]
+
+    put:
+      summary: Update details of a specific post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Post updated successfully
+          content:
+            application/json:
+              example:
+                message: Post updated successfully
+
+    delete:
+      summary: Delete a specific post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post deleted successfully
+
+  /channels/{channel_id}/posts/{post_id}/comments:
+    get:
+      summary: Get all comments on a specific post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+                    type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                comments: [{comment: "Comment1", author: {...}}, {comment: "Comment2", author: {...}}, ...]
+
+  /channels/{channel_id}/posts/{post_id}/comments/{comment_id}:
+    get:
+      summary: Get details of a specific comment on a post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+        - name: comment_id
+          in: path
+          required: true
+          description: ID of the comment
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                comment: "CommentContent"
+                author: {...}
+
+    put:
+      summary: Update details of a specific comment on a post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+        - name: comment_id
+          in: path
+          required: true
+          description: ID of the comment
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated successfully
+          content:
+            application/json:
+              example:
+                message: Comment updated successfully
+
+    delete:
+      summary: Delete a specific comment on a post in a channel
+      parameters:
+        - name: channel_id
+          in: path
+          required: true
+          description: ID of the channel
+          schema:
+            type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          schema:
+            type: integer
+        - name: comment_id
+          in: path
+          required: true
+          description: ID of the comment
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Comment deleted successfully
+
+components:
+  schemas:
+    Channel:
+      type: object
+      properties:
+        title:
+          type: string
+        moderator:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+
+    Post:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        upvotes:
+          type: integer
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        reported:
+          type: boolean
+        postId:
+          type: integer
+        author:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        deletedAt:
+          type: string
+          format: date-time
+        tag:
+          type: array
+          items:
+            type: string
+
+    Comment:
+      type: object
+      properties:
+        comment:
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: ["ADMIN", "STUDENT", "MODERATOR", "AUTHORITY"]
+
