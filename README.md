@@ -7,6 +7,7 @@ Peer Pulse is a web-based solution designed to enhance the university experience
 ## Project Scope - Phase 1
 ### Domain-Driven Design Model
 We have developed a domain-driven design model that efficiently organizes the complexities of our platform, ensuring that it is student-focused and intuitive.
+
 ![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/b7ae9f94acb3b94f8203560d0441747d0b524cff/Project%20DDD.drawio.png)
 
 
@@ -35,10 +36,11 @@ To view the domain model or API schemas: navigate to apiSchema in the root folde
 6) Deploy the Application to Azure Cloud
 
 ## Contributions
-[Hari Sriya Pelluri]: Events API
-[Kavya Rachana Malluvalasa]: Housing API
-[Raveena Ingale]: Channel System API
-[Sai Krishna Reddy Gaddam]: User API
+- [Hari Sriya Pelluri]: Events API
+- [Kavya Rachana Malluvalasa]: Housing API
+- [Raveena Ingale]: Channel System API
+- [Sai Krishna Reddy Gaddam]: User API
+
 
 ## Acknowledgements
 Special thanks go to Prof. Amuthan, our mentors, and fellow contributors for their valuable guidance and support during this phase. The collective effort and collaboration within the group have greatly enriched this experience.
