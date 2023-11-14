@@ -7,7 +7,9 @@ Peer Pulse is a web-based solution designed to enhance the university experience
 ## Project Scope - Phase 1
 ### Domain-Driven Design Model
 We have developed a domain-driven design model that efficiently organizes the complexities of our platform, ensuring that it is student-focused and intuitive.
-![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/22d59ecc0b782143d0e6bce5a03e28f6bf012359/Project%20DDD.drawio.png)
+![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/b7ae9f94acb3b94f8203560d0441747d0b524cff/Project%20DDD.drawio.png)
+
+
 
 ## API Schema Development
 In this phase, each team member has contributed to the development of an API schema, focusing on different aspects of the platform:
