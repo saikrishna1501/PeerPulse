@@ -6,6 +6,61 @@ servers:
   - url: http://localhost:5000
 paths:
   /users:
+    get:
+      operationId: get-all-users
+      description: Retrive all users information
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+        - name: maxResult
+          in: query
+          schema:
+            type: number
+            examples:
+              - 123
+      responses: 
+        "200":
+          description: Successfully retrived users details
+          content: 
+            application/json: 
+              schema: 
+                type: array
+                $ref: "#/components/schemas/BasicUserDetails"
+              examples:
+                example1:
+                  summary: Example of user details
+                  value:
+                    - email: "gaddam.sai@northeastern.edu"
+                      firstName: "Sai"
+                      lastName: "Gaddam"
+                      phoneNumber: "+1234567890"
+                      profilePic: "https://localhost:5000/profile-pictures/test.png"
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
     post:
       operationId: create-user
       description: create a user(register)
