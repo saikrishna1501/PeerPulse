@@ -8,3 +8,20 @@ Peer Pulse is a web-based solution designed to enhance the university experience
 ### Domain-Driven Design Model
 We have developed a domain-driven design model that efficiently organizes the complexities of our platform, ensuring that it is student-focused and intuitive.
 ![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/22d59ecc0b782143d0e6bce5a03e28f6bf012359/Project%20DDD.drawio.png)
+
+## API Schema Development
+In this phase, each team member has contributed to the development of an API schema, focusing on different aspects of the platform:
+
+- Events API: Developed by [Hari Sriya Pelluri]. This API handles the retrieving, creating and updating events happening in and around the NEU Boston campus.
+- Housing API: Created by [Kavya Rachana Malluvalasa]. It provides information on all the available off-campus housing options in and around Boston along with option to save and retrieve from the listing.
+- Discussion Forum API: Crafted by [Raveena Ingale], this API facilitates the posting and management of discussion threads.
+- User API: Developed by [Team Member Name], enabling one-on-one chat functionality among students.
+
+## Installation and Setup
+To set up the project in its current state:
+
+Clone the repository: git clone [https://docs.github.com/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project]
+
+
+
+
