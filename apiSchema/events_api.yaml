@@ -1,0 +1,148 @@
+openapi: 3.1.0
+info:
+  title: Events API
+  description: REST API to search for all events happening and do various opeartions with them like save them, create a new event, edit the event and delete the event.
+  version: 1.0.0
+servers:
+  - url: https://localhost:8080
+
+paths:
+  /events:
+    get:
+      summary: List all events
+      responses:
+        '200':
+          description: A list of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '201':
+          description: Event created
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+  /events/{eventId}/save:
+    post:
+      summary: Add event to user's saved items
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Event added to saved items
+        '404':
+          description: Event not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete event from user's saved items
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Event removed from saved items
+        '404':
+          description: Event not found
+        '500':
+          description: Internal server error
+
+  /events/{eventId}:
+    put:
+      summary: Edit an event
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        '200':
+          description: Event updated
+        '400':
+          description: Bad request
+        '403':
+          description: Forbidden - User does not have permission
+        '404':
+          description: Event not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete an event
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '204':
+          description: Event deleted
+        '403':
+          description: Forbidden - User does not have permission
+        '404':
+          description: Event not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Event:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the event
+        name:
+          type: string
+          description: Name of the event
+        description:
+          type: string
+          description: Detailed description of the event
+        date:
+          type: string
+          format: date-time
+          description: Date and time of the event
+        location:
+          type: string
+          description: Location of the event
+        organizer:
+          type: string
+          description: Organizer of the event
+        userId:
+          type: string
+          description: ID of the user who created the event
+  parameters:
+    eventId:
+      in: path
+      name: eventId
+      required: true
+      schema:
+        type: string
+    userId:
+      in: header
+      name: userId
+      required: true
+      schema:
+        type: string

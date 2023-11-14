@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: Off- Campus Housing List API
+  description: REST API for off-Campus housing for students in Boston. This API provides house listings where user can save or delete  a property listing from user specific saved items.
+  version: 'v1.0'
+servers: 
+  - url: http://localhost:8080
+paths:
+  /housinglist:
+    get:
+      summary: Get list of all properties 
+      description: Retrieve a list of all available properties.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                apartments:
+                  - $ref: '#/components/schemas/House'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: server encountered an unexpected condition. Not able to fulfil the request
+    post:
+      summary: Add property to saved items of a user
+      description: Add a new property to the saved items of a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - house
+              properties:
+                userId:
+                  type: integer
+                  description: ID of the user
+                house:
+                  $ref: '#/components/schemas/House'
+      responses:
+        '201':
+          description: Property added to saved items successfully
+          content:
+            application/json:
+              example:
+                message: Property added to saved items successfully
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                error: Bad request. Please provide valid userId and house details.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: server encountered an unexpected condition. Not able to fulfil the request
+  /housinglist/{userId}/{houseId}:
+    delete:
+      summary: Delete property from saved items of a user
+      description: Delete a property from the saved items of a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the user
+        - name: houseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the house to be deleted
+      responses:
+        '204':
+          description: House deleted from saved items successfully
+          content: 
+            application/json: 
+              example:
+                message: House deleted from saved items successfully
+        '404':
+          description: House not found in the user's saved items
+          content:
+            application/json:
+              example:
+                error: House not found in the user's saved items
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: server encountered an unexpected condition. Not able to fulfil the request
+  /users/{userId}/saveditems:
+    get:
+      summary: Get list of saved items for a user
+      description: Retrieve a list of houses saved by a specific user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the user
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                savedItems:
+                  - $ref: '#/components/schemas/House'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: server encountered an unexpected condition. Not able to fulfil the request
+    put:
+      summary: Update saved items for a user
+      description: Update the list of properties saved by a specific user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            description: ID of the user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                description: ID of the house to be saved
+      responses:
+        '204':
+          description: Saved items updated successfully
+          content: 
+            application/json: 
+              example:
+                message: Saved items updated successfully
+        '404':
+          description: User not found
+          content:
+            application/json:
+              example:
+                error: User not found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: server encountered an unexpected condition. Not able to fulfil the request
+components:
+  schemas:
+    House:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the house
+        name:
+          type: string
+          description: Name of the house
+        type:
+          type: string
+          description: Type of the house (e.g., Apartment, Studio)
+        location:
+          type: string
+          description: Location of the house
+        price:
+          type: number
+          description: Price of the house
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+                description: URL of the house image

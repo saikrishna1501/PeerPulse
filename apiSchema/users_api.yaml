@@ -1,0 +1,420 @@
+openapi: 3.1.0
+info:
+  title: User API
+  description: This REST API simplifies user management, offering seamless operations to retrieve, create, update, authenticate, and delete user information.
+servers:
+  - url: http://localhost:5000
+paths:
+  /users:
+    get:
+      operationId: get-all-users
+      description: Retrive all users information
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+        - name: maxResult
+          in: query
+          schema:
+            type: number
+            examples:
+              - 123
+      responses: 
+        "200":
+          description: Successfully retrived users details
+          content: 
+            application/json: 
+              schema: 
+                type: array
+                $ref: "#/components/schemas/BasicUserDetails"
+              examples:
+                example1:
+                  summary: Example of user details
+                  value:
+                    - email: "gaddam.sai@northeastern.edu"
+                      firstName: "Sai"
+                      lastName: "Gaddam"
+                      phoneNumber: "+1234567890"
+                      profilePic: "https://localhost:5000/profile-pictures/test.png"
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+    post:
+      operationId: create-user
+      description: create a user(register)
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+      requestBody:
+        description: user details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+      responses: 
+        "200":
+          description: Successful user creation
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+                    examples: 
+                      - Successfully created user
+                  userid:
+                    type: string
+                    examples:
+                      - 231214
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+
+  /users/{userid}:
+    get:
+      operationId: retrive-user-details
+      description: Retrive specific user's information
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+      responses: 
+        "200":
+          description: Successfully retrived user details
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                $ref: "#/components/schemas/BasicUserDetails"
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+    put:
+      operationId: update-user
+      description: update a user
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+      requestBody:
+        description: user details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetails'
+      responses: 
+        "200":
+          description: Successfully updated user details
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties: 
+                  message:
+                    type: string
+                    examples: 
+                      - successfully updated user
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+    delete:
+      operationId: delete-user
+      description: delete a user
+      parameters:
+        - name: session
+          in: cookie
+          required: true
+          schema:
+            type: string
+            examples: 
+              - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+      responses: 
+        "200":
+          description: Successful user deletion
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties: 
+                  message:
+                    type: string
+                    examples: 
+                      - successfully deleted user
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+    post:
+      operationId: authenticate-user
+      description: authenticate a user
+      requestBody:
+        description: username and password
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/AuthenticationDetails'
+      responses: 
+        "200":
+          description: Successful authentication
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties: 
+                  sessionToken:
+                    type: string
+                    examples: 
+                      - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwI
+                  userId:
+                    type: string
+                    examples:
+                      - 231214
+        "401":
+          description: Unauthenticated request
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UnauthenticatedError"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/InternalServerError'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ForbiddenError'
+      
+components: 
+  schemas: 
+    BasicUserDetails:
+      type: object
+      properties: 
+        email:
+          type: string
+          examples:
+            - gaddam.sai@northeastern.edu
+        firstName:
+          type: string
+          examples:
+            - Sai
+        lastName:
+          type: string
+          examples:
+            - Gaddam
+        phoneNumber:
+          type: string
+          pattern: ^\+\d{1,4}(\d{10})?$  # Country code followed by optional 10-digit number
+          examples: 
+            - "+1234567890"
+        profilePic:
+          type: string
+          examples:
+            - https://localhost:5000/profile-pictures/test.png
+    UserDetails:
+      allOf:
+        - $ref: '#/components/schemas/BasicUserDetails'
+        - type: object
+          properties:
+            savedItems:
+              type: array
+              examples: 
+                - '#/components/schemas/Event'
+            password:
+              type: string
+              examples:
+                - Test@123
+    AuthenticationDetails:
+      type: object
+      properties:
+        email:
+          type: string
+          examples:
+            - gaddam.sai@northeastern.edu
+        password:
+          type: string
+          examples:
+            - Test@123
+    Event:
+      eventId:
+        type: string
+        examples:
+          - 151230
+      eventName:
+        type: string
+        examples:
+          - Speaker Series on networking
+      catergory:
+        type: string
+        examples:
+          - SpeakerSeries
+      schedule:
+          $ref: "#/components/schemas/Schedule"
+        
+    Schedule:
+      type: object
+      description: start and end time
+      properties:
+        start-time:
+          type: string
+          exmaples:
+            - "2023-11-12T13:14:15Z"
+        end-time:
+          type: string
+          examples:
+            - "2024-5-12T13:14:15Z"
+    UnauthenticatedError:
+      type: object
+      description: session token is missing or invalid
+      properties: 
+        error:
+          type: string
+          description: Authorization Error
+          examples:
+            - Unauthorized
+        message:
+          type: string
+          description: Error message
+          examples:
+            - Invalid token
+    InternalServerError:
+      type: object
+      description: Internal Server Error
+      properties:
+        error:
+          type: string
+          examples:
+            - Internal Server Error
+        message:
+          type: string
+          examples: 
+            - An unexpected error occurred
+    ForbiddenError:
+      type: object
+      description: Forbidden request
+      properties:
+          error:
+            type: string
+            examples: 
+              - Forbidden
+          message:
+            type: string
+            examples: 
+              - Access denied
