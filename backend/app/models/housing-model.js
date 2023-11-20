@@ -17,10 +17,13 @@ const housingSchema = new Schema ({
         required: true },
     beds: {
         type: Number,
-        required: true },
-    savedEvents: {
-        type: String
-    }
+        required: true }
+    // savedEvents: {
+    //     type: String
+    // }
+},
+{
+    versionKey: false
 });
 
 const housingmodel = mongoose.model("Housing", housingSchema);
