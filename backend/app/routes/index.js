@@ -1,7 +1,10 @@
 import userRouter from './users-routes.js';
-import eventRoutes from './eventRoutes.js'
+import eventRoutes from './eventRoutes.js';
+import housingRoutes from './housing-routes.js';
 
 export default (app) => {
     app.use("/users", userRouter);
     app.use('/events', eventRoutes);
+    app.use('/housing', housingRoutes);
+
 }
