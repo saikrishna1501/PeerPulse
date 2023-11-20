@@ -26,3 +26,29 @@ export const saveUser = async(request, response) => {
         setErrorResponse(err, response);
     }
 }
+
+export const findUserById = async(request,response) => {
+    try {
+        const id = request.params.id;
+        console.log(id);
+        const userDetails = await userService.findUserById(id);
+        setResponse(userDetails, response);
+    }
+    catch(err) {
+        setErrorResponse(err, response);
+    }
+}
+
+export const updateUser = async(request,response) => {
+    try {
+        const id = request.params.id;
+        const userChanges = {...request.body};
+        console.log(userChanges);
+        const updatedUserDetails = await userService.updateUser(id, userChanges);
+        console.log(updatedUserDetails)
+        setResponse(updatedUserDetails, response);
+    }
+    catch(err) {
+        setErrorResponse(err, response);
+    }
+}
