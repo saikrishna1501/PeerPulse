@@ -1,5 +1,3 @@
-const eventService = require('./eventService');
+import * as EventService from './eventServices.js'
 
-module.exports = {
-  eventService,
-};
+export default EventService

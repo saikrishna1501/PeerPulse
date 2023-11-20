@@ -1,5 +1,3 @@
-const eventController = require('./eventController');
+import * as eventController from './event-controller.js'
 
-module.exports = {
-  eventController,
-};
+export default eventController

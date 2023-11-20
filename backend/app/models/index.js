@@ -1,5 +1,5 @@
-const Event = require('./eventModel');
+import Event from './eventModel.js'
 
-module.exports = {
-  Event,
-};
+export default {
+    Event
+}
