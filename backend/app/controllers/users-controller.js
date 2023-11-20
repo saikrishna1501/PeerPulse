@@ -17,6 +17,8 @@ export const saveUser = async(request, response) => {
     try {
         console.log(newUser);
         const createdUserDetails = await userService.createUser(newUser);
+        const {password, createdUserDetailsWithoutPassword} = createdUserDetails;
+        console.log("Successfully created user", createdUserDetailsWithoutPassword);
         setResponse({
             message: "Successfully created user",
             userid: createdUserDetails._id
@@ -45,8 +47,10 @@ export const updateUser = async(request,response) => {
         const userChanges = {...request.body};
         console.log(userChanges);
         const updatedUserDetails = await userService.updateUser(id, userChanges);
-        console.log(updatedUserDetails)
-        setResponse(updatedUserDetails, response);
+        console.log("Updated user details", updatedUserDetails);
+        setResponse({
+            message: "Successfully updated user"
+        }, response);
     }
     catch(err) {
         setErrorResponse(err, response);
