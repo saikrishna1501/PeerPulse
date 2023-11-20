@@ -9,13 +9,17 @@ export const getEvents = async (req, res) => {
   }
 };
 
-export const getEvent = async (req, res) => {
-    try {
-      const event = await EventService.getAllEvents(req.params.id);
-      res.json(event);
-    } catch (error) {
-      res.status(500).send(error.message);
+export const getEventById = async (req, res) => {
+  try {
+    const eventId = req.params.id;
+    const event = await EventService.getEventById(eventId);
+    if (!event) {
+      return res.status(404).send('Event not found');
     }
+    res.json(event);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
   };
 
 
@@ -25,6 +29,7 @@ export const createEvent = async (req, res) => {
     const event = await EventService.createEvent(req.body);
     res.status(201).json(event);
   } catch (error) {
+    console.log(error)
     res.status(500).send(error.message);
   }
 };
