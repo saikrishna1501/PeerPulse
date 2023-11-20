@@ -1,11 +1,12 @@
 import EventService from '../services/index.js'
+import { setResponse, setErrorResponse } from './response-handler.js';
 
 export const getEvents = async (req, res) => {
   try {
     const events = await EventService.getAllEvents(req.query);
-    res.json(events);
+    setResponse(events, res);
   } catch (error) {
-    res.status(500).send(error.message);
+    setErrorResponse(error, res);
   }
 };
 
@@ -16,9 +17,9 @@ export const getEventById = async (req, res) => {
     if (!event) {
       return res.status(404).send('Event not found');
     }
-    res.json(event);
+    setResponse(event, res);
   } catch (error) {
-    res.status(500).send(error.message);
+    setErrorResponse(error, res);
   }
   };
 
@@ -29,17 +30,16 @@ export const createEvent = async (req, res) => {
     const event = await EventService.createEvent(req.body);
     res.status(201).json(event);
   } catch (error) {
-    console.log(error)
-    res.status(500).send(error.message);
+    setErrorResponse(error, res);
   }
 };
 
 export const updateEvent = async (req, res) => {
   try {
     const updatedEvent = await EventService.updateEvent(req.params.id, req.body);
-    res.json(updatedEvent);
+    setResponse(updateEvent, res);
   } catch (error) {
-    res.status(500).send(error.message);
+    setErrorResponse(error, res);
   }
 };
 
@@ -48,6 +48,6 @@ export const deleteEvent = async (req, res) => {
     await EventService.deleteEvent(req.params.id);
     res.status(200).send('Event deleted successfully');
   } catch (error) {
-    res.status(500).send(error.message);
+    setErrorResponse(error, res);
   }
 }
