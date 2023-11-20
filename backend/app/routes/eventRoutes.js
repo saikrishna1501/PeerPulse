@@ -7,7 +7,8 @@ router.route('/')
     .post(eventController.createEvent)
 
     router.route('/:id')
-    .get(eventController.getEvent)
+    .get(eventController.getEventById)
     .put(eventController.updateEvent)
     .delete(eventController.deleteEvent);
+
 export default router;

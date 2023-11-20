@@ -1,4 +1,4 @@
-import Event from "../models/index.js";
+import Event from "../models/eventModel.js";
 
 export const getAllEvents = async (filters) => {
   let query = {};
@@ -14,7 +14,12 @@ export const getAllEvents = async (filters) => {
   if (filters.isPaid !== undefined) {
     query.isPaid = filters.isPaid === 'true';
   }
-  return await Event.find(query);
+  console.log(Event)
+  return await Event.find(query).exec();
+};
+
+export const getEventById = async (eventId) => {
+  return await Event.findById(eventId);
 };
 
 export const createEvent = async (eventData) => {
