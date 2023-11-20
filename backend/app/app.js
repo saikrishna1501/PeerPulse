@@ -7,9 +7,7 @@ const initialize = (app) => {
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded());
-    //MongoDB connection
-    mongoose.connect('<Mongo-url>')
-    //Initialize routes
+    mongoose.connect("mongodb+srv://admin:Test123@peer-pulse-db.lke6ms9.mongodb.net/dev?retryWrites=true&w=majority");
     registerRouter(app);
 }
  
