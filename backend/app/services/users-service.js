@@ -16,3 +16,7 @@ export const findUserById = async(id, projection = {password: 0, __v: 0}) => {
 export const updateUser = async(id, updatedUserDetails, projection = {password: 0, __v: 0}) => {
     return User.findByIdAndUpdate(id, {$set: updatedUserDetails}, {projection: projection, new: true}).exec();
 }
+
+export const deleteUser = async(id, projection = {password: 0, __v: 0}) => {
+    return User.findByIdAndDelete(id, {projection: projection}).exec();
+}

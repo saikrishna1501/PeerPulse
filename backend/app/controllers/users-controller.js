@@ -52,3 +52,17 @@ export const updateUser = async(request,response) => {
         setErrorResponse(err, response);
     }
 }
+
+export const deleteUser = async(request, response) => {
+    try {
+        const id = request.params.id;
+        const deletedUserDetails = await userService.deleteUser(id);
+        console.log("Successfully deleted user", deletedUserDetails);
+        setResponse({
+            message: `successfully deleted user`
+        },response)
+    }
+    catch(err) {
+        setErrorResponse(err, response);
+    }
+}
