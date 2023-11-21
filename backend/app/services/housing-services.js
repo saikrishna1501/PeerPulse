@@ -14,5 +14,5 @@ export const fetchAllHousing = async(filters) => {
     if(filters.bed) {
         result.bed = filters.bed;
     }
-    return await Housing.find(query);
+    return await Housing.find(result);
 };
