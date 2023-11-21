@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//Define a Mongoose schema for the "Housing" model.
 const Schema = mongoose.Schema;
 
 const housingSchema = new Schema ({
@@ -23,9 +24,12 @@ const housingSchema = new Schema ({
     // }
 },
 {
+    //Disable version key in the MongoDB document.
     versionKey: false
 });
 
+//Create a Mongoose model for the "Housing" schema.
 const housingmodel = mongoose.model("Housing", housingSchema);
 
+//Export the "Housing" model for external use.
 export default housingmodel;

@@ -20,5 +20,5 @@ const initialize = (app) => {
     registerRouter(app);
 }
  
-// Export the initialization function for external use
+// Export the initialization function for external use 
 export default initialize;
