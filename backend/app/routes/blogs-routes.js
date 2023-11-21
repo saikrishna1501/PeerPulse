@@ -18,6 +18,7 @@ router.route("/")
 //both put and delete blogs routes require authentication
 router.route('/:id')
     //Route for handling PUT and DELETE requests related to a specific blog entry by ID.
+    .get(blogsController.findBlogById)
     .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.updateBlog)
     .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.deleteBlog)
 

@@ -26,10 +26,14 @@ export const getAllBlogs = async () => {
 
 export const updateBlogByID = async (blogID, updateData) => {
     // Use Mongoose's findByIdAndUpdate to update the blog entry by its ID
-    return await Blog.findByIdAndUpdate(blogID, updateData, { new: true });
-  };
+  return await Blog.findByIdAndUpdate(blogID, updateData, { new: true });
+};
   
-  export const deleteBlogByID = async (blogID) => {
+export const deleteBlogByID = async (blogID) => {
     // Use Mongoose's findByIdAndDelete to delete the blog entry by its ID
     return await Blog.findByIdAndDelete(blogID);
-  };
+};
+
+export const getBlogById = async (blogId) => {
+  return await Blog.findById(blogId);
+}
