@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
+export const Roles = {
+    ADMIN: "admin",
+    MODERATOR: "moderator",
+    STUDENT: "student"
+}
+
 const userSchema = new Schema({
     email: {
         type: String,
@@ -32,6 +38,11 @@ const userSchema = new Schema({
     // }],
     savedEvents: {
         type: [String]
+    },
+    role: {
+        type: String,
+        enum: [Roles.ADMIN, Roles.MODERATOR, Roles.STUDENT],
+        default: "student"
     },
     password: { //password hash
         type: String,
