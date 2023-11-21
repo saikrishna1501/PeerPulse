@@ -10,15 +10,19 @@ import { Roles } from '../models/users-model.js';
 //create express router
 const router = express.Router();
 
+//Post and get routes requires authentication for blogs
 router.route("/")
-    // .get(blogsController.getBlogs)
-    // .post(blogsController.saveBlog)
+.post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.createBlog)
+.get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.getBlogs)
 
 //both put and delete blogs routes require authentication
 router.route('/:id')
     //Route for handling PUT and DELETE requests related to a specific blog entry by ID.
     .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.updateBlog)
     .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.deleteBlog)
+
+// router.route('/:id/comments')
+//     .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.addComment);
 
 //export blogs router
 export default router;

@@ -1,12 +1,31 @@
 import * as BlogService from '../services/blogs-service.js'
 import { setErrorResponse, setResponse } from './response-handler.js';
 
-export const getBlogs = async (request, response) => {
-
+  
+export const createBlog = async (request, response) => {
+    try {
+      const blogData = request.body; 
+      const createdBlog = await BlogService.createBlog(blogData);
+      response.status(201).json(createdBlog);
+    } catch (error) {
+      // Handle the error, log it, and send an error response
+      console.error("Error creating blog:", error);
+      response.status(500).json({ error: "Internal Server Error" });
+    }
 }
 
-export const saveBlog = async(request, response) => {
-   
+//get all the blogs
+export const getBlogs = async (req, res) => {
+  try {
+    const blogs = await BlogService.getAllBlogs();
+
+    res.status(200).json(blogs);
+  } catch (error) {
+    // Handle the error, log it, and send an error response
+    console.error("Error fetching blogs:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+
 }
 
 //Function to update Blog by passing id
