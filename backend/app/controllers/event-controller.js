@@ -40,7 +40,7 @@ export const createEvent = async (req, res) => {
 export const updateEvent = async (req, res) => {
   try {
     const updatedEvent = await EventService.updateEvent(req.params.id, req.body);
-    setResponse(updateEvent, res);
+    setResponse(updatedEvent, res);
   } catch (error) {
     setErrorResponse(error, res);
   }
@@ -50,7 +50,7 @@ export const updateEvent = async (req, res) => {
 export const deleteEvent = async (req, res) => {
   try {
     await EventService.deleteEvent(req.params.id);
-    res.status(200).send('Event deleted successfully');
+    setResponse({},res);
   } catch (error) {
     setErrorResponse(error, res);
   }
