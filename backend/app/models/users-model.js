@@ -1,13 +1,16 @@
+//import mongoose to access mongodb
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
+//ENUM data for Roles
 export const Roles = {
     ADMIN: "admin",
     MODERATOR: "moderator",
     STUDENT: "student"
 }
 
+//Mongoose Schema for user
 const userSchema = new Schema({
     email: {
         type: String,
@@ -50,6 +53,8 @@ const userSchema = new Schema({
     }
 })
 
+//create a model using the schema
 const userModel = mongoose.model("User", userSchema);
 
+//export the schema
 export default userModel;
