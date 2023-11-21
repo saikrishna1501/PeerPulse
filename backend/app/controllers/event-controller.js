@@ -1,6 +1,8 @@
 import EventService from '../services/index.js'
+// Import response handling functions from the response-handler module
 import { setResponse, setErrorResponse } from './response-handler.js';
 
+// Controller function to retrieve a list of events
 export const getEvents = async (req, res) => {
   try {
     const events = await EventService.getAllEvents(req.query);
@@ -10,6 +12,7 @@ export const getEvents = async (req, res) => {
   }
 };
 
+// Controller function to retrieve a specific event by its ID
 export const getEventById = async (req, res) => {
   try {
     const eventId = req.params.id;
@@ -23,8 +26,7 @@ export const getEventById = async (req, res) => {
   }
   };
 
-
-
+// Controller function to add a new event
 export const createEvent = async (req, res) => {
   try {
     const event = await EventService.createEvent(req.body);
@@ -34,6 +36,7 @@ export const createEvent = async (req, res) => {
   }
 };
 
+// Controller function to update an existing event
 export const updateEvent = async (req, res) => {
   try {
     const updatedEvent = await EventService.updateEvent(req.params.id, req.body);
@@ -43,6 +46,7 @@ export const updateEvent = async (req, res) => {
   }
 };
 
+// Controller function to delete an event
 export const deleteEvent = async (req, res) => {
   try {
     await EventService.deleteEvent(req.params.id);
