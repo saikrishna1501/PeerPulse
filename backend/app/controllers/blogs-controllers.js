@@ -9,6 +9,7 @@ export const saveBlog = async(request, response) => {
    
 }
 
+//Function to update Blog by passing id
 export const updateBlog = async(request, response) => {
     try {
         const updatedBlog = await BlogService.updateBlogByID(request.params.id, request.body);
@@ -18,6 +19,7 @@ export const updateBlog = async(request, response) => {
       }
 }
 
+//Function to delete Blog by passing id
 export const deleteBlog = async (request, response) => {
     try {
       await BlogService.deleteBlogByID(request.params.id);
