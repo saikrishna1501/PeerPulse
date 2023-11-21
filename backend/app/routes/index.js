@@ -9,7 +9,5 @@ export default (app) => {
     app.use("/users", userRouter);
     app.use('/events', eventRoutes);
     app.use('/housing', housingRoutes);
-    // app.use('/blogs/:blogId/comments', commentRoutes);
     app.use('/blogs', blogRoutes);
-
 }

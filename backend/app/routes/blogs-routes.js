@@ -19,7 +19,9 @@ router.route("/")
 
 //post a comment 
 router.route('/:id/comments/:commentId')
-    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.deleteComment)
+    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.deleteCommentById)
+    .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.updateCommentById)
+
 
 //post a comment 
 router.route('/:id/comments')
