@@ -1,72 +1,157 @@
+//imports
+import PasswordMissMatchError from '../exceptions/password-missmatch-error.js';
 import * as userService from '../services/users-service.js';
-import { setErrorResponse, setResponse } from './response-handler.js';
+import {setErrorResponse, setHttpOnlyCookiesAndResponse, setResponse } from './response-handler.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
+/* Controller function to retrive users. By default, it returns maximum of 250 users.
+   Use maxResults query string to alter the maximum user count
+*/
 export const getUsers = async (request, response) => {
-    const maxResult = request.query.maxResult;
-    const allUsers = await userService.retrieveAllUsers({maxResult: maxResult});
     try {
+        //fetch maxResult from query string
+        const maxResult = request.query.maxResult;
+        //retrive users
+        const allUsers = await userService.retrieveAllUsers({maxResult: maxResult});
+        //return the users details
         setResponse(allUsers, response);
     }
     catch(err) {
+        //return error response
         setErrorResponse(err, response);
     } 
 }
 
+// Controller function to store the details of user. Can be used for signing up the user. 
 export const saveUser = async(request, response) => {
+    //get the user details from the request body
     const newUser = {...request.body};
     try {
-        console.log(newUser);
+        //hash the user password before storing to the DB
+        newUser.password = await bcrypt.hash(newUser.password, 12);
+        //store user details in db
         const createdUserDetails = await userService.createUser(newUser);
         const {password, createdUserDetailsWithoutPassword} = createdUserDetails;
+        //Printing user details(excluding password)
         console.log("Successfully created user", createdUserDetailsWithoutPassword);
+        //return userid in response
         setResponse({
             message: "Successfully created user",
             userid: createdUserDetails._id
         },response);
     }
     catch(err) {
+        //return error response
         setErrorResponse(err, response);
     }
 }
 
+// Controller function to find a user by id.
 export const findUserById = async(request,response) => {
     try {
+        //extra the userid
         const id = request.params.id;
-        console.log(id);
+        //fetch the user details from the DB
         const userDetails = await userService.findUserById(id);
+        //return the user details
         setResponse(userDetails, response);
     }
     catch(err) {
+        //return error response
         setErrorResponse(err, response);
     }
 }
 
+//controller function to update user details
 export const updateUser = async(request,response) => {
     try {
+        //extract the user id and new changes
         const id = request.params.id;
         const userChanges = {...request.body};
-        console.log(userChanges);
+        //update the new details
         const updatedUserDetails = await userService.updateUser(id, userChanges);
         console.log("Updated user details", updatedUserDetails);
+        //respond with acknowledgement
         setResponse({
             message: "Successfully updated user"
         }, response);
     }
     catch(err) {
+        //return error response
         setErrorResponse(err, response);
     }
 }
 
 export const deleteUser = async(request, response) => {
     try {
+        //extract the user id
         const id = request.params.id;
+        //delete the user from the DB
         const deletedUserDetails = await userService.deleteUser(id);
         console.log("Successfully deleted user", deletedUserDetails);
+        //respond with acknowledgement
         setResponse({
             message: `successfully deleted user`
         },response)
     }
     catch(err) {
+        //return error response
         setErrorResponse(err, response);
+    }
+}
+
+export const login = async (request, response) => {
+    //extract email id and password from request body
+    let {email, password} = request.body;
+    try {
+        //fetch the user details from DB using the email id
+        const user = await userService.findUserByEmail(email);
+        //compare the password with the password hash fetched from the DB
+        let isMatch = await bcrypt.compare(password, user.password);
+        if(isMatch) {
+            //if password matches, Sign a token and issue it to the user
+            let token = jwt.sign(
+                {
+                    role: user.role,
+                    email: user.email,
+                    id: user._id
+                },
+                process.env.APP_SECRET,
+                {
+                    expiresIn: "3 days" //token expires in 3 days
+                }
+            );
+            const result = {
+                id: user._id,
+                email: user.email,
+                role: user.role
+            }
+            //setting the session cookie and user details in response
+            setHttpOnlyCookiesAndResponse({
+                ...result,
+                message: "You have successfully logged in"
+            },
+            {
+                name: "session",
+                value: token,
+                options: {
+                    httpOnly: true,
+                    secure: false, // Use 'secure' in production for HTTPS
+                    sameSite: 'Strict',
+                    maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+                }
+            },
+            response
+            )
+        }
+        else {
+            //if password matches, Sign a token and issue it to the user then throw PasswordMissMatchError
+            throw new PasswordMissMatchError();
+        }
+    }
+    catch(err) {
+        //return error response
+        setErrorResponse(err,response);
     }
 }
