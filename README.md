@@ -20,6 +20,15 @@ In this phase, each team member has contributed to the development of an API sch
 - Channel system API: Crafted by [Raveena Ingale], this comprehensive API supports the functionalities of channels, posts, comments, and upvotes, providing a robust platform for efficient management and interaction within the community.
 - User API: Developed by [Sai Krishna Reddy Gaddam], this API simplifies user interactions—retrieve details, update information, sign up, log in, and delete users.
 
+## Creation of Rest APIs and creating database connections
+
+In this phase, each team member has contributed to the development of an Rest API schema, focusing on different aspects of the platform:
+
+- Events Rest API: An Events REST API is an interface that allows clients to interact with a server to perform operations related to events. In the context of web development, events could represent activities, gatherings, or occurrences that users may be interested in.
+- Housings Rest API: A Housings REST API is an interface that facilitates the interaction between clients and a server for managing housing-related information. In the context of real estate or property management, this API allows users to perform operations related to housing units, such as fetching available listings
+- Blogs Rest API: A Blogs REST API serves as an interface for clients to interact with a server, facilitating operations related to blog entries. This API allows users to perform actions such as fetching blog entries, creating new blog posts, updating existing posts, and deleting blog entries.
+- Users Rest API: A Users REST API acts as an interface for clients to interact with a server, enabling operations related to user management. This API allows users to perform actions such as creating new user accounts, retrieving user information, updating user details, and deleting user accounts. 
+
 ## Installation and Setup
 To set up the project in its current state:
 
@@ -27,19 +36,18 @@ Clone the repository: git clone git@github.com:info-6150-fall-2023/final-project
 
 To view the domain model or API schemas: navigate to apiSchema in the root folder
 
-## Future Development
-1) Creation of Database Schemas
-2) Creation of Rest APIs
-3) Creation of User-Friendly User Interface
-4) Implement Unit Test Cases
-5) Creation of CI/CD Pipelines
-6) Deploy the Application to Azure Cloud
+
+## Future Developments
+1) Creation of User-Friendly User Interface
+2) Implement Unit Test Cases
+3) Creation of CI/CD Pipelines
+4) Deploy the Application to Azure Cloud
 
 ## Contributions
-- [Hari Sriya Pelluri]: Events API
-- [Kavya Rachana Malluvalasa]: Housing API
-- [Raveena Ingale]: Channel System API
-- [Sai Krishna Reddy Gaddam]: User API
+- [Hari Sriya Pelluri]: Events API, Events REST API 
+- [Kavya Rachana Malluvalasa]: Housing API, Housing REST API 
+- [Raveena Ingale]: Blogs API, Blogs REST API 
+- [Sai Krishna Reddy Gaddam]: User API, User REST API 
 
 
 ## Acknowledgements
