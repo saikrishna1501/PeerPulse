@@ -2,7 +2,7 @@ import * as BlogService from '../services/blogs-service.js'
 import { setErrorResponse, setResponse } from './response-handler.js';
 
   
-export const createBlog = async (request, response) => {
+export const createBlog = async (request, response, next) => {
     try {
       const blogData = request.body; 
       const createdBlog = await BlogService.createBlog(blogData);
