@@ -4,6 +4,7 @@ import * as userService from '../services/users-service.js';
 import {setErrorResponse, setHttpOnlyCookiesAndResponse, setResponse } from './response-handler.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {sendEmail} from '../middlewares/sendMail.js'
 
 /* Controller function to retrive users. By default, it returns maximum of 250 users.
    Use maxResults query string to alter the maximum user count
@@ -101,6 +102,48 @@ export const deleteUser = async(request, response) => {
     }
 }
 
+// Controller function for new user to register
+export const register = async(req,res)=>{
+    try{
+        const {firstName, lastName, email, password}= req.body;
+        if(!firstName || !lastName || !email || !password){
+            return res.status(400).json({msg: "Please fill in all fields"})
+        }
+        const passwordHash = await bcrypt.hash(password,12);
+        const activation_token = createActivationToken({firstName, lastName, password: passwordHash})
+        const newUser= {firstName, lastName, password: passwordHash, activationToken: activation_token, email}
+        const userCreated = await userService.createUser(newUser)
+        const url=`http://localhost:3000/users/activate/${activation_token}`
+        sendEmail(email,url, firstName)
+        res.redirect('back')
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+
+    }
+
+}
+
+// Controller function to send verification link to user email
+export const verifyEmail = async(req,res)=>{
+    
+    try{
+        let {activation_token}=req.params;
+        const user = await userService.findByUniqueString(activation_token)
+        if(user){
+            user.isValid=true;
+            user.save()
+            res.redirect('/users/auth')
+        }
+        else{
+            console.log("User not found")
+        }
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 export const login = async (request, response) => {
     //extract email id and password from request body
     let {email, password} = request.body;
@@ -111,17 +154,7 @@ export const login = async (request, response) => {
         let isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
             //if password matches, Sign a token and issue it to the user
-            let token = jwt.sign(
-                {
-                    role: user.role,
-                    email: user.email,
-                    id: user._id
-                },
-                process.env.APP_SECRET,
-                {
-                    expiresIn: "3 days" //token expires in 3 days
-                }
-            );
+            let token = createActivationToken(user);
             const result = {
                 id: user._id,
                 email: user.email,
@@ -154,4 +187,19 @@ export const login = async (request, response) => {
         //return error response
         setErrorResponse(err,response);
     }
+}
+
+const createActivationToken=(user)=>{
+    let token = jwt.sign(
+        {
+            role: user.role,
+            email: user.email,
+            id: user._id
+        },
+        process.env.APP_SECRET,
+        {
+            expiresIn: "3 days" //token expires in 3 days
+        }
+    );
+    return token;
 }

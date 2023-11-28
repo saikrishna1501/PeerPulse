@@ -15,6 +15,14 @@ router.route("/")
 //login route(no authentication required)
 router.route("/auth")
     .post(userController.login)
+    
+//signup route
+router.route("/register")
+.post(userController.register)
+
+//verification link
+router.route("/activate/:activation_token")
+      .get(userController.verifyEmail)
 
 //fetch, update and delete routes for a particular user
 router.route("/:id")

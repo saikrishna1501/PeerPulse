@@ -10,8 +10,10 @@ import registerRouter from './routes/index.js';
 import dotenv from 'dotenv';
 // Importing cookie-parser to parse cookies
 import cookieParser from "cookie-parser";
+// Importing express-fileupload to upload files
+import fileUpload from "express-fileupload"
  
-const initialize = (app) => {
+const initialize = async(app) => {
     dotenv.config();
     // Enable Cross-Origin Resource Sharing (CORS)
     app.use(cors());
@@ -21,8 +23,20 @@ const initialize = (app) => {
     app.use(cookieParser())
     // Parse incoming URL-encoded requests
     app.use(express.urlencoded());
+    // To upload files
+    app.use(fileUpload({
+        useTempfiles: true
+    }))
     // Connect to MongoDB using the provided connection string
-    mongoose.connect(process.env.MONGO_DB);
+
+    try{
+        mongoose.set('strictQuery', false);
+        mongoose.connect(process.env.MONGO_DB);
+    }
+    catch(err){
+        console.log(err)
+    }
+
     // Set up routes using the registered router
     registerRouter(app);
 }
