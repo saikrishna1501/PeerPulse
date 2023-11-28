@@ -22,7 +22,7 @@ const initialize = (app) => {
     // Parse incoming URL-encoded requests
     app.use(express.urlencoded());
     // Connect to MongoDB using the provided connection string
-    mongoose.connect("mongodb+srv://admin:Test123@peer-pulse-db.lke6ms9.mongodb.net/dev?retryWrites=true&w=majority");
+    mongoose.connect(process.env.MONGO_DB);
     // Set up routes using the registered router
     registerRouter(app);
 }
