@@ -50,6 +50,14 @@ const userSchema = new Schema({
     password: { //password hash
         type: String,
         required: true
+    },
+    activationToken:{
+        type: String,
+        required: true
+    },
+    isValid:{
+        type: Boolean,
+        default: false
     }
 })
 

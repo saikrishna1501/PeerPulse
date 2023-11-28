@@ -16,6 +16,7 @@ router.route("/")
 router.route("/auth")
     .post(userController.login)
 
+
 //fetch, update and delete routes for a particular user
 router.route("/:id")
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.findUserById)
