@@ -15,7 +15,7 @@ const router = express.Router();
 //Post and get routes requires authentication for blogs
 router.route("/")
 .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.createBlog)
-.get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.getBlogs)
+.get(blogsController.getBlogs)
 
 //post a comment 
 router.route('/:id/comments/:commentId')

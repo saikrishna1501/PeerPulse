@@ -28,6 +28,7 @@ const initialize = async(app) => {
         useTempfiles: true
     }))
     // Connect to MongoDB using the provided connection string
+
     try{
         mongoose.set('strictQuery', false);
         mongoose.connect(process.env.MONGO_DB);
@@ -35,6 +36,7 @@ const initialize = async(app) => {
     catch(err){
         console.log(err)
     }
+
     // Set up routes using the registered router
     registerRouter(app);
 }
