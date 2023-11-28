@@ -13,6 +13,17 @@ export const createUser = async (newUser) => {
     return user.save();
 }
 
+// find using the activation code specific to user
+export const findByUniqueString=async(activationToken)=>{
+    const user = await User.findOne({activationToken})
+    if(user){
+        return user;
+    }
+    else {
+        //if user doesn't exit, throw exception
+        throw new UserNotFoundException();
+    }
+}
 //function to find an user by id
 export const findUserById = async(id, projection = {password: 0, __v: 0}) => {
     const user = await User.findById(id, projection);

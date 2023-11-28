@@ -7,7 +7,7 @@ import initialize from './app/app.js';
 const app = express();
 
 // Set the port number for the server to listen on
-const port = 3000;
+const port = 5000;
 
 // Call the initialize function to set up middleware and other configurations
 initialize(app);
