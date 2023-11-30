@@ -7,11 +7,11 @@ import initialize from './app/app.js';
 const app = express();
 
 // Set the port number for the server to listen on
-const port = 3000;
+const port = process.env.PORT_NUMBER || 5000;
 
 // Call the initialize function to set up middleware and other configurations
 initialize(app);
 
 // Start the server and make it listen on the specified port.
 // Once the server is running, log a message to the console.
-app.listen(3000, () => console.log(`Server is listening at port ${port}`));
+app.listen(port, () => console.log(`Server is listening at port ${port}`));
