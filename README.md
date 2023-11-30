@@ -8,7 +8,7 @@ Peer Pulse is a web-based solution designed to enhance the university experience
 ### Domain-Driven Design Model
 We have developed a domain-driven design model that efficiently organizes the complexities of our platform, ensuring that it is student-focused and intuitive.
 
-![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/b7ae9f94acb3b94f8203560d0441747d0b524cff/Project%20DDD.drawio.png)
+![Project DDD](https://github.com/info-6150-fall-2023/final-project-cohortcrafters/blob/main/Project%20DDD.drawio.png)
 
 
 
