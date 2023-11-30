@@ -14,4 +14,4 @@ initialize(app);
 
 // Start the server and make it listen on the specified port.
 // Once the server is running, log a message to the console.
-app.listen(3000, () => console.log(`Server is listening at port ${port}`));
+app.listen(port, () => console.log(`Server is listening at port ${port}`));

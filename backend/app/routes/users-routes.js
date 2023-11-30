@@ -18,11 +18,15 @@ router.route("/auth")
     
 //signup route
 router.route("/register")
-.post(userController.register)
+    .post(userController.register)
 
 //verification link
 router.route("/activate/:activation_token")
       .get(userController.verifyEmail)
+
+//to verify the 'session' cookie and respond
+router.route("/auth-check")
+        .get(userController.validateCookie)
 
 //fetch, update and delete routes for a particular user
 router.route("/:id")
