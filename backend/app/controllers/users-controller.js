@@ -133,7 +133,7 @@ export const verifyEmail = async(req,res)=>{
         if(user){
             user.isValid=true;
             user.save()
-            res.redirect('/users/auth')
+            //res.redirect('/users/auth')
         }
         else{
             console.log("User not found")
@@ -188,6 +188,16 @@ export const login = async (request, response) => {
         setErrorResponse(err,response);
     }
 }
+
+export const validateCookie = (req, res) => {
+    // Logic to verify the 'session' cookie and respond
+    jwt.verify(req.cookies.session, process.env.APP_SECRET, (err, decoded) => {
+      if (err) {
+        return res.json({ isAuthenticated: false });
+      }
+      return res.json({ isAuthenticated: true, user: decoded });
+    });
+  }
 
 const createActivationToken=(user)=>{
     let token = jwt.sign(
