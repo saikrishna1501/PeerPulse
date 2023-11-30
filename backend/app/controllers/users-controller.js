@@ -6,6 +6,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {sendEmail} from '../middlewares/sendMail.js'
 
+const TokenType = {
+    ACCESS: 'access',
+    REFRESH: 'refresh',
+};
+
 /* Controller function to retrive users. By default, it returns maximum of 250 users.
    Use maxResults query string to alter the maximum user count
 */
@@ -154,27 +159,42 @@ export const login = async (request, response) => {
         let isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
             //if password matches, Sign a token and issue it to the user
-            let token = createActivationToken(user);
+            let accessToken = createToken(user, TokenType.ACCESS);
+            let refreshToken = createToken(user, TokenType.REFRESH);
+            user.activationToken = refreshToken;
+            userService.updateUser(user.id, user);
             const result = {
                 id: user._id,
                 email: user.email,
                 role: user.role
             }
-            //setting the session cookie and user details in response
+            //setting the accessToken and refreshToken cookie and user details in response
             setHttpOnlyCookiesAndResponse({
                 ...result,
                 message: "You have successfully logged in"
             },
-            {
-                name: "session",
-                value: token,
-                options: {
-                    httpOnly: true,
-                    secure: false, // Use 'secure' in production for HTTPS
-                    sameSite: 'Strict',
-                    maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+            [
+                {
+                    name: "accessToken",
+                    value: accessToken,
+                    options: {
+                        httpOnly: true,
+                        secure: false, // Use 'secure' in production for HTTPS
+                        sameSite: 'Strict',
+                        maxAge: 10 * 60 * 1000, // 10 minutes
+                    }
+                },
+                {
+                    name: "refreshToken",
+                    value: refreshToken,
+                    options: {
+                        httpOnly: true,
+                        secure: false, // Use 'secure' in production for HTTPS
+                        sameSite: 'Strict',
+                        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+                    }
                 }
-            },
+            ],
             response
             )
         }
@@ -199,16 +219,27 @@ export const validateCookie = (req, res) => {
     });
   }
 
-const createActivationToken=(user)=>{
+const createToken=(user, tokenType)=>{
+    let expiresIn;
+    let secret;
+    if(tokenType === TokenType.ACCESS) {
+        expiresIn = "5m"; //token expires in 5 minutes
+        secret = process.env.ACCESS_TOKEN_SECRET;
+    }
+    else {
+        expiresIn = "3d"; //token expires in 3 days
+        secret = process.env.REFRESH_TOKEN_SECRET;
+    }
+
     let token = jwt.sign(
         {
             role: user.role,
             email: user.email,
             id: user._id
         },
-        process.env.APP_SECRET,
+        secret,
         {
-            expiresIn: "3 days" //token expires in 3 days
+            expiresIn: expiresIn
         }
     );
     return token;

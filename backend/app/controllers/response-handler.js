@@ -8,9 +8,11 @@ export const setResponse = (data, response) => {
     response.status(200).json(data);
 }
 //send successful response with http only cookie
-export const setHttpOnlyCookiesAndResponse = (data,cookie, response) => {
+export const setHttpOnlyCookiesAndResponse = (data,cookies, response) => {
     //set cookie
-    response.cookie(cookie.name, cookie.value, cookie.options);
+    cookies.forEach((cookie) => {
+        response.cookie(cookie.name, cookie.value, cookie.options);
+    })
     //send response
     response.status(200).json(data);
 }
