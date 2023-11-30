@@ -7,6 +7,6 @@ import blogRoutes from './blogs-routes.js';
 export default (app) => {
     app.use("/users", userRouter);
     app.use('/events', eventRoutes);
-    app.use('/housing', housingRoutes);
+    app.use('/housings', housingRoutes);
     app.use('/blogs', blogRoutes);
 }
