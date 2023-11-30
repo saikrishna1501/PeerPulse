@@ -16,7 +16,12 @@ import fileUpload from "express-fileupload"
 const initialize = async(app) => {
     dotenv.config();
     // Enable Cross-Origin Resource Sharing (CORS)
-    app.use(cors());
+    // CORS configuration
+    const corsOptions = {
+        origin: 'http://localhost:3000', //to match the front-end URL
+        credentials: true, // as front-end needs to send cookies and authentication details
+    };
+    app.use(cors(corsOptions));
     // Parse incoming JSON requests
     app.use(express.json());
     // Parse cookies
