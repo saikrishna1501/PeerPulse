@@ -11,6 +11,11 @@ const commentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    blog: {
+        type: Schema.Types.ObjectId,
+        ref: 'Blog', // Assuming there is a 'Blog' model
+        required: true
     }
 });
 

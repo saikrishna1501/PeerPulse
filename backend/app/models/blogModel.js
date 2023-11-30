@@ -14,6 +14,10 @@ const blogSchema = new Schema({
         type: Number,
         default: 0
     },
+    downvotes:{
+        type : Number,
+        default : 0
+    },
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
@@ -21,10 +25,6 @@ const blogSchema = new Schema({
     reported: {
         type: Boolean,
         default: false
-    },
-    postId: {
-        type: Number,
-        required: true
     },
     author: {
         type: Schema.Types.ObjectId,
@@ -36,10 +36,6 @@ const blogSchema = new Schema({
         default: Date.now
     },
     updatedAt: {
-        type: Date,
-        default: null
-    },
-    deletedAt: {
         type: Date,
         default: null
     },
