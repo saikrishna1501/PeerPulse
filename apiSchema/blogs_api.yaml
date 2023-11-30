@@ -1,0 +1,575 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Blog API
+servers:
+  - url: http://localhost:3000
+paths:
+  /blogs:
+    post:
+      summary: Create a new blog
+      description: Create a new blog with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog
+          in: body
+          description: The blog data.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Blog'
+      responses:
+        200:
+          description: Blog created successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+    get:
+      summary: Get all blogs
+      description: Get all blogs with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Blog'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+  /blogs/{blog_id}:
+    get:
+      summary: Get details of a specific blog
+      description: Get details of a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            $ref: '#/components/schemas/Blog'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+    put:
+      summary: Update details of a specific blog
+      description: Update details of a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: blog
+          in: body
+          description: The updated blog data.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Blog'
+      responses:
+        200:
+          description: Blog updated successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+    patch:
+      summary: Patch details of a specific blog
+      description: Patch details of a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: blog
+          in: body
+          description: The partial blog data for updating.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Blog'
+      responses:
+        200:
+          description: Blog patched successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+    delete:
+      summary: Delete a specific blog
+      description: Delete a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+      responses:
+        204:
+          description: Blog deleted successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+  /blogs/{blog_id}/comments:
+    post:
+      summary: Add a comment to a blog
+      description: Add a comment to a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: comment
+          in: body
+          description: The comment data.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Comment'
+      responses:
+        200:
+          description: Comment added successfully
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+    get:
+      summary: Get comments for a blog
+      description: Get comments for a specific blog by ID with authentication and role-based access control.
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Comment'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal Server Error
+
+  /blogs/{blog_id}/comments/{comment_id}:
+    get:
+      summary: Get details of a specific comment on a post in a blog
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          type: integer
+        - name: comment_id
+          in: path
+          required: true
+          description: ID of the comment
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              comment:
+                type: string
+                example: CommentContent
+              author:
+                type: object
+                example: {...}
+        401:
+          description: Unauthorized
+          schema:
+            type:
+  /blogs/{blog_id}/upvote:
+    get:
+      summary: Get all upvote for a specific post in a blog
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              upvote:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                      example: 1
+                    username:
+                      type: string
+                      example: john_doe
+                    upvoted_at:
+                      type: string
+                      example: "2023-11-14T12:00:00Z"
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid token
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden
+              message:
+                type: string
+                example: Access Denied
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: An unexpected error occurred
+    post:
+      summary: Upvote a specific post in a blog
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          type: integer
+      responses:
+        200:
+          description: Upvote successful
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Upvote successful
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid token
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden
+              message:
+                type: string
+                example: Access Denied
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: An unexpected error occurred
+
+  /blogs/{blog_id}/downvote:
+    post:
+      summary: Downvote a specific post in a blog
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          type: integer
+      responses:
+        200:
+          description: Downvote successful
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Downvote successful
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid token
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden
+              message:
+                type: string
+                example: Access Denied
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: An unexpected error occurred
+    get:
+      summary: Get all downvote for a specific post in a blog
+      parameters:
+        - name: session
+          in: cookie
+          description: The session cookie for authentication.
+          required: true
+          type: string
+        - name: blog_id
+          in: path
+          required: true
+          description: ID of the blog
+          type: integer
+        - name: post_id
+          in: path
+          required: true
+          description: ID of the post
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: object
+            properties:
+              downvote:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                      example: 1
+                    username:
+                      type: string
+                      example: john_doe
+                    downvoted_at:
+                      type: string
+                      example: "2023-11-14T12:00:00Z"
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid token
+        403:
+          description: Forbidden
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Forbidden
+              message:
+                type: string
+                example: Access Denied
+        500:
+          description: Internal Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: An unexpected error occurred
+components:
+  schemas:
+    Blog:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        upvote:
+          type: integer
+          default: 0
+        downvote:
+          type: integer
+          default: 0
+        comments:
+          type: array
+          items:
+            type: string  # Assuming the Comment IDs are represented as strings
+        reported:
+          type: boolean
+          default: false
+        author:
+          type: string  # Assuming the User ID is represented as a string
+        createdAt:
+          type: string  # Assuming the date is represented as a string
+          format: date-time
+        updatedAt:
+          type: string  # Assuming the date is represented as a string
+          format: date-time
+        tag:
+          type: array
+          items:
+            type: string
+
+    Comment:
+          type: object
+          properties:
+            comment:
+              type: string
+            author:
+              type: string  # Assuming the User ID is represented as a string
+            blog:
+              type: string  # Assuming the Blog ID is represented as a string

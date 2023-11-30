@@ -38,32 +38,28 @@ export const addComment = async (request, response) => {
 };
 
 export const getComments = async (request, response) => {
-    try{
-
-        // Get blog id from url
+    try {
+        // Get blog id from URL
         const blogId = request.params.id;
 
         // Get blog object asynchronously using await
-        const blog = await BlogService.getBlogById(blogId);
+        const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
 
         // Ensure blog is not null before proceeding
         if (!blog) {
             return response.status(404).json({ error: "Blog not found" });
         }
 
-        // Ensure comments array is created
-        if (!blog.comments) {
-            blog.comments = [];
-        }
+        // Send the filtered comments as a response
+        response.status(200).json(blog.comments);
 
-        response.status(201).json(blog.comments);
-
-    }catch(error){
+    } catch (error) {
         // Handle the error, log it, and send an error response
-        console.error("Error creating blog:", error);
+        console.error("Error fetching comments:", error);
         response.status(500).json({ error: "Internal Server Error" });
     }
-}
+};
+
 
 export const deleteCommentById = async (request, response) => {
     try {
@@ -111,7 +107,7 @@ export const deleteCommentById = async (request, response) => {
 
 export const updateCommentById = async (request, response) => {
     try {
-        // Get blog id from url
+        // Get blog id from URL
         const blogId = request.params.id;
 
         // Get blog object asynchronously using await
@@ -125,8 +121,8 @@ export const updateCommentById = async (request, response) => {
         // Get commentId
         const commentId = request.params.commentId;
 
-        // Get updated comment from request body
-        const updatedComment = request.body;
+        // Get updated comment content from request body
+        const updatedCommentContent = request.body.comment;
 
         if (!blog.comments || blog.comments.length === 0) {
             return response.status(404).json({ error: "Comment not found" });
@@ -137,12 +133,13 @@ export const updateCommentById = async (request, response) => {
 
         // Check if the commentId was found
         if (commentIndex !== -1) {
-            // Update the comment in the comments array
-            blog.comments[commentIndex] = updatedComment;
+            // Update the comment content in the comments array
+            blog.comments[commentIndex].comment = updatedCommentContent;
 
             // Update blogs
             await BlogService.updateBlogByID(blogId, blog);
-            await CommentService.updateCommentById(commentId, updatedComment);
+            // Update comment content using CommentService
+            await CommentService.updateCommentById(commentId, { comment: updatedCommentContent });
 
             response.status(200).json(blog.comments[commentIndex]);
         } else {
@@ -156,8 +153,16 @@ export const updateCommentById = async (request, response) => {
     }
 };
 
-
-
-
-
-
+export const findCommentById = async (req, res) => {
+    try{
+      // get id from url
+      const commentId = req.params.commentId;
+      // fetch blog from blogService
+      const blog = await CommentService.getCommentById(commentId);
+      res.status(200).json(blog);
+    }catch (error){
+      console.error("Error fetching blogs:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  
