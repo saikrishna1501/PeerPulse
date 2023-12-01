@@ -5,11 +5,8 @@ import {setErrorResponse, setHttpOnlyCookiesAndResponse, setResponse } from './r
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {sendEmail} from '../middlewares/sendMail.js'
-
-const TokenType = {
-    ACCESS: 'access',
-    REFRESH: 'refresh',
-};
+import * as tokenService from '../services/tokenService.js';
+import UserNotFoundException from '../exceptions/user-not-found-exception.js';
 
 /* Controller function to retrive users. By default, it returns maximum of 250 users.
    Use maxResults query string to alter the maximum user count
@@ -115,34 +112,29 @@ export const register = async(req,res)=>{
             return res.status(400).json({msg: "Please fill in all fields"})
         }
         const passwordHash = await bcrypt.hash(password,12);
-        const activation_token = createActivationToken({firstName, lastName, password: passwordHash})
-        const newUser= {firstName, lastName, password: passwordHash, activationToken: activation_token, email}
+        const verification_token = tokenService.createToken({firstName, lastName, password: passwordHash}, tokenService.TokenType.VERIFY);
+        const newUser= {firstName, lastName, password: passwordHash, email}
         const userCreated = await userService.createUser(newUser)
-        const url=`http://localhost:3000/users/activate/${activation_token}`
+        const url=`http://localhost:3000/users/activate/${verification_token}`
         sendEmail(email,url, firstName)
         res.redirect('back')
     }
     catch(err){
         return res.status(500).json({msg: err.message});
-
     }
-
 }
 
 // Controller function to send verification link to user email
 export const verifyEmail = async(req,res)=>{
     
     try{
-        let {activation_token}=req.params;
-        const user = await userService.findByUniqueString(activation_token)
-        if(user){
-            user.isValid=true;
-            user.save()
+        let {verification_token}=req.params;
+        const tokenDetails = await tokenService.findToken({token: verification_token})
+        const user = await userService.findUserByEmail(tokenDetails.email)
+        user.isValid=true;
+        user.save()
+        tokenService.deleteToken(tokenDetails);
             //res.redirect('/users/auth')
-        }
-        else{
-            console.log("User not found")
-        }
     }
     catch(err){
         console.log(err)
@@ -159,10 +151,8 @@ export const login = async (request, response) => {
         let isMatch = await bcrypt.compare(password, user.password);
         if(isMatch) {
             //if password matches, Sign a token and issue it to the user
-            let accessToken = createToken(user, TokenType.ACCESS);
-            let refreshToken = createToken(user, TokenType.REFRESH);
-            user.activationToken = refreshToken;
-            userService.updateUser(user.id, user);
+            let accessToken = tokenService.createToken(user, tokenService.TokenType.ACCESS);
+            let refreshToken = tokenService.createToken(user, tokenService.TokenType.REFRESH);
             const result = {
                 id: user._id,
                 email: user.email,
@@ -211,36 +201,46 @@ export const login = async (request, response) => {
 
 export const validateCookie = (req, res) => {
     // Logic to verify the 'session' cookie and respond
-    jwt.verify(req.cookies.session, process.env.APP_SECRET, (err, decoded) => {
-      if (err) {
-        return res.json({ isAuthenticated: false });
-      }
-      return res.json({ isAuthenticated: true, user: decoded });
-    });
+    // jwt.verify(req.cookies.session, process.env.APP_SECRET, (err, decoded) => {
+    //   if (err) {
+    //     return res.json({ isAuthenticated: false });
+    //   }
+    //   return res.json({ isAuthenticated: true, user: decoded });
+    // });
+
+    const accessToken = request.cookies.accessToken;
+    const refreshToken = response.cookies.refreshToken;
+    try {
+        let decodedUserDetails;
+        if(!accessToken && !refreshToken) {
+            throw new UnAuthorizedException();
+        }
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+            if(err) {
+                if(!refreshToken) {
+                    throw new UnAuthorizedException();
+                }
+                jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
+                    if(err) {
+                        throw new UnAuthorizedException();
+                    }
+                    const accessToken = createToken(decoded, TokenType.ACCESS);
+                    response.cookie("accessToken", accessToken , {
+                        httpOnly: true,
+                        secure: false, // Use 'secure' in production for HTTPS
+                        sameSite: 'Strict',
+                        maxAge: 10 * 60 * 1000, // 10 minutes
+                    });
+                })
+                decodedUserDetails = decoded;
+            }
+            decodedUserDetails = decoded;
+            response.status(200).json({isAuthenticated: true, decodedUserDetails});
+        })
+    }
+    catch(err) {
+        //send error response
+        return res.status(401).json({ isAuthenticated: false });
+    }  
   }
 
-const createToken=(user, tokenType)=>{
-    let expiresIn;
-    let secret;
-    if(tokenType === TokenType.ACCESS) {
-        expiresIn = "5m"; //token expires in 5 minutes
-        secret = process.env.ACCESS_TOKEN_SECRET;
-    }
-    else {
-        expiresIn = "3d"; //token expires in 3 days
-        secret = process.env.REFRESH_TOKEN_SECRET;
-    }
-
-    let token = jwt.sign(
-        {
-            role: user.role,
-            email: user.email,
-            id: user._id
-        },
-        secret,
-        {
-            expiresIn: expiresIn
-        }
-    );
-    return token;
-}
