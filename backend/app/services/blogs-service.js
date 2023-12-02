@@ -16,13 +16,19 @@ export const createBlog = async (blogData) => {
 //get all the blogs
 export const getAllBlogs = async () => {
   try {
-    const blogs = await Blog.find().exec();
+    // Use Mongoose's populate method to replace comment IDs with actual comments
+    const blogs = await Blog.find().populate({
+      path: 'comments',
+      model: 'Comment', 
+      select: 'comment' 
+    }).exec();
+
     return blogs;
   } catch (error) {
     console.error("Error fetching blogs:", error);
     throw error;
   }
-}
+};
 
 export const updateBlogByID = async (blogID, updateData) => {
     // Use Mongoose's findByIdAndUpdate to update the blog entry by its ID
@@ -37,3 +43,69 @@ export const deleteBlogByID = async (blogID) => {
 export const getBlogById = async (blogId) => {
   return await Blog.findById(blogId);
 }
+
+export const getBlogByIdAndPopulateComments = async (blogId) => {
+  try {
+      // Find the blog by ID and populate the comments field
+      const blog = await Blog.findById(blogId).populate({
+          path: 'comments',
+          model: 'Comment',
+      }).exec();
+
+      // Ensure blog is not null before proceeding
+      if (!blog) {
+          return null;  // Or handle it according to your needs
+      }
+
+      // Ensure the comments array exists and has elements
+      if (!blog.comments || blog.comments.length === 0) {
+          return blog;
+      }
+
+      // Filter comments for the specific blog
+      const filteredComments = blog.comments.filter(comment => comment && comment.blog && comment.blog.equals(blogId));
+
+      // Replace the comments array in the blog with the filtered comments
+      blog.comments = filteredComments;
+
+      return blog;
+  } catch (error) {
+      console.error("Error fetching blog:", error);
+      throw error;
+  }
+};
+
+export const getBlogsByTag = async (tag) => {
+  try {
+      // Fetch blogs with the specified tag
+      const blogs = await Blog.find({ tag: tag }).exec();
+      return blogs;
+  } catch (error) {
+      console.error('Error fetching blogs by tag:', error);
+      throw error;
+  }
+};
+
+export const patchBlogById = async (blogId, updateData) => {
+  try {
+    // Use Mongoose's findById to fetch the existing blog entry
+    const existingBlog = await Blog.findById(blogId);
+
+    // Ensure the blog entry exists
+    if (!existingBlog) {
+      throw new Error('Blog not found');
+    }
+
+    // Update the fields present in the request body
+    for (const key in updateData) {
+      existingBlog[key] = updateData[key];
+    }
+
+    // Save the updated blog entry
+    const updatedBlog = await existingBlog.save();
+
+    return updatedBlog;
+  } catch (error) {
+    throw error;
+  }
+};

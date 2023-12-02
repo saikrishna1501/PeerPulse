@@ -10,7 +10,7 @@ const app = express();
 initialize(app);
 
 // Set the port number for the server to listen on
-const port = process.env.PORT;
+const port = process.env.PORT_NUMBER || 5000;
 
 // Start the server and make it listen on the specified port.
 // Once the server is running, log a message to the console.
