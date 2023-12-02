@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import {sendEmail} from '../middlewares/sendMail.js'
 import * as tokenService from '../services/tokenService.js';
 import UserNotFoundException from '../exceptions/user-not-found-exception.js';
+import UnverifiedEmailException from '../exceptions/unverified-email-exception.js';
 
 /* Controller function to retrive users. By default, it returns maximum of 250 users.
    Use maxResults query string to alter the maximum user count
@@ -112,24 +113,24 @@ export const register = async(req,res)=>{
             return res.status(400).json({msg: "Please fill in all fields"})
         }
         const passwordHash = await bcrypt.hash(password,12);
-        const verification_token = tokenService.createToken({firstName, lastName, password: passwordHash}, tokenService.TokenType.VERIFY);
+        const verification_token = await tokenService.createToken({firstName, lastName, password: passwordHash, email}, tokenService.TokenType.VERIFY);
         const newUser= {firstName, lastName, password: passwordHash, email}
         const userCreated = await userService.createUser(newUser)
-        const url=`http://localhost:3000/users/activate/${verification_token}`
+        const url=`http://localhost:${process.env.PORT}/users/activate/${verification_token}`
         sendEmail(email,url, firstName)
         res.redirect('back')
     }
     catch(err){
+        console.log(err)
         return res.status(500).json({msg: err.message});
     }
 }
 
 // Controller function to send verification link to user email
 export const verifyEmail = async(req,res)=>{
-    
     try{
-        let {verification_token}=req.params;
-        const tokenDetails = await tokenService.findToken({token: verification_token})
+        let {activation_token}=req.params;
+        const tokenDetails = await tokenService.findToken({token: activation_token})
         const user = await userService.findUserByEmail(tokenDetails.email)
         user.isValid=true;
         user.save()
@@ -149,15 +150,20 @@ export const login = async (request, response) => {
         const user = await userService.findUserByEmail(email);
         //compare the password with the password hash fetched from the DB
         let isMatch = await bcrypt.compare(password, user.password);
+        if(!user.isValid) {
+            throw new UnverifiedEmailException();
+        }
         if(isMatch) {
             //if password matches, Sign a token and issue it to the user
-            let accessToken = tokenService.createToken(user, tokenService.TokenType.ACCESS);
-            let refreshToken = tokenService.createToken(user, tokenService.TokenType.REFRESH);
+            let accessToken = await tokenService.createToken(user, tokenService.TokenType.ACCESS);
+            let refreshToken = await tokenService.createToken(user, tokenService.TokenType.REFRESH);
             const result = {
                 id: user._id,
                 email: user.email,
                 role: user.role
             }
+            console.log("Access Token", accessToken);
+            console.log("Refresh Token", refreshToken);
             //setting the accessToken and refreshToken cookie and user details in response
             setHttpOnlyCookiesAndResponse({
                 ...result,

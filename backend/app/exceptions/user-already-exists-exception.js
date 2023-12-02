@@ -1,5 +1,5 @@
-export default class ExpiredInvalidTokenException extends Error {
-    constructor(message = "Either token is expired/invalid") {
+export default class UserAlreadyExistsException extends Error {
+    constructor(message = "User already exists") {
         super(message);
         // assign the error class name in your custom error (as a shortcut)
         this.name = this.constructor.name
@@ -7,9 +7,9 @@ export default class ExpiredInvalidTokenException extends Error {
         // capturing the stack trace keeps the reference to your error class
         Error.captureStackTrace(this, this.constructor);
         // setting status code
-        this.status = 401;
+        this.status = 409;
     }
-    
+
     //get the status code
     statusCode() {
         return this.status

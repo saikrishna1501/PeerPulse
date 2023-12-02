@@ -1,6 +1,7 @@
 import ExpiredInvalidTokenException from "../exceptions/expired-invalid-token-exception.js";
 import UserToken from "../models/tokenModel.js";
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 export const TokenType = {
     ACCESS: 'access',
@@ -19,19 +20,25 @@ export const findToken = async(filter) => {
 }
 
 export const saveToken = async(email,token) => {
+    try {
     const tokenDetails = await deleteToken({email});
+    console.log("Deleted token Details", tokenDetails);
+    console.log(email);
     const newTokenDetails = new UserToken({email,token});
     return newTokenDetails.save();
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
 
 export const createToken = async(user, tokenType)=>{
     let expiresIn;
     let secret;
     let token;
-
     if(tokenType === TokenType.ACCESS || tokenType === TokenType.REFRESH) {
         if(tokenType === TokenType.ACCESS) {
-            expiresIn = "5m"; //token expires in 5 minutes
+            expiresIn = "10m"; //token expires in 10 minutes
             secret = process.env.ACCESS_TOKEN_SECRET;
         }
         else {
@@ -53,10 +60,13 @@ export const createToken = async(user, tokenType)=>{
     else {
         token = crypto.randomBytes(32).toString("hex");
     }
-
-    if(tokenType === TokenType.REFRESH || tokenType === tokenType.VERIFY) {
-        saveToken(user.email, token);
+    if(tokenType === TokenType.REFRESH || tokenType === TokenType.VERIFY) {
+        console.log("Saving Token to DB");
+        const savedTokenDetails = await saveToken(user.email, token);
+        console.log("Saved Token = ", savedTokenDetails);
     }
+
+    console.log("Token", token);
 
     return token;
 }
@@ -64,7 +74,7 @@ export const createToken = async(user, tokenType)=>{
 export const deleteToken = async(filter) => {
     let tokenDetails = await UserToken.findOne(filter);
     if(tokenDetails) {
-        tokenDetails.deleteOne();
+        return tokenDetails.deleteOne();
     }
     else {
         console.log("Token not found, so skipped delete");

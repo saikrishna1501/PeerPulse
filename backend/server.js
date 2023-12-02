@@ -6,11 +6,11 @@ import initialize from './app/app.js';
 // Create an instance of express
 const app = express();
 
-// Set the port number for the server to listen on
-const port = 5000;
-
 // Call the initialize function to set up middleware and other configurations
 initialize(app);
+
+// Set the port number for the server to listen on
+const port = process.env.PORT;
 
 // Start the server and make it listen on the specified port.
 // Once the server is running, log a message to the console.

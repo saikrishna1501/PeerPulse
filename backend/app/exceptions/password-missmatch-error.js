@@ -8,7 +8,7 @@ export default class PasswordMissMatchError extends Error {
         Error.captureStackTrace(this, this.constructor);
 
         // setting status code
-        this.status = 403;
+        this.status = 401;
     }
     //get the status code
     statusCode() {

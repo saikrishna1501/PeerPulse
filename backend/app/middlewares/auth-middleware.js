@@ -76,7 +76,7 @@ const lol = async(request, response, next) => {
 }
 
 const authorize = async(request, response, next) => {
-    console.log(request.cookies);
+    console.log("Request Cookies", request.cookies);
     const accessToken = request.cookies.accessToken;
     const refreshToken = request.cookies.refreshToken;
     try {
@@ -97,7 +97,7 @@ const authorize = async(request, response, next) => {
             try {
                 console.log("refreshToken", refreshToken);
                 const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-                const accessToken = createToken(decoded, TokenType.ACCESS);
+                const accessToken = await createToken(decoded, TokenType.ACCESS);
                 response.cookie("accessToken", accessToken , {
                     httpOnly: true,
                     secure: false, // Use 'secure' in production for HTTPS
