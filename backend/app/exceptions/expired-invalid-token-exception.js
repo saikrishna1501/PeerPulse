@@ -1,5 +1,5 @@
-export default class UnAuthorizedException extends Error {
-    constructor(message = "Either tokens are missing/invalid or user is not authorized to access this resource") {
+export default class ExpiredInvalidTokenException extends Error {
+    constructor(message = "Either token is expired/invalid") {
         super(message);
         // assign the error class name in your custom error (as a shortcut)
         this.name = this.constructor.name

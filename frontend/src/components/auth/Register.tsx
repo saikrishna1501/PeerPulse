@@ -16,7 +16,7 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/users/register', userData);
+      const response = await axios.post('http://localhost:5000/users', userData);
       console.log('Registration successful', response.data);
       // redirect need to be added
     } catch (error) {

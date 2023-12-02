@@ -1,16 +1,22 @@
 //imports
+import ExpiredInvalidTokenException from "../exceptions/expired-invalid-token-exception.js";
 import PasswordMissMatchError from "../exceptions/password-missmatch-error.js";
 import UnAuthorizedException from "../exceptions/unauthorized-exception.js";
+import UnverifiedEmailException from "../exceptions/unverified-email-exception.js";
+import UserAlreadyExistsException from "../exceptions/user-already-exists-exception.js";
 import UserNotFoundException from "../exceptions/user-not-found-exception.js";
+
 
 //send successful response
 export const setResponse = (data, response) => {
     response.status(200).json(data);
 }
 //send successful response with http only cookie
-export const setHttpOnlyCookiesAndResponse = (data,cookie, response) => {
+export const setHttpOnlyCookiesAndResponse = (data,cookies, response) => {
     //set cookie
-    response.cookie(cookie.name, cookie.value, cookie.options);
+    cookies.forEach((cookie) => {
+        response.cookie(cookie.name, cookie.value, cookie.options);
+    })
     //send response
     response.status(200).json(data);
 }
@@ -37,6 +43,27 @@ export const setErrorResponse = (err, response) => {
         response.status(err.statusCode()).json({
             code: "UnAuthorized",
             message: "Either session token is missing/invalid or user is not authorized to access this resource"
+        })
+    }
+    //if err matches UserAlreadyExistsException
+    else if(err instanceof UserAlreadyExistsException) {
+        response.status(err.statusCode()).json({
+            code: "UserDetailsConflict",
+            message: "User already exists"
+        })
+    }
+    //if err matches ExpiredInvalidTokenException
+    else if(err instanceof ExpiredInvalidTokenException) {
+        response.status(err.statusCode()).json({
+            code: "ExpiredOrInvalidToken",
+            message: "Either token is expired/invalid"
+        })
+    }
+    //if err matches UnverifiedEmailException
+    else if(err instanceof UnverifiedEmailException) {
+        response.status(err.statusCode()).json({
+            code: "UnVerifiedEmail",
+            message: "Email not verified by the user"
         })
     }
     //if none of the above Exceptions match then return a Generic Response

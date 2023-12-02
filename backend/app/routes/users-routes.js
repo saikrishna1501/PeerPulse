@@ -11,14 +11,10 @@ const router = express.Router();
 //get requires authentication but creating a user doesn't require authentication(sign up)
 router.route("/")
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT,Roles.MODERATOR]),userController.getUsers)
-    .post(userController.saveUser)
+    .post(userController.register)
 //login route(no authentication required)
 router.route("/auth")
     .post(userController.login)
-    
-//signup route
-router.route("/register")
-    .post(userController.register)
 
 //verification link
 router.route("/activate/:activation_token")
