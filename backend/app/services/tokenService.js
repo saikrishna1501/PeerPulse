@@ -23,7 +23,6 @@ export const saveToken = async(email,token) => {
     try {
     const tokenDetails = await deleteToken({email});
     console.log("Deleted token Details", tokenDetails);
-    console.log(email);
     const newTokenDetails = new UserToken({email,token});
     return newTokenDetails.save();
     }
@@ -61,12 +60,8 @@ export const createToken = async(user, tokenType)=>{
         token = crypto.randomBytes(32).toString("hex");
     }
     if(tokenType === TokenType.REFRESH || tokenType === TokenType.VERIFY) {
-        console.log("Saving Token to DB");
-        const savedTokenDetails = await saveToken(user.email, token);
-        console.log("Saved Token = ", savedTokenDetails);
+        saveToken(user.email, token);
     }
-
-    console.log("Token", token);
 
     return token;
 }

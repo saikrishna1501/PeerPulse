@@ -162,8 +162,6 @@ export const login = async (request, response) => {
                 email: user.email,
                 role: user.role
             }
-            console.log("Access Token", accessToken);
-            console.log("Refresh Token", refreshToken);
             //setting the accessToken and refreshToken cookie and user details in response
             setHttpOnlyCookiesAndResponse({
                 ...result,
