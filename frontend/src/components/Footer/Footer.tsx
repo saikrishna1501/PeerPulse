@@ -10,10 +10,8 @@ const Footer = () => {
         textAlign: 'center',
         p: 6,
         backgroundColor: '#f0f0f0', // Set your desired background color
-        marginTop: 'auto', // Push the footer to the bottom of the page
-        position: 'absolute',
-        buttom: 0,
-        left: 0,
+        // flexShrink: 0,
+        // marginTop: 'auto', // Push the footer to the bottom of the page
         width: "100%",
         mt: 10,
         background: [theme.palette.info.main],

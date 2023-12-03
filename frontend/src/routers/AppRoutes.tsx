@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 // import LandingPage from '../LandingPage/Header';
-import LandingPage from '../LandingPage/LandingPage';
-import Login from '../auth/Login';
-import Register from '../auth/Register';
-import EventsPage from '../EventsPage/EventsPage';
-import HousingPage from '../HousingPage/HousingPage';
-import BlogsPage from '../BlogsPage/BlogsPage';
-import Header from '../LandingPage/Header';
-import Footer from '../LandingPage/Footer';
-import MainLayout from '../../layouts/MainLayout';
+import LandingPage from '../pages/LandingPage/LandingPage';
+import Login from '../components/auth/Login';
+import Register from '../components/auth/Register';
+import EventsPage from '../pages/EventsPage/EventsPage';
+import HousingPage from '../pages/HousingPage/HousingPage';
+import BlogsPage from '../pages/BlogsPage/BlogsPage';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
+import MainLayout from '../layouts/MainLayout/MainLayout';
 
 const AppRoutes: React.FC = () => {
  

@@ -1,7 +1,7 @@
 import React from 'react';
-import PageGuideSection from '../PageGuideSection/PageGuideSection';
+import PageGuideSection from './PageGuideSection/PageGuideSection';
 import { Container} from '@mui/material';
-import IntroductionSection from '../PageGuideSection/IntroductionSection';
+import IntroductionSection from './PageGuideSection/IntroductionSection';
 
 const LandingPage: React.FC = () => {
   return (
