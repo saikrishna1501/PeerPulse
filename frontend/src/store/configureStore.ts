@@ -3,6 +3,7 @@ import reducer from './reducer';
 import logger from './middleware/logger';
 import func from './middleware/func';
 import api from "./middleware/api";
+import auth from "./middleware/auth";
 
 export default function(){
     return configureStore({
@@ -10,6 +11,7 @@ export default function(){
         middleware : [
             logger('console'),
             func,
+            // auth,
             api
         ]
     });
