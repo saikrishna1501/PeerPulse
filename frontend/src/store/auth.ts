@@ -29,6 +29,9 @@ const userSlice = createSlice({
 // Creator for logIn action
 export const apiCallForLogin = (email: string, password: string) => ({
     type: apiCallBegan.type,
+    meta: {
+        skipAuth: true
+    },
     payload: {
         url: authUrl,
         method: 'post',
