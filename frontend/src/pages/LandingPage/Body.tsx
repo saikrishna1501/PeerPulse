@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom'
-import Login from '../auth/Login';
-import Register from '../auth/Register';
+import Login from '../../components/auth/Login';
+import Register from '../../components/auth/Register';
 //import EmailVerification from '../auth/EmailVerification';
-import { checkAuthStatus } from '../utils/authUtils';
+import { checkAuthStatus } from '../../services/AuthService';
 
 // Test component to check if cookie validation is working
 // if cookie is present user is redirected to dashboard for now

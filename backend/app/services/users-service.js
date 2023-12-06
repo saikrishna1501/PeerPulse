@@ -1,6 +1,7 @@
 //imports
 import User from "../models/users-model.js";
 import UserNotFoundException from "../exceptions/user-not-found-exception.js";
+import UserAlreadyExistsException from "../exceptions/user-already-exists-exception.js";
 
 //function to retrive details of all users
 export const retrieveAllUsers = async ({params = {}, projection = {password: 0, __v: 0}, maxResult = 250}) => {
@@ -9,7 +10,11 @@ export const retrieveAllUsers = async ({params = {}, projection = {password: 0, 
 
 //function to create an user
 export const createUser = async (newUser) => {
-    const user = new User(newUser);
+    let user = await User.findOne({email : newUser.email});
+    if(user) {
+        throw new UserAlreadyExistsException();
+    }
+    user = new User(newUser);
     return user.save();
 }
 

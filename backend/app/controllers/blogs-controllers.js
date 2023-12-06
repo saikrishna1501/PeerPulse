@@ -32,7 +32,7 @@ export const findBlogById = async (req, res) => {
     // get id from url
     const blogId = req.params.id;
     // fetch blog from blogService
-    const blog = await BlogService.getBlogById(blogId);
+    const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
     res.status(200).json(blog);
   }catch (error){
     console.error("Error fetching blogs:", error);
@@ -40,15 +40,7 @@ export const findBlogById = async (req, res) => {
   }
 }
 
-//Function to update Blog by passing id
-export const updateBlog = async(request, response) => {
-    try {
-        const updatedBlog = await BlogService.updateBlogByID(request.params.id, request.body);
-        setResponse(updatedBlog, response);
-      } catch (error) {
-        setErrorResponse(error, response);
-      }
-}
+
 
 //Function to delete Blog by passing id
 export const deleteBlog = async (request, response) => {
@@ -59,3 +51,181 @@ export const deleteBlog = async (request, response) => {
         setErrorResponse(error, response);
       }
   }
+
+  export const handleUpvote = async (req, res) => {
+    try {
+        const blogId = req.params.id;
+
+        // Find the blog by ID
+        const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
+
+        // Ensure the blog exists
+        if (!blog) {
+            return res.status(404).json({ error: 'Blog not found' });
+        }
+
+        // Check if the request body contains the expected action
+        const { action } = req.body;
+
+        if (action === 'upvote') {
+            // Increment the upvotes count
+            blog.upvotes += 1;
+
+            // Save the updated blog
+            await blog.save();
+
+            // Return the updated blog
+            res.status(200).json({ upvotes: blog.upvotes });
+        } else {
+            // If the action is not recognized, respond with an error
+            res.status(400).json({ error: 'Invalid action' });
+        }
+    } catch (error) {
+        console.error('Error handling upvote:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+// Controller function to get upvotes for a blog
+export const getUpvotes = async (req, res) => {
+    try {
+        // Get blog id from URL parameters
+        const blogId = req.params.id;
+
+        // Find the blog in the database
+        const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
+
+        // Check if the blog exists
+        if (!blog) {
+            return res.status(404).json({ error: 'Blog not found' });
+        }
+
+        // Respond with the current upvotes count
+        res.status(200).json({ upvotes: blog.upvotes });
+    } catch (error) {
+        console.error('Error fetching upvotes:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+export const handleDownvote = async (req, res) => {
+  try {
+      const blogId = req.params.id;
+
+      // Find the blog by ID
+      const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
+
+      // Ensure the blog exists
+      if (!blog) {
+          return res.status(404).json({ error: 'Blog not found' });
+      }
+
+      // Check if the request body contains the expected action
+      const { action } = req.body;
+
+      if (action === 'downvote') {
+          // Increment the upvotes count
+          blog.downvotes += 1;
+
+          // Save the updated blog
+          await blog.save();
+
+          // Return the updated blog
+          res.status(200).json({ downvote: blog.downvotes });
+      } else {
+          // If the action is not recognized, respond with an error
+          res.status(400).json({ error: 'Invalid action' });
+      }
+  } catch (error) {
+      console.error('Error handling upvote:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Controller function to get upvotes for a blog
+export const getDownVote = async (req, res) => {
+  try {
+      // Get blog id from URL parameters
+      const blogId = req.params.id;
+
+      // Find the blog in the database
+      const blog = await BlogService.getBlogByIdAndPopulateComments(blogId);
+
+      // Check if the blog exists
+      if (!blog) {
+          return res.status(404).json({ error: 'Blog not found' });
+      }
+
+      // Respond with the current upvotes count
+      res.status(200).json({ downvotes: blog.downvotes });
+  } catch (error) {
+      console.error('Error fetching downvotes:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const getBlogsByTag = async (req, res) => {
+  try {
+      const tag = req.query.tag;
+      // Call the service method to get blogs by tag
+      const blogs = await BlogService.getBlogsByTag(tag);
+
+      res.status(200).json(blogs);
+  } catch (error) {
+      console.error('Error fetching blogs by tag:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const patchBlog = async (req, res) => {
+  try {
+    // Fetch the fields provided in req.body
+    const blog = req.body;
+
+    // Validate that the request body contains fields to update
+    if (!blog || Object.keys(blog).length === 0) {
+      return res.status(400).json({ error: 'No fields provided for update' });
+    }
+
+    // Validate that the fields to update are allowed
+    const allowedFields = ['title', 'content', 'tag'];
+    const fieldsToUpdate = Object.keys(blog);
+
+    for (const fieldToUpdate of fieldsToUpdate) {
+      if (!allowedFields.includes(fieldToUpdate)) {
+        return res.status(400).json({ error: `Invalid field to update: ${fieldToUpdate}` });
+      }
+    }
+
+    // Create an object with the fields to update and their new values
+    const updateObject = {};
+
+    fieldsToUpdate.forEach((field) => {
+      updateObject[field] = blog[field];
+    });
+
+    // Get the blog ID from the request parameters
+    const blogId = req.params.id;
+
+    // Update the blog using the BlogService
+    const updatedBlog = await BlogService.patchBlogById(blogId, updateObject);
+
+    // Send the updated blog as a response
+    setResponse(updatedBlog, res);
+  } catch (error) {
+    // Handle the error and send an error response
+    setErrorResponse(error, res);
+  }
+};
+
+
+
+//Function to update Blog by passing id
+export const updateBlog = async(request, response) => {
+  try {
+      const updatedBlog = await BlogService.updateBlogByID(request.params.id, request.body);
+      setResponse(updatedBlog, response);
+    } catch (error) {
+      setErrorResponse(error, response);
+    }
+}

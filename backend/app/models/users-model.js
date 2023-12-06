@@ -51,10 +51,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    activationToken:{
-        type: String,
-        required: true
-    },
     isValid:{
         type: Boolean,
         default: false
