@@ -1,0 +1,75 @@
+import { Button, TextField } from "@mui/material";
+import { read } from "fs";
+import { useState } from "react";
+import defaultProfilePictureLink from '../../../assets/images/profile-picture.png';
+import { useTheme } from '@mui/material/styles';
+
+type Props = {
+    src: string | undefined,
+    formUpdateHandler: any,
+    name: string
+}
+
+function ProfilePictureUpload({ src, formUpdateHandler, name }: Props) {
+    const [isHovered, setIsHovered] = useState(false);
+    const theme = useTheme();
+    // src = src ? `url(data:image/jpeg;base64,${btoa(src)};)` : `url(${defaultProfilePictureLink})`;
+    src = src ? `url(${src})` : `url(${defaultProfilePictureLink})`;
+    let profilePictureSx = {
+        borderRadius: "50%",
+        width: 100, 
+        height: 100, 
+        backgroundImage: src,
+        backgroundSize: "cover",
+        cursor: "pointer",
+        // border: `3px solid ${theme.palette.primary.main}`,
+        border: `2px solid #f2f2f2`,
+        boxShadow: isHovered ? `0 0 10px rgba(255, 255, 255, 0.7)` : 'none',
+        transition: 'transform 0.3s ease', // Adding a smooth transition
+        transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+    }
+
+    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        if(file) {
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            const isAllowedType = allowedTypes.includes(file.type);
+            if(isAllowedType) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const binaryData:string = e.target?.result as string;
+                    console.log(binaryData);
+                    formUpdateHandler(binaryData);
+                }
+                console.log(file);
+                reader.readAsDataURL(file);
+            }
+            else {
+                alert("file must be of type " + allowedTypes);
+            }
+        }
+    }
+
+    return (
+        <>
+            <input
+                id="file-upload-button"
+                type="file"
+                style={{display: "none"}}
+                onChange={onChangeHandler}
+                name={name}
+                accept=".jpg,.png,.jpeg"
+            />
+            <label htmlFor="file-upload-button" 
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}>
+            <div
+                style={profilePictureSx}
+            />
+                {/* <Button color="primary" variant="outlined" sx={profilePictureSx}></Button> */}
+            </label>
+        </>
+    )
+}
+
+export default ProfilePictureUpload;

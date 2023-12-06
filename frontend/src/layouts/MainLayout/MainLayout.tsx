@@ -25,7 +25,7 @@ const MainLayout = () => {
     return (
         <>
               <Header />
-              <main>
+              <main style={{ backgroundSize: "250px", backgroundRepeat: "repeat", }}>
                 <Outlet />
               </main>
               <Footer />
