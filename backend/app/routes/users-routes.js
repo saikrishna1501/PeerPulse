@@ -15,6 +15,11 @@ router.route("/")
 //login route(no authentication required)
 router.route("/auth")
     .post(userController.login)
+
+//Forgot password 
+router.route("/auth")
+    .post("/requestPasswordReset", requestPasswordReset)
+    .post("/resetPassword", resetPassword)
     
 //signup route
 router.route("/register")

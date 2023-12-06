@@ -213,3 +213,4 @@ const createActivationToken=(user)=>{
     );
     return token;
 }
+
