@@ -3,6 +3,7 @@ import "./App.scss";
 import AppRoutes from "./routers/AppRoutes";
 import theme from "./theme/theme";
 import { ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 import configureMyStore from "./store/configureStore";
 import { Provider } from "react-redux";
 
@@ -12,6 +13,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <AppRoutes />
       </ThemeProvider>
     </Provider>
