@@ -42,5 +42,8 @@ router.route("/:id")
     .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.updateUser)
     .delete(authorize, checkRoles([Roles.ADMIN]), userController.deleteUser);
 
+router.route("/logout")
+    .post(userController.logout)
+
 //export users router
 export default router;

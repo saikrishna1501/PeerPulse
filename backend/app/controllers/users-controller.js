@@ -150,6 +150,7 @@ export const login = async (request, response) => {
         const user = await userService.findUserByEmail(email);
         //compare the password with the password hash fetched from the DB
         let isMatch = await bcrypt.compare(password, user.password);
+        console.log(user)
         if(!user.isValid) {
             throw new UnverifiedEmailException();
         }
@@ -290,5 +291,49 @@ export const resetPasswordRequestController = async (req, res, next) => {
     }
   };
   
+
+  export const logout = async (request, response) => {
+    //extract email id from request body
+    let {email} = request.body;
+    try {
+        //fetch the user details from DB using the email id
+        const user = await userService.findUserByEmail(email);
+        if(!user.isValid) {
+            throw new UnverifiedEmailException();
+        }
+            let refreshToken = await tokenService.deleteToken({ email });
+            const result = {
+                id: user._id,
+                email: user.email,
+                role: user.role
+            }
+            //setting the refreshToken cookie and user details in response
+            setHttpOnlyCookiesAndResponse({
+                ...result,
+                message: "You have successfully logged out"
+            },
+            [
+                {
+                    name: "refreshToken",
+                    value: refreshToken,
+                    options: {
+                        httpOnly: true,
+                        secure: false, // Use 'secure' in production for HTTPS
+                        sameSite: 'Strict',
+                        maxAge: 0  
+                    }
+                }
+            ],
+            response
+            )
+
+            
+        }
+    catch(err) {
+        //return error response
+        setErrorResponse(err,response);
+    }
+  };
+
 
   
