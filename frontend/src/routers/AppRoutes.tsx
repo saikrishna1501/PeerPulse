@@ -7,12 +7,14 @@ import EventsPage from "../pages/EventsPage/EventsPage";
 import HousingPage from "../pages/HousingPage/HousingPage";
 import BlogsPage from "../pages/BlogsPage/BlogsPage";
 import MainLayout from "../layouts/MainLayout/MainLayout";
+import EventDetailsPage from "../pages/EventsPage/EventDetailsPage";
 import {
   AUTH_ROUTE,
   BLOGS_ROUTE,
   EVENTS_ROUTE,
   HOUSING_ROUTE,
   REGISTER_ROUTE,
+  EVENT_DETAIL_ROUTE
 } from "../constants/routes";
 
 const AppRoutes: React.FC = () => {
@@ -26,6 +28,7 @@ const AppRoutes: React.FC = () => {
           <Route path={EVENTS_ROUTE} element={<EventsPage />} />
           <Route path={HOUSING_ROUTE} element={<HousingPage />} />
           <Route path={BLOGS_ROUTE} element={<BlogsPage />} />
+          <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage/>} />
         </Route>
       </Routes>
     </Router>
