@@ -9,4 +9,5 @@ export interface Event {
     imageUrl: string;
     latitude: number;
     longitude: number;
+    isPaid: boolean
 }
