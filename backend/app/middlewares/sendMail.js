@@ -1,6 +1,18 @@
 import nodemailer from 'nodemailer';
+import handlebars from 'handlebars';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-export const sendEmail = (email, url, firstName)=>{
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const subject = {
+    sendVerification: 'Peer Pulse Email Verification'
+};
+
+
+export const sendEmail = (email, url, firstName, type="sendVerification")=>{
     var Transport = nodemailer.createTransport({
         service: "Gmail",
         auth:{
@@ -9,14 +21,13 @@ export const sendEmail = (email, url, firstName)=>{
         }
     });
 
+    const source = fs.readFileSync(path.join(__dirname, `../templates/${type}.handlebars`), "utf8");
+    const compiledTemplate = handlebars.compile(source);
     const mailOptions = {
              from: process.env.SENDER_EMAIL_ADD,
              to: email,
-             subject: "Peer Pulse Email Verification",
-             html:`<div>Hi ${firstName}
-             <h1>Welcome to Peer Pulse!</h1>
-             Please verify your email by clicking the link below and become a member now:</div>
-             <div><a href=${url}>here</a></div>`
+             subject: subject[type],
+             html:compiledTemplate({ url, firstName})
          }
     
     Transport.sendMail(mailOptions,function(error,response){
@@ -25,7 +36,7 @@ export const sendEmail = (email, url, firstName)=>{
         }
         else{
             console.log("Message sent")
-        }
-    })
-    
+        }
+    })
+    
 }
