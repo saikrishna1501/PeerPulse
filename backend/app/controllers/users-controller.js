@@ -248,19 +248,21 @@ export const validateCookie = (req, res) => {
     }  
   }
 
-  const resetPasswordRequestController = async (req, res, next) => {
-    const requestPasswordResetService = await requestPasswordReset(
+export const resetPasswordRequestController = async (req, res, next) => {
+
+    try {
+
+       if(!req.body.email) return res.status(400).json({message: 'email is required'});
+
+    await userService.requestPasswordReset(
       req.body.email
     );
-    return res.json(requestPasswordResetService);
+    return res.status(200).json({message: 'succesfully sent the link!'});
+
+    } catch(err) {
+    return res.status(500).json({message: 'something went worng!'});
+    }
   };
   
-  const resetPasswordController = async (req, res, next) => {
-    const resetPasswordService = await resetPassword(
-      req.body.userId,
-      req.body.token,
-      req.body.password
-    );
-    return res.json(resetPasswordService);
-  };
+
 

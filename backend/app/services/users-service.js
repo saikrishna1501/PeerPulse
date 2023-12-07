@@ -1,5 +1,9 @@
 //imports
 import User from "../models/users-model.js";
+import Token from "../models/tokenModel.js";
+import * as TokenService from "../services/tokenService.js";
+import * as sendEmail from "../middlewares/sendMail.js";
+
 import UserNotFoundException from "../exceptions/user-not-found-exception.js";
 import UserAlreadyExistsException from "../exceptions/user-already-exists-exception.js";
 
@@ -65,3 +69,23 @@ export const findUserByEmail = async(email) => {
         throw new UserNotFoundException();
     }
 }
+
+export const requestPasswordReset = async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) throw new Error("Email does not exist");
+
+    const verify = TokenService.TokenType.VERIFY;
+  
+    let token = await TokenService.createToken({email, verify});
+  
+    const link = `http://localhost:${process.env.PORT}/passwordReset?token=${token}&id=${email}`;
+  
+
+    await sendEmail.sendEmail(
+        user.email,
+        link,
+        user.firstName,
+        "passwordResetRequest"
+    );
+  };
+  

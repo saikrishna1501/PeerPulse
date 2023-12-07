@@ -17,9 +17,9 @@ router.route("/auth")
     .post(userController.login)
 
 //Forgot password 
-router.route("/auth")
-    .post("/auth/requestResetPassword", resetPasswordRequestController)
-    .post("/auth/resetPassword", resetPasswordController)
+router.route("/auth/requestResetPassword")
+    .post(userController.resetPasswordRequestController)
+  
     
 //signup route
 router.route("/register")
