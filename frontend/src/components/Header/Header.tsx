@@ -68,7 +68,6 @@ const Header: React.FC = () => {
               centered
               value={value}
               onChange={(e, newValue) => setValue(newValue)}
-              indicatorColor="secondary"
             >
               <CustomTab label="Home" onClick={navigateTo(HOME_ROUTE)} />
               <CustomTab label="Events" onClick={navigateTo(EVENTS_ROUTE)} />

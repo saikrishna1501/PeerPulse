@@ -39,10 +39,11 @@ const Filters = () => {
         flex: 1.5,
         textAlign: "center",
         height: "300px",
+        position: "sticky",
+        top: 100,
         display: { xs: "none", sm: "block" },
-        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Box shadow for a subtle effect
+        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)", // Box shadow for a subtle effect
         borderRadius: theme.shape.borderRadius * 2, // Rounded corners
-        backgroundColor: "#f0f0f0", // Grey background color
         transition: "transform 0.3s ease-in-out", // Smooth transition effect
         "&:hover": {
           transform: "scale(1.05)", // Scale up on hover
@@ -63,7 +64,7 @@ const Filters = () => {
             <ListItemButton onClick={handlePastWeekChange}>
               <Checkbox checked={pastWeek} />
               <ListItemText
-                primary="Past 1 week"
+                primary="Last 7 Days"
                 sx={{
                   fontSize: "1.5rem",
                   fontFamily: theme.typography.fontFamily,

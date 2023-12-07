@@ -3,6 +3,7 @@ import { Box, Container, Stack } from "@mui/material";
 import BlogPost from "../../components/Blogs/BlogCard";
 import Filters from "../../components/BlogsFilter/Filters";
 import Rightbar from "../../components/BlogsFilter/Rightbar";
+import { BlogHeader } from "../../components/Blogs/BlogHeader";
 
 const BlogsPage = (props: any) => {
   // Initial state with at least two blog objects
@@ -34,17 +35,20 @@ const BlogsPage = (props: any) => {
   ]);
 
   return (
-    <Container>
-      <Stack
-        direction="row"
-        spacing={2}
-        marginTop={50}
-        justifyContent="space-between"
-      >
-        <BlogPost />
-        <Filters />
-      </Stack>
-    </Container>
+    <>
+      <BlogHeader />
+      <Container>
+        <Stack
+          direction="row"
+          spacing={2}
+          marginTop={5}
+          justifyContent="space-between"
+        >
+          <BlogPost />
+          <Filters />
+        </Stack>
+      </Container>
+    </>
   );
 };
 

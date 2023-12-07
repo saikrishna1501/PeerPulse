@@ -1,8 +1,17 @@
-import React from 'react';
-import {  useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
+import theme from "../../theme/theme";
 //import { RootState } from './store'; // Import the type of your root state
 //import { setAuthenticated } from './authSlice'; // Import the action to update the state
 
@@ -13,31 +22,48 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>
+    setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
-  
+
   const handleLogout = () => {
     // Perform the logout logic here
     //dispatch(setAuthenticated(false));
-    isAuthenticated=false
+    isAuthenticated = false;
     handleMenuClose();
-    navigate('/');
+    navigate("/");
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className="navbar-color">
       <Toolbar>
-        <Typography variant="h6" color="inherit" component={Link} to="/" sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          color="inherit"
+          component={Link}
+          to="/"
+          sx={{ flexGrow: 1 }}
+        >
           PeerPulse
         </Typography>
         <div>
-          <Button color="inherit" component={Link} to="/events">Events</Button>
-          <Button color="inherit" component={Link} to="/housing">Housing</Button>
-          <Button color="inherit" component={Link} to="/blogs">Blogs</Button>
+          <Button color="inherit" component={Link} to="/events">
+            Events
+          </Button>
+          <Button color="inherit" component={Link} to="/housing">
+            Housing
+          </Button>
+          <Button color="inherit" component={Link} to="/blogs">
+            Blogs
+          </Button>
           {!isAuthenticated ? (
             <>
-              <Button color="inherit" component={Link} to="/login">Login</Button>
-              <Button color="inherit" component={Link} to="/signup">Signup</Button>
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/signup">
+                Signup
+              </Button>
             </>
           ) : (
             <IconButton
@@ -57,18 +83,18 @@ const Navbar: React.FC = () => {
           id="menu-appbar"
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           keepMounted
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={() => navigate('/dashboard')}>Dashboard</MenuItem>
+          <MenuItem onClick={() => navigate("/dashboard")}>Dashboard</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Toolbar>
@@ -76,4 +102,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;
