@@ -8,8 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const subject = {
-    sendVerification: 'Peer Pulse Email Verification'
-};
+    sendVerification: 'Peer Pulse Email Verification',
+    passwordResetRequest: 'Peer Pulse password reset'
+}
 
 
 export const sendEmail = (email, url, firstName, type="sendVerification")=>{
@@ -36,7 +37,6 @@ export const sendEmail = (email, url, firstName, type="sendVerification")=>{
         }
         else{
             console.log("Message sent")
-        }
-    })
-    
+       }
+    })
 }
