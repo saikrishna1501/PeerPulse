@@ -249,11 +249,8 @@ export const validateCookie = (req, res) => {
   }
 
 export const resetPasswordRequestController = async (req, res, next) => {
-
     try {
-
        if(!req.body.email) return res.status(400).json({message: 'email is required'});
-
     await userService.requestPasswordReset(
       req.body.email
     );
@@ -263,6 +260,35 @@ export const resetPasswordRequestController = async (req, res, next) => {
     return res.status(500).json({message: 'something went worng!'});
     }
   };
+
+
+  export const resetPasswordController = async (req, res, next) => {
+    try{
+        const { email, password } = req.body;
+        const  { activation_token }= req.query;
+        if(!email || !password || !activation_token) {
+            return res.status(400).json({message: 'email / password / token are required'});
+        }
+        const tokenDetails = await tokenService.findToken({token: activation_token});
+        if(!tokenDetails) {
+            return res.status(400).json({message: 'token expired or not found!'});
+        }
+        let passwordResetToken = await tokenService.findToken(tokenDetails);
+        if (!passwordResetToken) {
+            return res.status(401).json({message: "Invalid or expired password reset token"});
+        }
+    await userService.resetPassword(
+      req.body.email,
+      passwordResetToken,
+      req.body.password
+    );
+    return res.status(200).json({message: 'succesfully password is reset!'});
+    } catch(err) {
+        console.error(err.message);
+        return res.status(err.status ? err.status : 500).json(
+            {message: err.message ? err.message : 'something went wrong!'});
+    }
+  };
   
 
-
+  

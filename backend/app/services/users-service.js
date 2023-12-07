@@ -3,6 +3,8 @@ import User from "../models/users-model.js";
 import Token from "../models/tokenModel.js";
 import * as TokenService from "../services/tokenService.js";
 import * as sendEmail from "../middlewares/sendMail.js";
+import bcrypt from 'bcrypt';
+
 
 import UserNotFoundException from "../exceptions/user-not-found-exception.js";
 import UserAlreadyExistsException from "../exceptions/user-already-exists-exception.js";
@@ -70,22 +72,30 @@ export const findUserByEmail = async(email) => {
     }
 }
 
+
 export const requestPasswordReset = async (email) => {
     const user = await User.findOne({ email });
     if (!user) throw new Error("Email does not exist");
-
     const verify = TokenService.TokenType.VERIFY;
-  
-    let token = await TokenService.createToken({email, verify});
-  
-    const link = `http://localhost:${process.env.PORT}/passwordReset?token=${token}&id=${email}`;
-  
-
+    console.log(verify);
+    let token = await TokenService.createToken(user, verify);
+    const link = `${process.env.SERVER_URI}:${process.env.PORT}/passwordReset?token=${token}&id=${email}`;
     await sendEmail.sendEmail(
         user.email,
         link,
         user.firstName,
         "passwordResetRequest"
+   );
+  };
+
+  export const resetPassword = async (email, passwordToken, password) => {
+    const hash =  await bcrypt.hash(password, 12);
+    await User.updateOne(
+      { email },
+      { $set: { password: hash } },
+      { new: true }
     );
+    await TokenService.deleteToken(passwordToken);
+
   };
   
