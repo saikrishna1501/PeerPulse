@@ -16,6 +16,18 @@ router.route("/")
 router.route("/auth")
     .post(userController.login)
 
+//Forgot password 
+router.route("/auth/requestResetPassword")
+    .post(userController.resetPasswordRequestController)
+
+//reset password
+router.route("/auth/resetPassword")
+    .post(userController.resetPasswordController)
+
+//signup route
+router.route("/register")
+    .post(userController.register)
+
 //verification link
 router.route("/activate/:activation_token")
       .get(userController.verifyEmail)
@@ -29,6 +41,9 @@ router.route("/:id")
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.findUserById)
     .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.updateUser)
     .delete(authorize, checkRoles([Roles.ADMIN]), userController.deleteUser);
+
+router.route("/logout")
+    .post(userController.logout)
 
 //export users router
 export default router;

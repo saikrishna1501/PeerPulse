@@ -22,7 +22,6 @@ export const findToken = async(filter) => {
 export const saveToken = async(email,token) => {
     try {
     const tokenDetails = await deleteToken({email});
-    console.log("Deleted token Details", tokenDetails);
     const newTokenDetails = new UserToken({email,token});
     return newTokenDetails.save();
     }
@@ -60,7 +59,7 @@ export const createToken = async(user, tokenType)=>{
         token = crypto.randomBytes(32).toString("hex");
     }
     if(tokenType === TokenType.REFRESH || tokenType === TokenType.VERIFY) {
-        saveToken(user.email, token);
+        await saveToken(user.email, token);
     }
 
     return token;
