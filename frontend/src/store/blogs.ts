@@ -55,7 +55,18 @@ export const loadBlogs = () =>({
     onSuccess : blogsReceived.type, //helps dispatch another action 
     onError : apiCallFailure
   }
-})
+});
+
+export const createNewBlog = (data: Partial<Blog>) => ({
+  type : apiCallBegan.type,
+  payload : {
+    url : '/blogs',
+    method : 'post',
+    data,
+    onSuccess : blogAdded.type,
+    onError : apiCallFailure
+  }
+});
 
 
 export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted } = slice.actions;

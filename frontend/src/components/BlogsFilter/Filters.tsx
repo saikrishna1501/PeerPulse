@@ -39,7 +39,6 @@ const Filters = () => {
         flex: 1.5,
         textAlign: "center",
         height: "300px",
-        position: "sticky",
         top: 100,
         display: { xs: "none", sm: "block" },
         boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)", // Box shadow for a subtle effect

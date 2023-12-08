@@ -8,7 +8,7 @@ import Blog from "../../models/blogs";
 import { useDispatch } from "react-redux";
 import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
-
+import EditNoteIcon from "@mui/icons-material/EditNote";
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
 
@@ -42,13 +42,15 @@ const BlogsPage = (props: any) => {
                 top: 100,
               }}
             >
+              <EditNoteIcon />
               <Typography
                 sx={{
+                  marginLeft: 1,
                   fontSize: "17px",
                   fontWeight: "bold",
                 }}
               >
-                Blog
+                Write
               </Typography>
             </Button>
             <Filters />

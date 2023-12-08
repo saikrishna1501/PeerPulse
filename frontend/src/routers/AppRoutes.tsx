@@ -16,9 +16,11 @@ import {
   HOUSING_ROUTE,
   REGISTER_ROUTE,
   EVENT_DETAIL_ROUTE,
-  LOGIN_PATH
+  LOGIN_PATH,
+  BLOG_FORM_ROUTE,
 } from "../constants/routes";
 import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
+import BlogForm from "../pages/BlogFormPage/BlogForm";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -28,11 +30,21 @@ const AppRoutes: React.FC = () => {
           <Route index element={<LandingPage />} />
           <Route path={AUTH_ROUTE} element={<Login />} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
-          <Route path={EVENTS_ROUTE} element={<ProtectedRoute component={EventsPage} />} />
-          <Route path={HOUSING_ROUTE} element={<ProtectedRoute component={HousingPage} />} />
-          <Route path={BLOGS_ROUTE} element={<ProtectedRoute component={BlogsPage} />} />
-          <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage/>} />
-          <Route path={LOGIN_PATH} element={<LoginRequiredPage/>} />
+          <Route
+            path={EVENTS_ROUTE}
+            element={<ProtectedRoute component={EventsPage} />}
+          />
+          <Route
+            path={HOUSING_ROUTE}
+            element={<ProtectedRoute component={HousingPage} />}
+          />
+          <Route
+            path={BLOGS_ROUTE}
+            element={<ProtectedRoute component={BlogsPage} />}
+          />
+          <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />
+          <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
+          <Route path={BLOG_FORM_ROUTE} element={<BlogForm />} />
         </Route>
       </Routes>
     </Router>
