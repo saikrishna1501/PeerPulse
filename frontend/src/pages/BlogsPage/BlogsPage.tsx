@@ -1,38 +1,23 @@
-import React, { useState } from "react";
-import { Box, Container, Stack } from "@mui/material";
-import BlogPost from "../../components/Blogs/BlogCard";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import BlogList from "../../components/Blogs/BlogList";
 import Filters from "../../components/BlogsFilter/Filters";
 import Rightbar from "../../components/BlogsFilter/Rightbar";
 import { BlogHeader } from "../../components/Blogs/BlogHeader";
+import Blog from "../../models/blogs";
+import { useDispatch } from "react-redux";
+import { loadBlogs } from "../../store/blogs";
+import { useSelector } from "react-redux";
 
 const BlogsPage = (props: any) => {
+  const dispatch = useDispatch();
+
   // Initial state with at least two blog objects
-  const [blogs, setBlogs] = useState([
-    {
-      id: "1",
-      title: "Introduction to React18",
-      content: "Lorem ipsum dolor sit, amet consectetur...",
-      createdAt: new Date(),
-      tag: ["React", "Web Development"],
-      author: {
-        id: "author1",
-        name: "John Doe",
-        avatarUrl: "url_to_avatar",
-      },
-    },
-    {
-      id: "2",
-      title: "Getting Started with MUI5",
-      content: "Lorem ipsum dolor sit, amet consectetur...",
-      createdAt: new Date(),
-      tag: ["Material-UI", "React"],
-      author: {
-        id: "author2",
-        name: "Jane Doe",
-        avatarUrl: "url_to_avatar",
-      },
-    },
-  ]);
+  const blogs = useSelector((state: any) => state.entities.blogs.list);
+
+  useEffect(() => {
+    dispatch(loadBlogs());
+  }, []);
 
   return (
     <>
@@ -44,8 +29,30 @@ const BlogsPage = (props: any) => {
           marginTop={5}
           justifyContent="space-between"
         >
-          <BlogPost />
-          <Filters />
+          <BlogList blogs={blogs} />
+          <Stack direction="column" spacing={5}>
+            <Button
+              variant="contained"
+              sx={{
+                fontWeight: "bold",
+                borderRadius: "25px",
+                height: "50px",
+                width: "180px",
+                position: "sticky",
+                top: 100,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "17px",
+                  fontWeight: "bold",
+                }}
+              >
+                Blog
+              </Typography>
+            </Button>
+            <Filters />
+          </Stack>
         </Stack>
       </Container>
     </>

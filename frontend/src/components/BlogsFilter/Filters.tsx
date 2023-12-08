@@ -44,10 +44,6 @@ const Filters = () => {
         display: { xs: "none", sm: "block" },
         boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)", // Box shadow for a subtle effect
         borderRadius: theme.shape.borderRadius * 2, // Rounded corners
-        transition: "transform 0.3s ease-in-out", // Smooth transition effect
-        "&:hover": {
-          transform: "scale(1.05)", // Scale up on hover
-        },
       }}
     >
       <CardContent>
