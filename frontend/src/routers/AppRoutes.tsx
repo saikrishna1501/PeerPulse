@@ -11,6 +11,7 @@ import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import MainLayout from '../layouts/MainLayout/MainLayout';
 import UserSettingsPage from '../pages/UserSettingsPage/UserSettingsPage';
+import UserDashboardPage from '../pages/UserDashboardPage/UserDashboardPage';
 
 
 const AppRoutes: React.FC = () => {
@@ -22,7 +23,11 @@ const AppRoutes: React.FC = () => {
         <Route index  element={<LandingPage />}/>
         <Route path="/users/auth" element={<Login />} />
         <Route path="/users/register" element={<Register/>} />
-        <Route path="/users/settings" element={<UserSettingsPage/>} />
+        <Route path="/users/dashboard" element={<UserDashboardPage/>}>
+          {/* <Route path="/settings" element={<UserSettingsPage />}/> */}
+          <Route path="settings" element={<UserSettingsPage/>}/>
+        </Route>
+        {/* <Route path="/users/settings" element={<UserSettingsPage/>} /> */}
         <Route path="/events" element={<EventsPage/>}/>
         <Route path="/housing" element={<HousingPage/>}/>
         <Route path="/blogs" element={<BlogsPage/>}/>

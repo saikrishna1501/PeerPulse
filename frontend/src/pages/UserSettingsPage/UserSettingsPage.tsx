@@ -5,17 +5,19 @@ import ProfilePictureUpload from "./ProfilePictureUploadComponent.tsx/ProfilePic
 
 const formSxStyles = {
     '& .MuiTextField-root': { m: 1, width: '40ch' },
+    p: 0
 }
 
 const FormContainerPaper = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(4),
     border: `1px solid ${theme.palette.grey[300]}`,
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-    marginTop: theme.spacing(4),
+    marginTop: 0,
     marginButtom: theme.spacing(4),
-    marginLeft: "auto",
-    marginRight: "auto",
-    maxWidth: "40%"
+    // marginLeft: "auto",
+    // marginRight: "auto",
+    maxWidth: "60%",
+    marginLeft: 0,
 }
 ));
 
