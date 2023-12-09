@@ -2,15 +2,15 @@ import { ObjectId } from 'mongodb'; // Assuming you are using MongoDB and Object
 import Comment from './comments';
 
 class Blog {
-  id?: ObjectId; // Assuming you are using MongoDB ObjectId for the ID
+  id?: ObjectId | string; // Assuming you are using MongoDB ObjectId for the ID
   title!: string;
   content!: string;
   upvotes?: number;
   downvotes?: number;
   comments?: Comment[];
   reported?: boolean;
-  author?: ObjectId;
-  createdAt?: Date;
+  author?: ObjectId | any;
+  createdAt?: Date | any;
   updatedAt?: Date | null;
   tag?: string[];
 

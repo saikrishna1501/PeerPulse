@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Blog from "../models/blogs";
+import { apiCallBegan, apiCallFailure } from "./api";
 
 const slice = createSlice({
   name: 'blogs',
@@ -8,11 +9,12 @@ const slice = createSlice({
     loading: false,
     lastFetch: null as number | null,
   },
+
   reducers: {
     blogsRequested: (blogs) => {
       blogs.loading = true;
     },
-    blogsReceived: (blogs, action: PayloadAction<Blog[]>) => {
+    blogsReceived: (blogs, action: any) => {
       blogs.list = action.payload;
       blogs.loading = false;
       blogs.lastFetch = Date.now();
@@ -44,6 +46,28 @@ const slice = createSlice({
       },
   },
 });
+
+export const loadBlogs = () =>({
+  type : apiCallBegan.type,
+  payload : {
+    url : '/blogs',
+    method : 'get',
+    onSuccess : blogsReceived.type, //helps dispatch another action 
+    onError : apiCallFailure
+  }
+});
+
+export const createNewBlog = (data: Partial<Blog>) => ({
+  type : apiCallBegan.type,
+  payload : {
+    url : '/blogs',
+    method : 'post',
+    data,
+    onSuccess : blogAdded.type,
+    onError : apiCallFailure
+  }
+});
+
 
 export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted } = slice.actions;
 export default slice.reducer;

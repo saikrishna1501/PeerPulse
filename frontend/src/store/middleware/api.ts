@@ -20,7 +20,7 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
             data,
             method,
         });
-        dispatch({ type: onSuccess, payload : response });
+        dispatch({ type: onSuccess, payload : response.data }); 
     }
     // Rejected: Dispatch onError
     catch(error){

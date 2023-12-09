@@ -6,3 +6,4 @@ export const HOUSING_ROUTE = "/housing";
 export const BLOGS_ROUTE = "/blogs";
 export const EVENT_DETAIL_ROUTE = "/event/:eventId"
 export const LOGIN_PATH="/login-required"
+export const BLOG_FORM_ROUTE="/blogs/new";
