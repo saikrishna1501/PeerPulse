@@ -1,3 +1,5 @@
+// Test component to check if cookie validation is working
+// if cookie is present user is redirected to dashboard for now
 import React, { useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom'
 import Login from '../../components/auth/Login';
@@ -5,8 +7,6 @@ import Register from '../../components/auth/Register';
 //import EmailVerification from '../auth/EmailVerification';
 import { checkAuthStatus } from '../../services/AuthService';
 
-// Test component to check if cookie validation is working
-// if cookie is present user is redirected to dashboard for now
 const Body: React.FC = () =>{
   const navigate = useNavigate();
 
