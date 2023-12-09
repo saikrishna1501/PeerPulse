@@ -45,7 +45,7 @@ function a11yProps(index: number) {
 const VerticalTabs = ({ mapping }: Props) => {
 
   const containerSectionGridSx = {
-    '.MuiGrid-root.MuiGrid-item': { paddingTop: "56px" },
+    '.MuiGrid-root.MuiGrid-item.GridContainer': { paddingTop: "56px" },
     p: 5,
     ml: 0,
   }
@@ -87,7 +87,7 @@ const VerticalTabs = ({ mapping }: Props) => {
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', marginLeft: 0 }}
       >
-        <Grid container spacing={2} sx={containerSectionGridSx}>
+        <Grid container spacing={2} sx={containerSectionGridSx} className="GridContainer">
           <Grid item xs={3} sx={leftSectionGridSx}>
             <Tabs
               orientation="vertical"

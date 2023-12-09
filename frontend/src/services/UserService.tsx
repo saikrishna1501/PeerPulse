@@ -6,7 +6,13 @@ export const UserRoles = {
     MODERATOR: "moderator"
 }
 
-export const users: User[] = [
+interface Users {
+    users: User[],
+    numberOfPages: number
+}
+
+export const users: Users = {
+    users: [
     {
         _id: "656a9421c56c68861c127ac3",
         email: "saikrishna1501@gmail.com",
@@ -21,7 +27,9 @@ export const users: User[] = [
         lastName: "Gaddam",
         role: "student"
     }
-]
+],
+numberOfPages: 2
+}
 
 const user : User = {
     _id : "656a9421c56c68861c127ac3",

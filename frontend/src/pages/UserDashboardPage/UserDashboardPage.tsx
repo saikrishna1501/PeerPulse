@@ -24,7 +24,7 @@ const UserDashboardPage = () => {
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
                 { textOnTab: "Saved Events", componentToRender: (<div>Saved Events</div>), order: 0 },
                 { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing</div>), order: 0 },
-                { textOnTab: "Manage Users", componentToRender: (<div>Manage Users</div>), order: 0 },
+                // { textOnTab: "Manage Users", componentToRender: (<div>Manage Users</div>), order: 0 },
                 { textOnTab: "Manage Reports", componentToRender: (<div>Manage Reports</div>), order: 0 }
             ]);
         }

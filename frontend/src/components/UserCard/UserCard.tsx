@@ -1,6 +1,8 @@
-import { Button, Grid, Paper, styled } from "@mui/material";
+import { Box, Button, Grid, Paper, Typography, styled } from "@mui/material";
+import theme from "../../theme/theme";
 
 type props = {
+    userId: string,
     email: string,
     firstName: string,
     lastName: string,
@@ -12,7 +14,7 @@ const CardPaper = styled(Paper)(({ theme }) => ({
     border: `1px solid ${theme.palette.grey[300]}`,
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
     marginTop: 0,
-    marginButtom: theme.spacing(4),
+    marginBottom: theme.spacing(4),
     // marginLeft: "auto",
     // marginRight: "auto",
     maxWidth: "60%",
@@ -20,15 +22,29 @@ const CardPaper = styled(Paper)(({ theme }) => ({
 }
 ));
 
-const UserCard = ({email,firstName,lastName,role}: props) => {
+
+const UserCard = ({userId,email,firstName,lastName,role}: props) => {
     return (
         <CardPaper variant="outlined" square={false}>
             <Grid container spacing={2}>
                 <Grid item xs={9}>
-                      <h6>{firstName.substring(0,10) + " " + lastName.substring(0,10)}</h6>      
+                <Typography variant="h5">
+                    {email}
+                </Typography>   
                 </Grid>
                 <Grid item xs={3}>
-                    <Button color="error" variant="contained">Save</Button>    
+                    <Button color="error" variant="contained">Delete</Button>    
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="body1">
+                        <b>User ID</b>: {userId}
+                    </Typography> 
+                    <Typography variant="body1">
+                        <b>Name:</b> {firstName.substring(0,10) + " " + lastName.substring(0,10)}
+                    </Typography> 
+                    <Typography variant="body1">
+                        <b>Role:</b> {role}
+                    </Typography>   
                 </Grid>
 
                     
