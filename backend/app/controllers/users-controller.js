@@ -14,12 +14,18 @@ import UnverifiedEmailException from '../exceptions/unverified-email-exception.j
 */
 export const getUsers = async (request, response) => {
     try {
-        //fetch maxResult from query string
-        const maxResult = request.query.maxResult;
+        //fetch pageSize and pageNumber from query string
+        const pageSize = parseInt(request.query.pageSize);
+        const pageNumber = parseInt(request.query.pageNumber);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = startIndex + pageSize; 
+        console.log(startIndex, endIndex);
         //retrive users
-        const allUsers = await userService.retrieveAllUsers({maxResult: maxResult});
+        const allUsers = await userService.retriveUsersByStartAndEndIndices({startIndex: startIndex, endIndex: endIndex});
         //return the users details
-        setResponse(allUsers, response);
+        const totalNumberOfUsers = await userService.countUsers();
+        const numberOfPages = Math.ceil(totalNumberOfUsers/pageSize);
+        setResponse({users: allUsers, numberOfPages: numberOfPages}, response);
     }
     catch(err) {
         //return error response
