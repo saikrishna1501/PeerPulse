@@ -74,8 +74,8 @@ const BlogForm = () => {
   };
 
   useEffect(() => {
-    register("title", { required: true, minLength: 11 });
-    register("content", { required: true, minLength: 1000 });
+    register("title", { required: true, minLength: 5 });
+    register("content", { required: true, minLength: 5 });
   }, [register]);
 
   return (
