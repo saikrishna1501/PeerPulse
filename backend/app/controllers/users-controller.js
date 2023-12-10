@@ -84,7 +84,8 @@ export const updateUser = async(request,response) => {
         console.log("Updated user details", updatedUserDetails);
         //respond with acknowledgement
         setResponse({
-            message: "Successfully updated user"
+            message: "Successfully updated user",
+            userDetails: updatedUserDetails
         }, response);
     }
     catch(err) {
@@ -102,7 +103,8 @@ export const deleteUser = async(request, response) => {
         console.log("Successfully deleted user", deletedUserDetails);
         //respond with acknowledgement
         setResponse({
-            message: `successfully deleted user`
+            message: `successfully deleted user`,
+            userDetails: deletedUserDetails
         },response)
     }
     catch(err) {
@@ -165,7 +167,7 @@ export const login = async (request, response) => {
             let accessToken = await tokenService.createToken(user, tokenService.TokenType.ACCESS);
             let refreshToken = await tokenService.createToken(user, tokenService.TokenType.REFRESH);
             const result = {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 role: user.role
             }
@@ -309,7 +311,7 @@ export const resetPasswordRequestController = async (req, res, next) => {
         }
             let refreshToken = await tokenService.deleteToken({ email });
             const result = {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 role: user.role
             }
