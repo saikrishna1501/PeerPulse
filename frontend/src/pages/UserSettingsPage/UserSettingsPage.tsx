@@ -26,10 +26,13 @@ const FormContainerPaper = styled(Paper)(({ theme }) => ({
 const UserSettingsPage = () => {
     const dispatch = useDispatch();
 
-    const userId = useSelector(
-        (state: any) => state.auth.user._id
+    const userDetails = useSelector(
+        (state: any) => state.auth.user
     );
     
+    useEffect(() => {
+        
+    }, [])
     //later need to add useEffect to fetch user data
     const [userDetailsFormData, setUserDetailsFormData] = React.useState({
         email: user.email,
@@ -41,7 +44,7 @@ const UserSettingsPage = () => {
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserDetailsFormData({
             ...userDetailsFormData,
-            [event.target.name]: [event.target.value],
+            [event.target.name]: event.target.value,
         })
     }
 
@@ -57,7 +60,8 @@ const UserSettingsPage = () => {
         //make api call to update the data
         if (userDetailsFormData.firstName && userDetailsFormData.email) {
             // console.log(userDetailsFormData);
-            dispatch(updateUser({firstName: userDetailsFormData.firstName, lastName: userDetailsFormData.lastName},userId));
+            console.log("Last Name", userDetailsFormData.lastName);
+            dispatch(updateUser({firstName: userDetailsFormData.firstName, lastName: userDetailsFormData.lastName},userDetails._id));
             alert("Updated details Successfully");
         }
         else {
