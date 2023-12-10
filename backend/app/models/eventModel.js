@@ -14,6 +14,7 @@ const eventSchema = new Schema({
   isPaid: Boolean,
   type: { type: String, enum: ['in-person', 'virtual'], default: 'in-person' },
   proofDocument: String, // URL or reference to the document
+  creatorId: String
 });
 
 // Create a model from the schema. This model is used to create and manage 'Event' documents.

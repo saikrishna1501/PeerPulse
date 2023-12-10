@@ -3,9 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 //import { fetchEvents } from '../features/events/eventsSlice'; to be implemented
 import { testEventsData } from './testEventsData';
 import { Event } from '../../models/event';
-import EventCard from './EventCard';
-import MapView from './MapView';
-import FiltersComponent from './FiltersComponent';
+import EventCard from '../../components/Events/EventCard';
+import MapView from '../../components/Events/MapView';
+import FiltersComponent from '../../components/Events/FiltersComponent';
+import CreateEventForm from '../../components/Events/CreateEventForm';
 import { Button, Container, Grid, Paper, TextField} from '@mui/material';
 
 interface FiltersState {
@@ -22,10 +23,13 @@ const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  // let state = useSelector(state=> state);
-  const userid = useSelector(
-    (state: any) => state
-  );
+  const userId = useSelector((state: any) => state.auth.user._id);
+
+  const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
+
+  const handleOpenCreateEventForm = () => setIsCreateEventFormOpen(true);
+  const handleCloseCreateEventForm = () => setIsCreateEventFormOpen(false);
+
   const [filters, setFilters] = useState<FiltersState>({
     meetAndGreet: false,
     food: false,
@@ -88,7 +92,10 @@ const EventsPage: React.FC = () => {
             <Paper elevation={3} sx={{overflowY: 'auto', display: 'flex', flexDirection: 'column', p: 2, borderRight: '1px solid #ccc', mb: 2}}>
               <FiltersComponent filters={filters} onFilterChange={handleFilterChange} />
             </Paper>
-            <Button variant="contained" color="primary" sx={{ mb: 2 }}>Create Event</Button>
+             <Button onClick={handleOpenCreateEventForm} variant="contained" color="primary">
+              Create Event
+            </Button>
+            <CreateEventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} />
           </Grid>
           <Grid item xs={12} sm={7}>
             <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Events" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
