@@ -1,7 +1,9 @@
 import { Box, Button, Grid, Paper, TextField, styled } from "@mui/material"
 import user from "../../services/UserService"
-import React from "react"
+import React, { useEffect } from "react"
 import ProfilePictureUpload from "./ProfilePictureUploadComponent.tsx/ProfilePictureUpload"
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../store/users";
 
 const formSxStyles = {
     '& .MuiTextField-root': { m: 1, width: '40ch' },
@@ -22,6 +24,12 @@ const FormContainerPaper = styled(Paper)(({ theme }) => ({
 ));
 
 const UserSettingsPage = () => {
+    const dispatch = useDispatch();
+
+    const userId = useSelector(
+        (state: any) => state.auth.user._id
+    );
+    
     //later need to add useEffect to fetch user data
     const [userDetailsFormData, setUserDetailsFormData] = React.useState({
         email: user.email,
@@ -48,11 +56,12 @@ const UserSettingsPage = () => {
         event.preventDefault();
         //make api call to update the data
         if (userDetailsFormData.firstName && userDetailsFormData.email) {
-            console.log(userDetailsFormData);
+            // console.log(userDetailsFormData);
+            dispatch(updateUser({firstName: userDetailsFormData.firstName, lastName: userDetailsFormData.lastName},userId));
             alert("Updated details Successfully");
         }
         else {
-            console.error("Something went wrong");
+            console.error("Not all the required fields were entered");
         }
     }
 
