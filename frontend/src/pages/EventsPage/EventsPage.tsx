@@ -83,7 +83,6 @@ const EventsPage: React.FC = () => {
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      <h1>{JSON.stringify(userid)}</h1>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={2}>
             <Paper elevation={3} sx={{overflowY: 'auto', display: 'flex', flexDirection: 'column', p: 2, borderRight: '1px solid #ccc', mb: 2}}>
