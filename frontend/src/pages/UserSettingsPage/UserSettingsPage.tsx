@@ -4,6 +4,8 @@ import React, { useEffect } from "react"
 import ProfilePictureUpload from "./ProfilePictureUploadComponent.tsx/ProfilePictureUpload"
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../store/users";
+import { updateAuthDetails } from "../../store/auth";
+import User from "../../models/users";
 
 const formSxStyles = {
     '& .MuiTextField-root': { m: 1, width: '40ch' },
@@ -29,16 +31,13 @@ const UserSettingsPage = () => {
     const userDetails = useSelector(
         (state: any) => state.auth.user
     );
-    
-    useEffect(() => {
-        
-    }, [])
+
     //later need to add useEffect to fetch user data
     const [userDetailsFormData, setUserDetailsFormData] = React.useState({
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        profilePic: user.profilePic
+        email: userDetails.email,
+        firstName: userDetails.firstName,
+        lastName: userDetails.lastName,
+        profilePic: userDetails.profilePic
     })
 
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +59,12 @@ const UserSettingsPage = () => {
         //make api call to update the data
         if (userDetailsFormData.firstName && userDetailsFormData.email) {
             // console.log(userDetailsFormData);
-            console.log("Last Name", userDetailsFormData.lastName);
-            dispatch(updateUser({firstName: userDetailsFormData.firstName, lastName: userDetailsFormData.lastName},userDetails._id));
+            dispatch(updateUser({firstName: userDetailsFormData.firstName, lastName: userDetailsFormData.lastName, profilePic: userDetailsFormData.profilePic},userDetails._id));
+            dispatch(updateAuthDetails({
+                firstName: userDetailsFormData.firstName,
+                lastName: userDetailsFormData.lastName,
+                profilePic: userDetailsFormData.profilePic,
+              } as any));
             alert("Updated details Successfully");
         }
         else {

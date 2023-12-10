@@ -15,7 +15,7 @@ class User {
       firstName: string,
       lastName?: string,
       phoneNumber?: string,
-      profilePic: string = 'https://icons8.com/icon/tZuAOUGm9AuS/user-default',
+      profilePic: string = '',
       savedEvents: string[] = [],
       role: 'admin' | 'moderator' | 'student' = 'student',
       isValid: boolean = false

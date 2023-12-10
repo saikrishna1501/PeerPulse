@@ -155,22 +155,22 @@ export const login = async (request, response) => {
     let {email, password} = request.body;
     try {
         //fetch the user details from DB using the email id
-        const user = await userService.findUserByEmail(email);
+        let user = await userService.findUserByEmail(email);
+        console.log(user);
         //compare the password with the password hash fetched from the DB
         let isMatch = await bcrypt.compare(password, user.password);
+        
         console.log(user)
         if(!user.isValid) {
             throw new UnverifiedEmailException();
         }
         if(isMatch) {
+            user = user.toObject();
+            delete user.password;
             //if password matches, Sign a token and issue it to the user
             let accessToken = await tokenService.createToken(user, tokenService.TokenType.ACCESS);
             let refreshToken = await tokenService.createToken(user, tokenService.TokenType.REFRESH);
-            const result = {
-                _id: user._id,
-                email: user.email,
-                role: user.role
-            }
+            const result = user;
             //setting the accessToken and refreshToken cookie and user details in response
             setHttpOnlyCookiesAndResponse({
                 ...result,

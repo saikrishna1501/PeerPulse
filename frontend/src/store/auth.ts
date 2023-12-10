@@ -16,13 +16,19 @@ const userSlice = createSlice({
     reducers : {
         loginSuccess: (state, action: any) => {
             const {message,...response} = action.payload;
-            console.log(response);
             state.user = response;
             state.isAuthenticated = true;
         },
 
         loginFailed : (state : any, action: any) => {
 
+        },
+        updateAuthDetails: (state: any, action: Partial<PayloadAction<User>>) => {
+            // Update only the values of keys sent by the action payload
+            return {
+                ...state,
+                user: { ...state.user, ...action.payload },
+            };
         }
     }
 
@@ -49,5 +55,5 @@ export const selectIsLoggedIn = createSelector(
     (auth) => auth.isAuthenticated
 );
 
-export const { loginSuccess, loginFailed } = userSlice.actions;
+export const { loginSuccess, loginFailed, updateAuthDetails } = userSlice.actions;
 export default userSlice.reducer;
