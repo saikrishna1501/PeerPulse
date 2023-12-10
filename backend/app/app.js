@@ -23,7 +23,7 @@ const initialize = async(app) => {
     };
     app.use(cors(corsOptions));
     // Parse incoming JSON requests
-    app.use(express.json());
+    app.use(express.json({ limit: '20mb' })); //increasing the payload limit to 20mb
     // Parse cookies
     app.use(cookieParser())
     // Parse incoming URL-encoded requests

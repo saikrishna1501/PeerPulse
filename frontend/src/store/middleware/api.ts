@@ -19,6 +19,7 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
             url,
             data,
             method,
+            withCredentials: true
         });
         dispatch({ type: onSuccess, payload : response.data }); 
     }

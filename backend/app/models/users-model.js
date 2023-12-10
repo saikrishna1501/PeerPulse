@@ -33,7 +33,7 @@ const userSchema = new Schema({
     },
     profilePic: {
         type: String,
-        default: "https://icons8.com/icon/tZuAOUGm9AuS/user-default"
+        default: ""
     },
     // savedEvents: [{
     //     type: mongoose.Schema.Types.ObjectId,

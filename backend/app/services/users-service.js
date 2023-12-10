@@ -14,6 +14,15 @@ export const retrieveAllUsers = async ({params = {}, projection = {password: 0, 
     return User.find(params, projection).limit(maxResult).exec();
 }
 
+//function to retrive details of users using start and end indices
+export const retriveUsersByStartAndEndIndices = async({params = {}, projection = {password: 0, __v: 0}, startIndex = 0, endIndex = 10}) => {
+    return User.find(params, projection).skip(startIndex).limit(endIndex - startIndex).exec();
+}
+
+export const countUsers = async() => {
+    return User.countDocuments();
+}
+
 //function to create an user
 export const createUser = async (newUser) => {
     let user = await User.findOne({email : newUser.email});

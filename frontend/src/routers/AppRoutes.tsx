@@ -18,9 +18,11 @@ import {
   EVENT_DETAIL_ROUTE,
   LOGIN_PATH,
   BLOG_FORM_ROUTE,
+  USER_DASHBOARD_ROUTE
 } from "../constants/routes";
 import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
 import BlogForm from "../pages/BlogFormPage/BlogForm";
+import UserDashboardPage from "../pages/UserDashboardPage/UserDashboardPage";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -30,6 +32,7 @@ const AppRoutes: React.FC = () => {
           <Route index element={<LandingPage />} />
           <Route path={AUTH_ROUTE} element={<Login />} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
+          <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage/>}/>
           <Route
             path={EVENTS_ROUTE}
             element={<ProtectedRoute component={EventsPage} />}

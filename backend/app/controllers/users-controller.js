@@ -14,12 +14,18 @@ import UnverifiedEmailException from '../exceptions/unverified-email-exception.j
 */
 export const getUsers = async (request, response) => {
     try {
-        //fetch maxResult from query string
-        const maxResult = request.query.maxResult;
+        //fetch pageSize and pageNumber from query string
+        const pageSize = parseInt(request.query.pageSize);
+        const pageNumber = parseInt(request.query.pageNumber);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const endIndex = startIndex + pageSize; 
+        console.log(startIndex, endIndex);
         //retrive users
-        const allUsers = await userService.retrieveAllUsers({maxResult: maxResult});
+        const allUsers = await userService.retriveUsersByStartAndEndIndices({startIndex: startIndex, endIndex: endIndex});
         //return the users details
-        setResponse(allUsers, response);
+        const totalNumberOfUsers = await userService.countUsers();
+        const numberOfPages = Math.ceil(totalNumberOfUsers/pageSize);
+        setResponse({users: allUsers, numberOfPages: numberOfPages}, response);
     }
     catch(err) {
         //return error response
@@ -78,7 +84,8 @@ export const updateUser = async(request,response) => {
         console.log("Updated user details", updatedUserDetails);
         //respond with acknowledgement
         setResponse({
-            message: "Successfully updated user"
+            message: "Successfully updated user",
+            userDetails: updatedUserDetails
         }, response);
     }
     catch(err) {
@@ -96,7 +103,8 @@ export const deleteUser = async(request, response) => {
         console.log("Successfully deleted user", deletedUserDetails);
         //respond with acknowledgement
         setResponse({
-            message: `successfully deleted user`
+            message: `successfully deleted user`,
+            userDetails: deletedUserDetails
         },response)
     }
     catch(err) {
@@ -147,22 +155,22 @@ export const login = async (request, response) => {
     let {email, password} = request.body;
     try {
         //fetch the user details from DB using the email id
-        const user = await userService.findUserByEmail(email);
+        let user = await userService.findUserByEmail(email);
+        console.log(user);
         //compare the password with the password hash fetched from the DB
         let isMatch = await bcrypt.compare(password, user.password);
+        
         console.log(user)
         if(!user.isValid) {
             throw new UnverifiedEmailException();
         }
         if(isMatch) {
+            user = user.toObject();
+            delete user.password;
             //if password matches, Sign a token and issue it to the user
             let accessToken = await tokenService.createToken(user, tokenService.TokenType.ACCESS);
             let refreshToken = await tokenService.createToken(user, tokenService.TokenType.REFRESH);
-            const result = {
-                id: user._id,
-                email: user.email,
-                role: user.role
-            }
+            const result = user;
             //setting the accessToken and refreshToken cookie and user details in response
             setHttpOnlyCookiesAndResponse({
                 ...result,
@@ -303,7 +311,7 @@ export const resetPasswordRequestController = async (req, res, next) => {
         }
             let refreshToken = await tokenService.deleteToken({ email });
             const result = {
-                id: user._id,
+                _id: user._id,
                 email: user.email,
                 role: user.role
             }

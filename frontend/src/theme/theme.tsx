@@ -11,7 +11,7 @@ const theme = createTheme({
       main: purple[500],
     },
     error: {
-      main: red[500],
+      main: red[400],
     },
     warning: {
       main: yellow[500],
