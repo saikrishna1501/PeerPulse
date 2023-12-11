@@ -12,6 +12,9 @@ const router = express.Router();
 router.route("/")
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT,Roles.MODERATOR]),userController.getUsers)
     .post(userController.register)
+
+router.route("/pages")
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT,Roles.MODERATOR]),userController.getNoOfPages)
 //login route(no authentication required)
 router.route("/auth")
     .post(userController.login)

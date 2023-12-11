@@ -1,12 +1,15 @@
 import { Box, Button, Grid, Paper, Typography, styled } from "@mui/material";
 import theme from "../../theme/theme";
+import { deleteUser } from "../../store/users";
+import { useDispatch } from "react-redux";
 
 type props = {
     userId: string,
     email: string,
     firstName: string,
     lastName: string,
-    role: string
+    role: string,
+    onUserDelete: (userId: string) => void
 }
 
 const CardPaper = styled(Paper)(({ theme }) => ({
@@ -23,7 +26,11 @@ const CardPaper = styled(Paper)(({ theme }) => ({
 ));
 
 
-const UserCard = ({userId,email,firstName,lastName,role}: props) => {
+const UserCard = ({userId,email,firstName,lastName,role, onUserDelete}: props) => {
+
+    const handleClick = (userId: string): void => {
+        onUserDelete(userId)
+    } 
     return (
         <CardPaper variant="outlined" square={false}>
             <Grid container spacing={2}>
@@ -33,14 +40,14 @@ const UserCard = ({userId,email,firstName,lastName,role}: props) => {
                 </Typography>   
                 </Grid>
                 <Grid item xs={3}>
-                    <Button color="error" variant="contained">Delete</Button>    
+                    <Button color="error" variant="contained" onClick={() => handleClick(userId)}>Delete</Button>    
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="body1">
                         <b>User ID</b>: {userId}
                     </Typography> 
                     <Typography variant="body1">
-                        <b>Name:</b> {firstName.substring(0,10) + " " + lastName.substring(0,10)}
+                        <b>Name:</b> {firstName.substring(0,10) + " " + (lastName ? ` ${lastName.substring(0, 10)}` : '')}
                     </Typography> 
                     <Typography variant="body1">
                         <b>Role:</b> {role}
