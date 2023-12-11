@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormGroup, FormControlLabel, Checkbox, Dropdown} from '@mui/material';
+import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 
 interface FiltersComponentProps {
   filters: any;
@@ -10,7 +10,7 @@ const FiltersComponent: React.FC<FiltersComponentProps> = ({ filters, onFilterCh
   return (
     <FormGroup>
       <div>
-        <Dropdown>Price
+        <div>Price</div>
         <FormControlLabel
           control={<Checkbox checked={filters.upto1K} onChange={(e) => onFilterChange('upto1K', e.target.checked)} />}
           label="$500 - $1000"
@@ -27,7 +27,6 @@ const FiltersComponent: React.FC<FiltersComponentProps> = ({ filters, onFilterCh
           control={<Checkbox checked={filters.more5K} onChange={(e) => onFilterChange('more5K', e.target.checked)} />}
           label="$5001 - more"
         />
-        </Dropdown>
       </div>
       <div>
         <div>Type</div>

@@ -14,7 +14,7 @@ interface HousingCardProps {
 const housingCard: React.FC<HousingCardProps> = ({ housing, onSave }) => {
     return (
         <Card sx={{ display: 'flex', justifyContent: 'space-between', mb:2}}>
-            <CardActionArea onClick={() => window.open(`/event/${housing.id}`, '_blank')}>
+            <CardActionArea onClick={() => window.open(`/housing/${housing.id}`, '_blank')}>
                 <CardContent sx={{flex: '1 0 auto'}}>
                     <Typography variant="h5" >{housing.title}</Typography>
                     <Typography variant="body2" color="text.secondary">

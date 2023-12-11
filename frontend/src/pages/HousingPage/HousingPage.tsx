@@ -72,9 +72,9 @@ const HousingPage: React.FC = () => {
                               (!filterOptions.upto5K || housing.price.includes('$3001 - $5000')) &&
                               (!filterOptions.more5K || housing.price.includes('$5001 - more'));
 
-      const typeCheck = (!filterOptions.apartments || housing.location.includes('Northeastern University')) &&
-                            (!filterOptions.condos || housing.location !== 'Northeastern University') &&
-                            (!filterOptions.apartments || housing.location.includes('Northeastern University'));
+      const typeCheck = (!filterOptions.apartments || housing.type.includes('Apartment')) &&
+                            (!filterOptions.condos || housing.type.includes('Condos')) &&
+                            (!filterOptions.houses || housing.type.includes('Houses'));
 
                             
       //const pricingCheck = (!filterOptions.free || !housing.isPaid) && (!filterOptions.paid || housing.isPaid);
@@ -91,8 +91,8 @@ const HousingPage: React.FC = () => {
     applyFilters(searchQuery, newFilters);
   };
 
-  const saveEvent = (eventId: string)=>{
-      console.log(eventId)
+  const saveHousing = (houseID: string)=>{
+      console.log(houseID)
   }
 
 //   const focusEventOnMap = (location: string) => {
@@ -110,9 +110,9 @@ const HousingPage: React.FC = () => {
             <Button variant="contained" color="primary" sx={{ mb: 2 }}>Create Event</Button>
           </Grid>
           <Grid item xs={12} sm={7}>
-            <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Events" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
+            <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Location" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
             {filteredHousing.map(housing => (
-              <HousingCard key={housing.id} housing={housing} onSave={saveEvent} />
+              <HousingCard key={housing.id} housing={housing} onSave={saveHousing} />
             ))}
           </Grid>
           {/* <Grid item xs={12} sm={3}>
