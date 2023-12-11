@@ -20,7 +20,7 @@ const housingCard: React.FC<HousingCardProps> = ({ housing, onSave }) => {
                     <Typography variant="body2" color="text.secondary">
                         <PlaceIcon fontSize='small'/> {housing.location} </Typography>
                     <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.price} </Typography>
-                    <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.type} - {housing.beds}</Typography>
+                    <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.type} - {housing.beds} beds</Typography>
                     <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.amenities}</Typography>
                 </CardContent>
             </CardActionArea>

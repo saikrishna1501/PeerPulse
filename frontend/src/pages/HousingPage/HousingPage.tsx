@@ -107,7 +107,6 @@ const HousingPage: React.FC = () => {
             <Paper elevation={3} sx={{overflowY: 'auto', display: 'flex', flexDirection: 'column', p: 2, borderRight: '1px solid #ccc', mb: 2}}>
               <FiltersComponent filters={filters} onFilterChange={handleFilterChange} />
             </Paper>
-            <Button variant="contained" color="primary" sx={{ mb: 2 }}>Create Event</Button>
           </Grid>
           <Grid item xs={12} sm={7}>
             <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Location" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
