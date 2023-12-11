@@ -1,34 +1,61 @@
 import { useEffect, useState } from 'react';
 import UserCard from '../../components/UserCard/UserCard';
-import {users,UserRoles} from '../../services/UserService';
-import User from "../../models/UserModel";
 import PaginationContainer from '../../components/PaginationContainer/PaginationContainer';
+import { useDispatch } from 'react-redux';
+import { deleteUser, loadUsers } from '../../store/users';
+import { useSelector } from 'react-redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {RootState} from '../../store/reducer';
+import { AnyAction } from '@reduxjs/toolkit';
+
 const ManageUsersPage = () => {
-    const [listOfUsers,setListOfUsers] = useState<User[]>([]);
+    // const [listOfUsers,setListOfUsers] = useState<User[]>([]);
+    const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
-    const [noOfPages, setTotalNoOfPages] = useState(1);
+    // const [noOfPages, setTotalNoOfPages] = useState(1);
+    const dispatch = useDispatch();
+    const users = useSelector((state : any)=>state.entities.users.list);
+    const noOfPages = useSelector((state : any)=>state.entities.users.numberOfPages);
 
     useEffect(() => {
-        setListOfUsers(users.users);
-        setTotalNoOfPages(users.numberOfPages);
+        // setListOfUsers(users.users);
+        dispatch(loadUsers(currentPage,pageSize));
+        // setTotalNoOfPages(users.numberOfPages);
     },[]);
 
     const onPageChange = (clickedPage: number) => {
-        const newUsers = [...listOfUsers, {
-            _id: "656a9421c56c68861c127ac",
-            email: "gaddam.sai@northeastern.edu",
-            firstName: "Dummy",
-            lastName: "User",
-            role: "student"
-        }]
-        setListOfUsers(newUsers);
+        // const newUsers = [...listOfUsers, {
+        //     _id: "656a9421c56c68861c127ac",
+        //     email: "gaddam.sai@northeastern.edu",
+        //     firstName: "Dummy",
+        //     lastName: "User",
+        //     role: "student"
+        // }]
+        // setListOfUsers(newUsers);
+        dispatch(loadUsers(clickedPage,pageSize));
         setCurrentPage(clickedPage);
-        setTotalNoOfPages(users.numberOfPages);
+        // setTotalNoOfPages(users.numberOfPages);
+    }
+
+    const onUserDelete = async (userId: string) => {
+            try {
+              dispatch(deleteUser(userId));
+              setTimeout(() => dispatch(loadUsers(currentPage,pageSize)), 300);
+              //dispatch(deleteUser(userId));
+              // Optional: Additional logic to execute after successful deletion
+              console.log('User deleted successfully!');
+            } catch (error) {
+              // Handle errors, if any
+              console.error('Error deleting user:', error);
+            }
+        // dispatch(loadUsers(currentPage,pageSize));
+        // setTimeout(() => dispatch(loadUsers(currentPage,pageSize)), 2000);
     }
 
     const usersList = () => {
-        return listOfUsers.map((item,index) => {
-            return <UserCard key={item._id} userId={item._id} email={item.email} firstName={item.firstName} lastName={item.lastName} role={item.role}/>
+        console.log("users", users)
+        return users.map((item: any,index: any) => {
+            return <UserCard key={item._id} userId={item._id} email={item.email} firstName={item.firstName} lastName={item.lastName} role={item.role} onUserDelete={onUserDelete}/>
         })
     }
 

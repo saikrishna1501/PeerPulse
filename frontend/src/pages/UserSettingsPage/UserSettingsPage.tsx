@@ -47,10 +47,10 @@ const UserSettingsPage = () => {
         })
     }
 
-    const setProfilePic = (binaryData: string) => {
+    const setProfilePic = (imgUrl: string) => {
         setUserDetailsFormData({
             ...userDetailsFormData,
-            profilePic: binaryData,
+            profilePic: imgUrl,
         })
     }
 

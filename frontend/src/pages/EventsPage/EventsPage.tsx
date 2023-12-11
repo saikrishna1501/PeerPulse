@@ -23,6 +23,7 @@ const EventsPage: React.FC = () => {
   // to filter events
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const [searchQuery, setSearchQuery] = useState('');
+
   //to know if the author and current user are same
   const currentUserId = useSelector((state: any) => state.auth.user._id);
   const dispatch = useDispatch();
