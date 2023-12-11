@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteEvent, loadEvents } from '../../store/events';
-import { testEventsData } from './testEventsData';
 import { Event } from '../../models/event';
 import EventCard from '../../components/Events/EventCard';
 import MapView from '../../components/Events/MapView';
 import FiltersComponent from '../../components/Events/FiltersComponent';
-import CreateEventForm from '../../components/Events/CreateEventForm';
 import { Button, Container, Grid, Paper, TextField} from '@mui/material';
+import EventForm from '../../components/Events/EventForm';
 
 interface FiltersState {
   meetAndGreet: boolean;
@@ -21,24 +20,25 @@ interface FiltersState {
 
 const EventsPage: React.FC = () => {
   const events = useSelector((state: any) => state.entities.events.list);
+  // to filter events
   const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const [searchQuery, setSearchQuery] = useState('');
-  const userId = useSelector((state: any) => state.auth.user._id);
+  //to know if the author and current user are same
+  const currentUserId = useSelector((state: any) => state.auth.user._id);
   const dispatch = useDispatch();
-  
-
-  useEffect(() => {
-    dispatch(loadEvents());
-  }, []);
-
-  const handleDelete = (id: string) => {
-    dispatch(deleteEvent(id));
-  };
-
+  //to open create event dialog
   const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
-
   const handleOpenCreateEventForm = () => setIsCreateEventFormOpen(true);
   const handleCloseCreateEventForm = () => setIsCreateEventFormOpen(false);
+  //to open edit event dialog
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+  const handleOpenEditForm=()=>setIsEditFormOpen(true);
+  const handleCloseEditForm=()=>setIsEditFormOpen(false);
+  const [editingEventData, setEditingEvent] = useState<Event | null>(null);
+  // to open edit event
+  useEffect(() => {
+    dispatch(loadEvents());
+  }, [setFilteredEvents]);
 
   const [filters, setFilters] = useState<FiltersState>({
     meetAndGreet: false,
@@ -84,6 +84,19 @@ const EventsPage: React.FC = () => {
       console.log(eventId)
   }
 
+  const handleEdit=(event: Event)=>{
+    setEditingEvent(event);
+    handleOpenEditForm();
+    dispatch(loadEvents());
+    setFilteredEvents(events);
+  }
+
+  const handleDelete=(eventId: string)=>{
+    dispatch(deleteEvent(eventId));
+    dispatch(loadEvents());
+    setFilteredEvents(events);
+  }
+
   const focusEventOnMap = (location: string) => {
     alert(location)
   };
@@ -99,16 +112,19 @@ const EventsPage: React.FC = () => {
              <Button onClick={handleOpenCreateEventForm} variant="contained" color="primary">
               Create Event
             </Button>
-            <CreateEventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} />
+            <EventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} />
           </Grid>
           <Grid item xs={12} sm={7}>
             <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Events" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
             {filteredEvents.map(event => (
-              <EventCard key={event.id} event={event} onSave={saveEvent} />
+              <EventCard key={event._id} event={event} onSave={saveEvent} onEdit={handleEdit}
+              onDelete={handleDelete}
+              isCreator={true}/> //event.creatorId === currentUserId
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
-            {/* <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/> */}
+            <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} />
+            <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
           </Grid>
           
         </Grid>

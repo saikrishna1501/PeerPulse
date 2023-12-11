@@ -26,13 +26,13 @@ const eventSlice = createSlice({
     },
     eventUpdated: (events, action: PayloadAction<Event>) => {
       const updatedEvent = action.payload;
-      const index = events.list.findIndex(event => event.id === updatedEvent.id);
+      const index = events.list.findIndex(event => event._id === updatedEvent._id);
       if (index !== -1) {
         events.list[index] = updatedEvent;
       }
     },
     eventDeleted: (events, action: PayloadAction<string>) => {
-      events.list = events.list.filter(event => event.id !== action.payload);
+      events.list = events.list.filter(event => event._id !== action.payload);
     }
   },
 });
@@ -47,7 +47,7 @@ export const loadEvents = () => ({
   },
 });
 
-export const createEvent = (data: FormData) => ({
+export const createEvent = (data: Partial<Event>) => ({
   type: apiCallBegan.type,
   payload: {
     url: '/events',

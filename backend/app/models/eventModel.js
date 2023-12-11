@@ -13,6 +13,7 @@ const eventSchema = new Schema({
   location: String,
   categories: [String],
   isPaid: Boolean,
+  imageUrl: String,
   type: { type: String, enum: ['in-person', 'virtual'], default: 'in-person' },
   proofDocument: String, // URL or reference to the document
   creatorId: String,

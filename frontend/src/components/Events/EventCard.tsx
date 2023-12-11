@@ -9,12 +9,15 @@ import { Event } from '../../models/event';
 interface EventCardProps {
   event: Event;
   onSave: (eventId: string) => void;
+  onEdit: (event: any) => void;
+  onDelete: (eventId: string) => void;
+  isCreator: boolean
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event, onSave }) => {
+const EventCard: React.FC<EventCardProps> = ({ event, onSave, onEdit, onDelete, isCreator }) => {
   return (
     <Card sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-      <CardActionArea onClick={() => window.open(`/event/${event.id}`, '_blank')}>
+      <CardActionArea onClick={() => window.open(`/event/${event._id}`, '_blank')}>
       <CardContent sx={{ flex: '1 0 auto' }}>
         <Typography variant="h5">{event.title}</Typography>
         <Typography variant="body2" color="text.secondary">
@@ -28,9 +31,15 @@ const EventCard: React.FC<EventCardProps> = ({ event, onSave }) => {
       </CardContent>
       </CardActionArea>
       <CardActions>
-      <IconButton onClick={() => onSave(event.id)}>
+      <IconButton onClick={() => onSave(event._id)}>
           <FavoriteIcon />
         </IconButton>
+        {isCreator && (
+        <>
+          <IconButton onClick={() => onEdit(event)}>Edit</IconButton>
+          <IconButton onClick={() => onDelete(event._id)}>Delete</IconButton>
+        </>
+      )}
       </CardActions>
     </Card>
   );

@@ -15,7 +15,6 @@ export const getAllEvents = async (filters) => {
   if (filters.isPaid !== undefined) {
     query.isPaid = filters.isPaid === 'true';
   }
-  console.log(Event)
   return await Event.find(query).exec();
 };
 
