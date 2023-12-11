@@ -21,7 +21,7 @@ const housingCard: React.FC<HousingCardProps> = ({ housing, onSave }) => {
                         <PlaceIcon fontSize='small'/> {housing.location} </Typography>
                     <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.price} </Typography>
                     <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.type} - {housing.beds}</Typography>
-                    <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.description}</Typography>
+                    <Typography variant="body2" color="text.secondary" fontSize='small'> {housing.amenities}</Typography>
                 </CardContent>
             </CardActionArea>
             <CardActions>

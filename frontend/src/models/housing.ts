@@ -9,4 +9,5 @@ export interface Housing {
     longitude: number;
     beds: number;
     type: string;
+    amenities: string;
 }
