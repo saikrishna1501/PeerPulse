@@ -20,7 +20,7 @@ export const getAllEvents = async (filters) => {
     query._id = { $in: filters.ids }
   }
 
-  console.log(Event)
+  // console.log(Event)
   return await Event.find(query).exec();
 };
 

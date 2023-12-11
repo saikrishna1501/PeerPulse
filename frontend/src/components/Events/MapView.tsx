@@ -19,7 +19,7 @@ const MapView: React.FC<MapViewProps> = ({ events, onLocationSelect }) => {
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {events.map((event) => (
         <Marker
-          key={event.id}
+          key={event._id}
           position={[event.latitude, event.longitude]}
           eventHandlers={{
             click: () => {
@@ -27,7 +27,7 @@ const MapView: React.FC<MapViewProps> = ({ events, onLocationSelect }) => {
             },
           }}
         >
-          <Popup>{event.name}</Popup>
+          <Popup>{event.title}</Popup>
         </Marker>
       ))}
     </MapContainer>

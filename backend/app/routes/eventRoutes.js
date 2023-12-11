@@ -9,7 +9,7 @@ import { Roles } from '../models/users-model.js';
 // Define the route for the root path ('/')
 router.route('/')
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),eventController.getEvents)
-    .post(authorize, checkRoles([Roles.ADMIN, Roles.MODERATOR]),eventController.createEvent)
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.MODERATOR, Roles.STUDENT]),eventController.createEvent)
 
 // Define the route for paths with an 'id' parameter (e.g., '/123')
 router.route('/:id')
