@@ -25,7 +25,20 @@ export const getUsers = async (request, response) => {
         //return the users details
         const totalNumberOfUsers = await userService.countUsers();
         const numberOfPages = Math.ceil(totalNumberOfUsers/pageSize);
-        setResponse({users: allUsers, numberOfPages: numberOfPages}, response);
+        setResponse({users: allUsers, numberOfPages: numberOfPages, pageSize: pageSize}, response);
+    }
+    catch(err) {
+        //return error response
+        setErrorResponse(err, response);
+    } 
+}
+
+export const getNoOfPages = async (request, response) => {
+    try {
+        const pageSize = parseInt(request.query.pageSize);
+        const totalNumberOfUsers = await userService.countUsers();
+        const numberOfPages = Math.ceil(totalNumberOfUsers/pageSize);
+        setResponse({numberOfPages: numberOfPages}, response);
     }
     catch(err) {
         //return error response
@@ -126,7 +139,7 @@ export const register = async(req,res)=>{
         const userCreated = await userService.createUser(newUser)
         const url=`http://localhost:${process.env.PORT}/users/activate/${verification_token}`
         sendEmail(email,url, firstName)
-        res.redirect('back')
+        res.redirect('back');   
     }
     catch(err){
         console.log(err)

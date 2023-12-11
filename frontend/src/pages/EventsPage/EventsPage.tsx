@@ -23,9 +23,6 @@ const EventsPage: React.FC = () => {
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   // let state = useSelector(state=> state);
-  const userid = useSelector(
-    (state: any) => state
-  );
   const [filters, setFilters] = useState<FiltersState>({
     meetAndGreet: false,
     food: false,
