@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Blog from "../models/blogs";
-import { apiCallBegan, apiCallFailure } from "./api";
+import { apiCallBegan, apiCallFailure } from './api';
 
 const slice = createSlice({
   name: 'blogs',
@@ -52,10 +52,23 @@ export const loadBlogs = () =>({
   payload : {
     url : '/blogs',
     method : 'get',
+    dataInStoreCheck: 'entities.blogs.list',
     onSuccess : blogsReceived.type, //helps dispatch another action 
     onError : apiCallFailure
   }
 });
+
+export const loadBlogById = (id: any) => ({
+  type: apiCallBegan.type,
+  payload: {
+    url: `/blogs/${id}`,
+    method: "get",
+    dataInStoreCheck: 'entities.blogs.list',
+    onSuccess: blogAdded.type,
+    onError: apiCallFailure,
+  },
+})
+
 
 export const createNewBlog = (data: Partial<Blog>) => ({
   type : apiCallBegan.type,

@@ -6,6 +6,7 @@ import logger from './middleware/logger';
 import func from './middleware/func';
 import api from "./middleware/api";
 import auth from "./middleware/auth";
+import checkDataInStore from "./middleware/checkInStore";
 
 const persistConfig = {
     key: 'PeerPulse', //unique key that identifies your application's storage entry.
@@ -22,6 +23,7 @@ const store = configureStore({
             logger('console'),
             func,
             // auth,
+            checkDataInStore,
             api
         ]
     });

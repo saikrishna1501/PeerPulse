@@ -12,6 +12,11 @@ import {
 import Blog from "../../models/blogs";
 
 const BlogCard = ({ blog }: { blog: Blog }) => {
+  const stripHtmlTags = (html: string): string => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+
   return (
     <>
       <Card
@@ -55,8 +60,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             color="text.secondary"
           >
             {blog.content.length > 150
-              ? `${blog.content.slice(0, 150)}...`
-              : blog.content}
+              ? `${stripHtmlTags(blog.content.slice(0, 150))}...`
+              : stripHtmlTags(blog.content)}
           </Typography>
         </CardContent>
         <CardActions sx={{ padding: 0 }}>

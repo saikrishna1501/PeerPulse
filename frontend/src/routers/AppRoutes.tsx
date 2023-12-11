@@ -19,12 +19,14 @@ import {
   LOGIN_PATH,
   BLOG_FORM_ROUTE,
   USER_DASHBOARD_ROUTE,
-  HOUSING_DETAIL_ROUTE
+  HOUSING_DETAIL_ROUTE,
+  BLOGS_VIEW,
 } from "../constants/routes";
 import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
 import BlogForm from "../pages/BlogFormPage/BlogForm";
 import UserDashboardPage from "../pages/UserDashboardPage/UserDashboardPage";
 import HousingDetailsPage from "../pages/HousingPage/HousingDetailsPage";
+import BlogView from "../pages/Blog View/BlogView";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -34,7 +36,7 @@ const AppRoutes: React.FC = () => {
           <Route index element={<LandingPage />} />
           <Route path={AUTH_ROUTE} element={<Login />} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
-          <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage/>}/>
+          <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage />} />
           <Route
             path={EVENTS_ROUTE}
             element={<ProtectedRoute component={EventsPage} />}
@@ -43,14 +45,16 @@ const AppRoutes: React.FC = () => {
             path={HOUSING_ROUTE}
             element={<ProtectedRoute component={HousingPage} />}
           />
-          <Route
+          {/* <Route
             path={BLOGS_ROUTE}
             element={<ProtectedRoute component={BlogsPage} />}
-          />
+          /> */}
+          <Route path={BLOGS_ROUTE} element={<BlogsPage />} />
+          <Route path={BLOGS_VIEW} element={<BlogView />} />
           <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />
           <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
           <Route path={BLOG_FORM_ROUTE} element={<BlogForm />} />
-          <Route path= {HOUSING_DETAIL_ROUTE} element={<HousingDetailsPage/>} />
+          <Route path={HOUSING_DETAIL_ROUTE} element={<HousingDetailsPage />} />
         </Route>
       </Routes>
     </Router>

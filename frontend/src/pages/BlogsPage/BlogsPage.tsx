@@ -9,15 +9,21 @@ import { useDispatch } from "react-redux";
 import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { useNavigate } from "react-router-dom";
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // Initial state with at least two blog objects
   const blogs = useSelector((state: any) => state.entities.blogs.list);
 
   useEffect(() => {
     dispatch(loadBlogs());
   }, []);
+
+  const handleClick = () => {
+    // Navigate to /blogs/new
+    navigate("/blogs/new");
+  };
 
   return (
     <>
@@ -41,6 +47,7 @@ const BlogsPage = (props: any) => {
                 position: "sticky",
                 top: 100,
               }}
+              onClick={handleClick}
             >
               <EditNoteIcon />
               <Typography
