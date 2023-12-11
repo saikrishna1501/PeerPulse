@@ -3,6 +3,7 @@ import { read } from "fs";
 import { useState } from "react";
 import defaultProfilePictureLink from '../../../assets/images/profile-picture.png';
 import { useTheme } from '@mui/material/styles';
+import uploadFile from "../../../services/ImageUploadService";
 
 type Props = {
     src: string | undefined,
@@ -29,20 +30,14 @@ function ProfilePictureUpload({ src, formUpdateHandler, name }: Props) {
         transform: isHovered ? 'scale(1.1)' : 'scale(1)',
     }
 
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
         if(file) {
             const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
             const isAllowedType = allowedTypes.includes(file.type);
             if(isAllowedType) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const binaryData:string = e.target?.result as string;
-                    console.log(binaryData);
-                    formUpdateHandler(binaryData);
-                }
-                console.log(file);
-                reader.readAsDataURL(file);
+                const url = await uploadFile(file, "profile-pictures");
+                formUpdateHandler(url);
             }
             else {
                 alert("file must be of type " + allowedTypes);
