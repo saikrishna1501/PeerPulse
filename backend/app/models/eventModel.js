@@ -7,13 +7,18 @@ const Schema = mongoose.Schema;
 // Define a new schema for 'event' documents
 const eventSchema = new Schema({
   title: { type: String, required: true },
+  organizer: String,
   description: String,
   date: { type: Date, required: true },
   location: String,
   categories: [String],
   isPaid: Boolean,
+  imageUrl: String,
   type: { type: String, enum: ['in-person', 'virtual'], default: 'in-person' },
   proofDocument: String, // URL or reference to the document
+  creatorId: String,
+  latitude: Number,
+  longitude: Number
 });
 
 // Create a model from the schema. This model is used to create and manage 'Event' documents.
