@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'; // Assuming you are using MongoDB and ObjectId for IDs
 class User {
     _id!: string;
     email!: string;
@@ -6,6 +7,7 @@ class User {
     phoneNumber?: string;
     profilePic!: string;
     savedEvents!: string[];
+    upcomingEvents!: ObjectId[] | string[];
     role!: 'admin' | 'moderator' | 'student';
     isValid!: boolean;
   
@@ -17,6 +19,7 @@ class User {
       phoneNumber?: string,
       profilePic: string = '',
       savedEvents: string[] = [],
+      upcomingEvents: ObjectId[] | string[] = [],
       role: 'admin' | 'moderator' | 'student' = 'student',
       isValid: boolean = false
     ) {
@@ -29,8 +32,8 @@ class User {
       this.savedEvents = savedEvents;
       this.role = role;
       this.isValid = isValid;
+      this.upcomingEvents = upcomingEvents;
     }
   }
   
   export default User;
-  

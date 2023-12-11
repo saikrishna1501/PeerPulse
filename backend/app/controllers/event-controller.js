@@ -1,4 +1,7 @@
+import { EventUnRegisterationConfirmationEmailTemplateOptions, InPersonEventConfirmationEmailTemplateOptions, VirtualEventConfirmationEmailTemplateOptions, emailTypes, sendEmail } from '../middlewares/sendMail.js';
+import { eventTypes } from '../models/eventModel.js';
 import EventService from '../services/index.js'
+import { registerForEvent, unRegisterForEvent } from '../services/users-service.js';
 // Import response handling functions from the response-handler module
 import { setResponse, setErrorResponse } from './response-handler.js';
 
@@ -45,6 +48,42 @@ export const updateEvent = async (req, res) => {
     setErrorResponse(error, res);
   }
 };
+
+// Controller function to register for an event
+export const registerEvent = async (req,res) => {
+  try {
+    const {eventId, userId} = req.body;
+    const updatedUserDetails = await registerForEvent(userId, eventId);
+    setResponse(updatedUserDetails, res);
+    const eventDetails = await EventService.getEventById(eventId);
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: "America/New_York" };
+    const formattedDate = eventDetails.date.toLocaleDateString('en-US', dateOptions);
+
+    // Parse and format the time
+    const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true,  timeZone: "America/New_York" };
+    const formattedTime = eventDetails.date.toLocaleTimeString('en-US', timeOptions);
+    if(eventDetails.type === eventTypes.IN_PERSON) {
+      sendEmail(new InPersonEventConfirmationEmailTemplateOptions(updatedUserDetails.email, updatedUserDetails.firstName, eventDetails.title, formattedDate, formattedTime, eventDetails.location), emailTypes.EVENT_REGISTRATION_INPERSON_CONFIRMATION);
+    }
+    else {
+      sendEmail(new VirtualEventConfirmationEmailTemplateOptions(updatedUserDetails.email, updatedUserDetails.firstName, eventDetails.title, formattedDate, formattedTime), emailTypes.EVENT_REGISTRATION_VIRTUAL_CONFIRMATION);
+    }
+  } catch (error) {
+    setErrorResponse(error, res);
+  }
+}
+
+export const unregisterEvent = async (req,res) => {
+  try {
+    const {eventId, userId} = req.body;
+    const updatedUserDetails = await unRegisterForEvent(userId, eventId);
+    setResponse(updatedUserDetails, res);
+    const eventDetails = await EventService.getEventById(eventId);
+    sendEmail(new EventUnRegisterationConfirmationEmailTemplateOptions(updatedUserDetails.email, updatedUserDetails.firstName, eventDetails.title), emailTypes.EVENT_UNREGISTRATION_CONFIRMATION);
+  } catch (error) {
+    setErrorResponse(error, res);
+  }
+}
 
 // Controller function to delete an event
 export const deleteEvent = async (req, res) => {
