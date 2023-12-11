@@ -5,7 +5,12 @@ import { setResponse, setErrorResponse } from './response-handler.js';
 // Controller function to retrieve a list of events
 export const getEvents = async (req, res) => {
   try {
-    const events = await EventService.getAllEvents(req.query);
+    let query = {...req.query}
+    if(req.body) {
+      query = {...query, ...req.body}
+    }
+    console.log("query", query);
+    const events = await EventService.getAllEvents(query);
     setResponse(events, res);
   } catch (error) {
     setErrorResponse(error, res);

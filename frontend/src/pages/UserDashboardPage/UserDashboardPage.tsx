@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import user from "../../services/UserService"
 import { UserRoles } from '../../services/UserService'
 import ManageUsersPage from "../ManageUsersPage/ManageUsersPage"
+import UpcomingEventsPage from "../UpcomingEventsPage/UpcomingEventsPage"
 
 const UserDashboardPage = () => {
     // let mapping = [{ textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 }];
@@ -33,6 +34,7 @@ const UserDashboardPage = () => {
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
                 { textOnTab: "Saved Events", componentToRender: (<div>Saved events</div>), order: 0 },
                 { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing`</div>), order: 0 },
+                { textOnTab: "Upcoming Events", componentToRender: (<UpcomingEventsPage/>), order: 0 },
                 { textOnTab: "Manage Users", componentToRender: (<div><ManageUsersPage /></div>), order: 0 },
             ]);
         }

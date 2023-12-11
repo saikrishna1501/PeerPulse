@@ -15,6 +15,11 @@ export const getAllEvents = async (filters) => {
   if (filters.isPaid !== undefined) {
     query.isPaid = filters.isPaid === 'true';
   }
+
+  if(filters.ids !== undefined || filters.ids.length === 0) {
+    query._id = { $in: filters.ids }
+  }
+
   console.log(Event)
   return await Event.find(query).exec();
 };
