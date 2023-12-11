@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Paper, Typography, Button } from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
-import { testEventsData } from './testhousingdata';
+import { testhousingdata } from './testhousingdata';
 
 const HousingDetailsPage: React.FC = () => {
   const { housingId } = useParams<{ housingId: string }>();
