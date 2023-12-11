@@ -39,8 +39,11 @@ const userSchema = new Schema({
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'Event',
     // }],
-    savedEvents: {
-        type: [String]
+    upcomingEvents: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Event',
+        }]
     },
     role: {
         type: String,

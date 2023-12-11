@@ -4,6 +4,11 @@ import mongoose from "mongoose";
 // Retrieve the Schema constructor from the mongoose object
 const Schema = mongoose.Schema;
 
+export const eventTypes = {
+   IN_PERSON: 'in-person',
+   VIRTUAL: 'virtual'
+}
+
 // Define a new schema for 'event' documents
 const eventSchema = new Schema({
   title: { type: String, required: true },
@@ -14,8 +19,8 @@ const eventSchema = new Schema({
   categories: [String],
   isPaid: Boolean,
   imageUrl: String,
-  type: { type: String, enum: ['in-person', 'virtual'], default: 'in-person' },
-  proofDocument: String, // URL or reference to the document
+  type: { type: String, enum: [eventTypes.IN_PERSON, eventTypes.VIRTUAL], default: eventTypes.IN_PERSON },
+  proofDocument: {type: String, default: ""}, // URL or reference to the document
   creatorId: String,
   latitude: Number,
   longitude: Number

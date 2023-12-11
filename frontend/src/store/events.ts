@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {Event} from '../models/event';
 import { apiCallBegan, apiCallFailure } from './api';
+import { updateAuthDetails } from './auth';
 
 const eventSlice = createSlice({
   name: 'events',
@@ -81,6 +82,29 @@ export const deleteEvent = (id: string) => ({
     onError: apiCallFailure,
   },
 });
+
+export const registerEvent = (data: {eventId: string, userId: string}) => ({
+  type: apiCallBegan.type,
+  payload: {
+    url: `/events/register`,
+    method: 'post',
+    data,
+    onSuccess: updateAuthDetails,
+    onError: apiCallFailure,
+  },
+});
+
+export const unRegisterEvent = (data: {eventId: string, userId: string}) => ({
+  type: apiCallBegan.type,
+  payload: {
+    url: `/events/unregister`,
+    method: 'post',
+    data,
+    onSuccess: updateAuthDetails,
+    onError: apiCallFailure,
+  },
+});
+
 
 export const { eventsRequested, eventsReceived, eventsRequestFailed, eventAdded, eventUpdated, eventDeleted } = eventSlice.actions;
 export default eventSlice.reducer;

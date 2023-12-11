@@ -13,3 +13,9 @@ export interface Event {
     isPaid: boolean;
     type: string
 }
+
+export enum RegistrationStatus {
+    REGISTERED,
+    NOT_REGISTERED,
+    CANT_REGISTER
+}

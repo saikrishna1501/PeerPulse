@@ -4,7 +4,7 @@ import * as userService from '../services/users-service.js';
 import {setErrorResponse, setHttpOnlyCookiesAndResponse, setResponse } from './response-handler.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {sendEmail} from '../middlewares/sendMail.js'
+import {VerificationEmailTemplateOptions, emailTypes, sendEmail} from '../middlewares/sendMail.js'
 import * as tokenService from '../services/tokenService.js';
 import UserNotFoundException from '../exceptions/user-not-found-exception.js';
 import UnverifiedEmailException from '../exceptions/unverified-email-exception.js';
@@ -138,7 +138,8 @@ export const register = async(req,res)=>{
         const newUser= {firstName, lastName, password: passwordHash, email}
         const userCreated = await userService.createUser(newUser)
         const url=`http://localhost:${process.env.PORT}/users/activate/${verification_token}`
-        sendEmail(email,url, firstName)
+        // sendEmail(email,url, firstName)
+        sendEmail(new VerificationEmailTemplateOptions(email, firstName, url), emailTypes.SEND_VERIFICATION);
         res.redirect('back');   
     }
     catch(err){
@@ -355,6 +356,3 @@ export const resetPasswordRequestController = async (req, res, next) => {
         setErrorResponse(err,response);
     }
   };
-
-
-  

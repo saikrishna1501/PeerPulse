@@ -8,6 +8,8 @@ import bcrypt from 'bcrypt';
 
 import UserNotFoundException from "../exceptions/user-not-found-exception.js";
 import UserAlreadyExistsException from "../exceptions/user-already-exists-exception.js";
+import AlreadyRegisteredEvent from "../exceptions/already-registered-event.js";
+import AlreadyNotRegisteredEvent from "../exceptions/already-not-registered-event.js";
 
 //function to retrive details of all users
 export const retrieveAllUsers = async ({params = {}, projection = {password: 0, __v: 0}, maxResult = 250}) => {
@@ -57,6 +59,49 @@ export const findUserById = async(id, projection = {password: 0, __v: 0}) => {
     }
 }
 
+export const registerForEvent = async(userId, eventId) => {
+    const userDetails = await User.findById(userId);
+    if(userDetails) {
+        const existingUpcomingEvents = userDetails.upcomingEvents;
+        if(existingUpcomingEvents.includes(eventId)) {
+            throw new AlreadyRegisteredEvent();
+        }
+        else {
+            const updatedDetails = User.findByIdAndUpdate(
+                userId,
+                { $push: { upcomingEvents: eventId } },
+                { new: true }, // To return the updated user
+            )
+            return updatedDetails;
+        }
+    }
+    else {
+        throw new UserNotFoundException();
+    }
+}
+
+export const unRegisterForEvent = async(userId, eventId) => {
+    const userDetails = await User.findById(userId);
+    if(userDetails) {
+        const existingUpcomingEvents = userDetails.upcomingEvents;
+        if(!existingUpcomingEvents.includes(eventId)) {
+            throw new AlreadyNotRegisteredEvent();
+        }
+        else {
+            const updatedDetails = User.findByIdAndUpdate(
+                userId,
+                { $pull: { upcomingEvents: eventId } },
+                { new: true }, // To return the updated user
+            )
+            return updatedDetails;
+        }
+    }
+    else {
+        throw new UserNotFoundException();
+    }
+}
+
+
 
 //function to update user details
 export const updateUser = async(id, updatedUserDetails, projection = {password: 0, __v: 0}) => {
@@ -89,12 +134,13 @@ export const requestPasswordReset = async (email) => {
     console.log(verify);
     let token = await TokenService.createToken(user, verify);
     const link = `${process.env.SERVER_URI}:${process.env.PORT}/passwordReset?token=${token}&id=${email}`;
-    await sendEmail.sendEmail(
-        user.email,
-        link,
-        user.firstName,
-        "passwordResetRequest"
-   );
+//     await sendEmail.sendEmail(
+//         user.email,
+//         link,
+//         user.firstName,
+//         "passwordResetRequest"
+//    );
+      sendEmail.sendEmail(new sendEmail.VerificationEmailTemplateOptions(user.email, user.firstName, link), sendEmail.emailTypes.PASSWORD_RESET_REQUEST);
   };
 
   export const resetPassword = async (email, passwordToken, password) => {
@@ -107,7 +153,3 @@ export const requestPasswordReset = async (email) => {
     await TokenService.deleteToken(passwordToken);
 
   };
-
-  
-
-  
