@@ -27,7 +27,7 @@ const MapView: React.FC<MapViewProps> = ({ events, onLocationSelect }) => {
             },
           }}
         >
-          <Popup>{event.name}</Popup>
+          <Popup>{event.title}</Popup>
         </Marker>
       ))}
     </MapContainer>

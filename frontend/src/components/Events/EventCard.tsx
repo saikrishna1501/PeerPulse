@@ -16,7 +16,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onSave }) => {
     <Card sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
       <CardActionArea onClick={() => window.open(`/event/${event.id}`, '_blank')}>
       <CardContent sx={{ flex: '1 0 auto' }}>
-        <Typography variant="h5">{event.name}</Typography>
+        <Typography variant="h5">{event.title}</Typography>
         <Typography variant="body2" color="text.secondary">
           <EventIcon fontSize="small" /> {event.date}
         </Typography>

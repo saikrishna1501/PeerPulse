@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { fetchEvents } from '../features/events/eventsSlice'; to be implemented
+import { deleteEvent, loadEvents } from '../../store/events';
 import { testEventsData } from './testEventsData';
 import { Event } from '../../models/event';
 import EventCard from '../../components/Events/EventCard';
@@ -20,10 +20,20 @@ interface FiltersState {
 }
 
 const EventsPage: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+  const events = useSelector((state: any) => state.entities.events.list);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const [searchQuery, setSearchQuery] = useState('');
   const userId = useSelector((state: any) => state.auth.user._id);
+  const dispatch = useDispatch();
+  
+
+  useEffect(() => {
+    dispatch(loadEvents());
+  }, []);
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteEvent(id));
+  };
 
   const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
 
@@ -40,12 +50,6 @@ const EventsPage: React.FC = () => {
     paid: false,
   });
 
-  useEffect(() => {
-    // Mock data fetching
-    setEvents(testEventsData);
-    setFilteredEvents(testEventsData);
-  }, []);
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
@@ -53,8 +57,8 @@ const EventsPage: React.FC = () => {
   };
 
   const applyFilters = (query: string, filterOptions: FiltersState) => {
-    let result = events.filter((event) => {
-      const queryCheck = event.name.toLowerCase().includes(query.toLowerCase());
+    let result = events.filter((event: Event) => {
+      const queryCheck = event.title.toLowerCase().includes(query.toLowerCase());
       const categoriesCheck = (!filterOptions.meetAndGreet || event.categories.includes('Meet and Greet')) &&
                               (!filterOptions.food || event.categories.includes('Food')) &&
                               (!filterOptions.speakerSeries || event.categories.includes('Speaker Series'));
@@ -104,7 +108,7 @@ const EventsPage: React.FC = () => {
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
-            <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
+            {/* <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/> */}
           </Grid>
           
         </Grid>

@@ -14,8 +14,8 @@ const EventDetailsPage: React.FC = () => {
 
   return (
     <Paper sx={{ padding: 2 }}>
-      <img src={event.imageUrl} alt={event.name} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
-      <Typography variant="h4">{event.name}</Typography>
+      <img src={event.imageUrl} alt={event.title} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
+      <Typography variant="h4">{event.title}</Typography>
       <Typography variant="body1" color="text.secondary">
         <PlaceIcon /> {event.location}
       </Typography>

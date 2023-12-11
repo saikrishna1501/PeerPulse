@@ -1,7 +1,7 @@
 export const testEventsData = [
   {
     id: '1',
-    name: 'Summer Fest',
+    title: 'Summer Fest',
     organizer: 'City Council',
     description: 'A great summer gathering with food, music, and games.',
     location: 'Central Park',
@@ -14,7 +14,7 @@ export const testEventsData = [
   },
   {
     id: '2',
-    name: 'Tech Conference 2023',
+    title: 'Tech Conference 2023',
     organizer: 'Tech Innovators',
     description: 'A conference showcasing the latest in tech innovation.',
     location: 'Convention Center',
@@ -27,7 +27,7 @@ export const testEventsData = [
   },
   {
     id: '3',
-    name: 'Marathon',
+    title: 'Marathon',
     organizer: 'Sports Association',
     description: 'Citywide marathon with categories for all age groups.',
     location: 'City Hall',
@@ -40,7 +40,7 @@ export const testEventsData = [
   },
   {
     id: '4',
-    name: 'Art Expo',
+    title: 'Art Expo',
     organizer: 'Local Artists',
     description: 'An exhibition of contemporary local artists.',
     location: 'Art Museum',
@@ -53,7 +53,7 @@ export const testEventsData = [
   },
   {
     id: '5',
-    name: 'Food Truck Fiesta',
+    title: 'Food Truck Fiesta',
     organizer: 'Food Lovers',
     description: 'A weekend of delicious food trucks and live music.',
     location: 'Riverside Park',
