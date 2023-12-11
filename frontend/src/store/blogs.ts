@@ -27,7 +27,7 @@ const slice = createSlice({
     },
     blogUpdated: (blogs, action: PayloadAction<Blog>) => {
       const updatedBlog = action.payload;
-      const index = blogs.list.findIndex(blog => blog.id === updatedBlog.id);
+      const index = blogs.list.findIndex(blog => blog._id === updatedBlog._id);
 
       if (index !== -1) {
         // Update the blog if found
@@ -38,7 +38,7 @@ const slice = createSlice({
         const blogIdToDelete = action.payload;
         blogs.list = blogs.list.filter(blog => {
           // Check if both ids exist and are equal
-          if (blog.id && blogIdToDelete && blog.id.toString() === blogIdToDelete) {
+          if (blog._id && blogIdToDelete && blog._id.toString() === blogIdToDelete) {
             return false; // Exclude the blog with the matching id
           }
           return true; // Include other blogs

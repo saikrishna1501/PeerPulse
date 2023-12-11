@@ -14,7 +14,7 @@ const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // Initial state with at least two blog objects
-  const blogs = useSelector((state: any) => state.entities.blogs.list);
+  const blogs = useSelector((state: any) => state.entities.blogs.list.data);
 
   useEffect(() => {
     dispatch(loadBlogs());

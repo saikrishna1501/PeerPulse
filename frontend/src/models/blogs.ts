@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'; // Assuming you are using MongoDB and Object
 import Comment from './comments';
 
 class Blog {
-  id?: ObjectId | string; // Assuming you are using MongoDB ObjectId for the ID
+  _id?: ObjectId | string; // Assuming you are using MongoDB ObjectId for the ID
   title!: string;
   content!: string;
   upvotes?: number;
@@ -15,7 +15,7 @@ class Blog {
   tag?: string[];
 
   constructor(
-    id: ObjectId,
+    _id: ObjectId,
     title: string,
     content: string,
     upvotes: number,
@@ -27,7 +27,7 @@ class Blog {
     updatedAt: Date | null,
     tag: string[]
   ) {
-    this.id = id;
+    this._id = _id;
     this.title = title;
     this.content = content;
     this.upvotes = upvotes;

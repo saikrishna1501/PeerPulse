@@ -10,11 +10,17 @@ import {
   Box,
 } from "@mui/material";
 import Blog from "../../models/blogs";
+import { useNavigate } from "react-router-dom";
 
 const BlogCard = ({ blog }: { blog: Blog }) => {
   const stripHtmlTags = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
+  };
+  const navigate = useNavigate();
+  const handleCardClick = () => {
+    // Navigate to /blogs/:id when the CardContent is clicked
+    navigate(`/blogs/${blog!._id}`);
   };
 
   return (
@@ -47,9 +53,10 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
 
         <CardContent sx={{ padding: "0px" }}>
           <Typography
-            sx={{ marginBottom: "10px" }}
+            sx={{ marginBottom: "10px", cursor: "pointer" }}
             variant="h3"
             fontWeight="bold"
+            onClick={handleCardClick}
           >
             {blog.title}
           </Typography>
