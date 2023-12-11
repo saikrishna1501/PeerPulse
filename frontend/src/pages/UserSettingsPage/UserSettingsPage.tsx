@@ -65,7 +65,7 @@ const UserSettingsPage = () => {
                 lastName: userDetailsFormData.lastName,
                 profilePic: userDetailsFormData.profilePic,
               } as any));
-            alert("Updated details Successfully");
+            // alert("Updated details Successfully");
         }
         else {
             console.error("Not all the required fields were entered");

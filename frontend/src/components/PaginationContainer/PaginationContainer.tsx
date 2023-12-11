@@ -1,5 +1,5 @@
 import { Pagination, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type props = {
     onPageChange: (clickedPage: number) => void,
@@ -8,6 +8,12 @@ type props = {
 } 
 
 const PaginationContainer = ({onPageChange, currentPage, noOfPages}: props) => {
+    useEffect(() => {
+        if(currentPage > noOfPages) {
+            console.log("Use effect executing" + currentPage + noOfPages);
+            onPageChange(currentPage - 1);
+        }
+    }, [noOfPages])
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         onPageChange(value);
     }
