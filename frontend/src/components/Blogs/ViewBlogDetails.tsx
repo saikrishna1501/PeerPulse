@@ -86,6 +86,16 @@ const ViewBlogDetails = ({ blog }: Props) => {
                   })}
                 </Typography>
               </Stack>
+
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ paddingLeft: "20px", ml: "auto", textAlign: "center" }}
+              >
+                {blog.tag?.map((t) => (
+                  <Chip label={t} />
+                ))}
+              </Stack>
             </>
           }
         />
@@ -134,12 +144,6 @@ const ViewBlogDetails = ({ blog }: Props) => {
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
-      </Stack>
-      Tags
-      <Stack direction="row" spacing={1}>
-        {blog.tag?.map((t) => (
-          <Chip label={t} />
-        ))}
       </Stack>
     </Container>
   );
