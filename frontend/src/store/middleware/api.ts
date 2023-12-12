@@ -27,7 +27,7 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
             return;
         }
 
-        dispatch({ type: onSuccess, payload : response.data }); 
+        onSuccess && dispatch({ type: onSuccess, payload : response.data }); 
     }
     // Rejected: Dispatch onError
     catch(error){

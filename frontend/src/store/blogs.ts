@@ -62,9 +62,6 @@ export const loadBlogById = (id: any) => ({
   payload: {
     url: `/blogs/${id}`,
     method: "get",
-    dataInStoreCheck: 'entities.blogs.list',
-    onSuccess: blogAdded.type,
-    onError: apiCallFailure,
   },
 })
 

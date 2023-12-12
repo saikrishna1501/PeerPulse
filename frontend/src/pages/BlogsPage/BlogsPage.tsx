@@ -10,6 +10,7 @@ import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useNavigate } from "react-router-dom";
+import PaginationContainer from "../../components/PaginationContainer/PaginationContainer";
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,6 +27,25 @@ const BlogsPage = (props: any) => {
     navigate("/blogs/new");
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const noOfPages = useSelector(
+    (state: any) => state.entities.users.numberOfPages
+  );
+
+  const onPageChange = (clickedPage: number) => {
+    // const newUsers = [...listOfUsers, {
+    //     _id: "656a9421c56c68861c127ac",
+    //     email: "gaddam.sai@northeastern.edu",
+    //     firstName: "Dummy",
+    //     lastName: "User",
+    //     role: "student"
+    // }]
+    // // setListOfUsers(newUsers);
+    // dispatch(loadUsers(clickedPage,pageSize));
+    // setCurrentPage(clickedPage);
+    // setTotalNoOfPages(users.numberOfPages);
+  };
+
   return (
     <>
       <BlogHeader />
@@ -36,7 +56,15 @@ const BlogsPage = (props: any) => {
           marginTop={5}
           justifyContent="space-between"
         >
-          <BlogList blogs={blogs} />
+          <Stack direction={"column"}>
+            <BlogList blogs={blogs} />
+            <PaginationContainer
+              onPageChange={onPageChange}
+              currentPage={currentPage}
+              noOfPages={noOfPages}
+            ></PaginationContainer>
+          </Stack>
+
           <Stack
             direction="column"
             spacing={5}

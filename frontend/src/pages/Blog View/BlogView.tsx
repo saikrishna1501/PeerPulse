@@ -3,7 +3,6 @@ import { loadBlogById } from "../../store/blogs";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import BlogCard from "../../components/Blogs/BlogCard";
 import { Container } from "@mui/material";
 import ViewBlogDetails from "../../components/Blogs/ViewBlogDetails";
 
@@ -20,8 +19,7 @@ const BlogView = () => {
   useEffect(() => {
     // Dispatch the action when the id changes
     dispatch(loadBlogById(id));
-    console.log("Blog", blog);
-  }, [id, dispatch]); // Add id and dispatch to the dependency array
+  }, []); // Add id and dispatch to the dependency array
 
   return (
     <>
