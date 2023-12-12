@@ -8,10 +8,10 @@ import { Event } from '../../models/event';
 
 interface EventCardProps {
   event: Event;
-  onSave: (eventId: string) => void;
-  onEdit: (event: any) => void;
-  onDelete: (eventId: string) => void;
-  isCreator: boolean
+  onSave?: (eventId: string) => void;
+  onEdit?: (event: any) => void;
+  onDelete?: (eventId: string) => void;
+  isCreator?: boolean
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event, onSave, onEdit, onDelete, isCreator }) => {
@@ -31,13 +31,20 @@ const EventCard: React.FC<EventCardProps> = ({ event, onSave, onEdit, onDelete, 
       </CardContent>
       </CardActionArea>
       <CardActions>
+      {
+        onSave ? 
       <IconButton onClick={() => onSave(event._id)}>
           <FavoriteIcon />
-        </IconButton>
+        </IconButton>: null
+      }
         {isCreator && (
         <>
-          <IconButton onClick={() => onEdit(event)}>Edit</IconButton>
-          <IconButton onClick={() => onDelete(event._id)}>Delete</IconButton>
+          {
+            onEdit? <IconButton onClick={() => onEdit(event)}>Edit</IconButton>: null
+          }
+          {
+            onDelete? <IconButton onClick={() => onDelete(event._id)}>Delete</IconButton>: null
+          }
         </>
       )}
       </CardActions>

@@ -21,7 +21,7 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
             method,
             withCredentials: true
         });
-        dispatch({ type: onSuccess, payload : response.data }); 
+        dispatch({ type: onSuccess, payload : response }); 
     }
     // Rejected: Dispatch onError
     catch(error){

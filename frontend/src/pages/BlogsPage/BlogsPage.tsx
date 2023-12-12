@@ -9,15 +9,22 @@ import { useDispatch } from "react-redux";
 import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { useNavigate } from "react-router-dom";
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // Initial state with at least two blog objects
-  const blogs = useSelector((state: any) => state.entities.blogs.list);
+  const blogs = useSelector((state: any) => state.entities.blogs.list.data);
 
   useEffect(() => {
+    console.log("Dispatching");
     dispatch(loadBlogs());
   }, []);
+
+  const handleClick = () => {
+    // Navigate to /blogs/new
+    navigate("/blogs/new");
+  };
 
   return (
     <>
@@ -30,7 +37,11 @@ const BlogsPage = (props: any) => {
           justifyContent="space-between"
         >
           <BlogList blogs={blogs} />
-          <Stack direction="column" spacing={5}>
+          <Stack
+            direction="column"
+            spacing={5}
+            sx={{ padding: "40px", borderLeft: "1px solid #F2F2F2" }}
+          >
             <Button
               variant="contained"
               sx={{
@@ -41,6 +52,7 @@ const BlogsPage = (props: any) => {
                 position: "sticky",
                 top: 100,
               }}
+              onClick={handleClick}
             >
               <EditNoteIcon />
               <Typography

@@ -4,14 +4,16 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useForm } from "react-hook-form";
 
-import { Container, TextField, Button, Alert } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { Container, TextField, Button, Alert, Snackbar } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewBlog } from "../../store/blogs";
+import { useNavigate } from "react-router-dom";
 
 const BlogForm = () => {
   // Store Config
   const dispatch = useDispatch();
-  const author = "6568a18d7bb787e0dadb3081"; //useSelector((state: any) => state.auth.user.id);
+  const navigate = useNavigate();
+  const author = useSelector((state: any) => state.auth.user._id);
   const containerRef = useRef(null);
 
   // Quill Config
@@ -55,11 +57,12 @@ const BlogForm = () => {
   const onSubmit = () => {
     dispatch(
       createNewBlog({
-        title: titleContent.value,
+        title: titleContent,
         content: editorContent,
         author,
       })
     );
+    navigate("/blogs");
   };
 
   const editorContent = watch("content");
@@ -70,12 +73,12 @@ const BlogForm = () => {
   };
 
   const onTitleStateChange = (titleState: any) => {
-    setValue("title", titleState.value);
+    setValue("title", titleState.target.value);
   };
 
   useEffect(() => {
-    register("title", { required: true, minLength: 5 });
-    register("content", { required: true, minLength: 5 });
+    register("title", { required: true });
+    register("content", { required: true });
   }, [register]);
 
   return (
