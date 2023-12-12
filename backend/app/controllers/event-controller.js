@@ -93,8 +93,8 @@ export const unregisterEvent = async (req,res) => {
 // Controller function to delete an event
 export const deleteEvent = async (req, res) => {
   try {
-    await EventService.deleteEvent(req.params.id);
-    setResponse({},res);
+    const deletedEvent = await EventService.deleteEvent(req.params.id);
+    setResponse(deletedEvent,res);
   } catch (error) {
     setErrorResponse(error, res);
   }

@@ -16,6 +16,8 @@ interface FiltersState {
   offCampus: boolean;
   free: boolean;
   paid: boolean;
+  virtual: boolean;
+  inPerson: boolean
 }
 
 const EventsPage: React.FC = () => {
@@ -27,19 +29,21 @@ const EventsPage: React.FC = () => {
   //to know if the author and current user are same
   const currentUserId = useSelector((state: any) => state.auth.user._id);
   const dispatch = useDispatch();
+
   //to open create event dialog
   const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
   const handleOpenCreateEventForm = () => setIsCreateEventFormOpen(true);
   const handleCloseCreateEventForm = () => setIsCreateEventFormOpen(false);
+
   //to open edit event dialog
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const handleOpenEditForm=()=>setIsEditFormOpen(true);
   const handleCloseEditForm=()=>setIsEditFormOpen(false);
   const [editingEventData, setEditingEvent] = useState<Event | null>(null);
-  // to open edit event
+
   useEffect(() => {
     dispatch(loadEvents());
-  }, [setFilteredEvents]);
+  }, []);
 
   const [filters, setFilters] = useState<FiltersState>({
     meetAndGreet: false,
@@ -49,6 +53,8 @@ const EventsPage: React.FC = () => {
     offCampus: false,
     free: false,
     paid: false,
+    virtual: false,
+    inPerson: false
   });
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,20 +64,31 @@ const EventsPage: React.FC = () => {
   };
 
   const applyFilters = (query: string, filterOptions: FiltersState) => {
-    let result = events.filter((event: Event) => {
-      const queryCheck = event.title.toLowerCase().includes(query.toLowerCase());
-      const categoriesCheck = (!filterOptions.meetAndGreet || event.categories.includes('Meet and Greet')) &&
-                              (!filterOptions.food || event.categories.includes('Food')) &&
-                              (!filterOptions.speakerSeries || event.categories.includes('Speaker Series'));
+    let allFiltersInactive = Object.values(filterOptions).every(val => val === false);
 
-      const locationCheck = (!filterOptions.onCampus || event.location.includes('Northeastern University')) &&
-                            (!filterOptions.offCampus || event.location !== 'Northeastern University');
-                            
-      const pricingCheck = (!filterOptions.free || !event.isPaid) && (!filterOptions.paid || event.isPaid);
-    
-      
-      return queryCheck && categoriesCheck && locationCheck && pricingCheck;
+    let result = events.filter((event: Event) => {
+      if (allFiltersInactive) return true; // If all filters are inactive, return all events
+  
+      const queryCheck = event.title.toLowerCase().includes(query.toLowerCase());
+      // Check for each filter category
+      const categoryChecks = [
+        filterOptions.meetAndGreet && event.categories.includes('Meet and Greet'),
+        filterOptions.food && event.categories.includes('Food'),
+        filterOptions.speakerSeries && event.categories.includes('Speaker Series'),
+        filterOptions.onCampus && event.location.includes('Northeastern University'),
+        filterOptions.offCampus && event.location !== 'Northeastern University',
+        filterOptions.free && !event.isPaid,
+        filterOptions.paid && event.isPaid,
+        filterOptions.inPerson && event.type === 'in-person',
+        filterOptions.virtual && event.type === 'virtual'
+      ];
+
+      // Determine if the event matches any of the active filters
+      const matchesFilters = categoryChecks.some(Boolean); // 'some' checks if at least one condition is true
+
+      return queryCheck && matchesFilters;
     });
+  
     setFilteredEvents(result);
   };
 
@@ -93,9 +110,14 @@ const EventsPage: React.FC = () => {
   }
 
   const handleDelete=(eventId: string)=>{
-    dispatch(deleteEvent(eventId));
-    dispatch(loadEvents());
-    setFilteredEvents(events);
+    try{
+      dispatch(deleteEvent(eventId));
+      setFilteredEvents(events.filter((e: any)=>e._id!==eventId))
+    }
+    catch(e){
+      console.log("Error: "+e)
+    }
+    
   }
 
   const focusEventOnMap = (location: string) => {
@@ -120,14 +142,13 @@ const EventsPage: React.FC = () => {
             {filteredEvents.map(event => (
               <EventCard key={event._id} event={event} onSave={saveEvent} onEdit={handleEdit}
               onDelete={handleDelete}
-              isCreator={true}/> //event.creatorId === currentUserId
+              isCreator={event.creatorId === currentUserId}/>
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
             <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} />
             <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
           </Grid>
-          
         </Grid>
       </Container>
     </>
