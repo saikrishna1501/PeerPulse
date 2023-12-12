@@ -80,6 +80,28 @@ export const createNewBlog = (data: Partial<Blog>) => ({
   }
 });
 
+export const updateBlog = (id:any, data: Partial<Blog>) => ({
+  type: apiCallBegan.type,
+  payload :{
+    url : `/blogs/${id}`,
+    method: "put",
+    data,
+    onSuccess: blogUpdated.type,
+    onError: apiCallFailure
+  }
+})
+
+export const deleteBlogById = (id: any) => ({
+  type : apiCallBegan.type,
+  payload : {
+    url : `/blogs/${id}`,
+    method : 'delete',
+    data: id,
+    onSuccess : blogDeleted.type,
+    onError : apiCallFailure
+  }
+});
+
 
 export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted } = slice.actions;
 export default slice.reducer;

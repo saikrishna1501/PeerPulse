@@ -12,8 +12,11 @@ import {
 import Blog from "../../models/blogs";
 import { useNavigate } from "react-router-dom";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBlogById } from "../../store/blogs";
 const BlogCard = ({ blog }: { blog: Blog }) => {
+  const dispatch = useDispatch();
+
   const stripHtmlTags = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, "text/html");
 
@@ -40,7 +43,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
   };
 
   const deleteBlog = (blog: any) => {
-    console.log("Deleted! ");
+    dispatch(deleteBlogById(blog._id));
+    // navigate("/blogs");
   };
 
   return (
@@ -91,8 +95,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             </Typography>
             {isAuthor(blog) && (
               <RemoveCircleIcon
-                sx={{ marginLeft: "10px" }}
-                onClick={deleteBlog}
+                sx={{ marginLeft: "10px", cursor: "pointer" }}
+                onClick={() => deleteBlog(blog)}
               />
             )}
           </Stack>
