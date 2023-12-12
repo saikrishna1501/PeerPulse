@@ -19,19 +19,22 @@ export interface EventData {
   date: string;
   creatorId: string;
   proofDocument?: File | null ;
+  latitude: number;
+  longitude: number;
   type: string;
 }
 
 const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = false, initialEventData }) => {
+  const events = useSelector((state:any)=>state.entities.events.list);
   const userId = useSelector((state: any) => state.auth.user._id);
-  const [eventData, setEventData] = useState<EventData>(initialEventData ||{ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null, type:''});
+  const [eventData, setEventData] = useState<EventData>(initialEventData ||{ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null, type:'', latitude:0,longitude:0});
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditMode && initialEventData) {
       setEventData(initialEventData);
     } else {
-      setEventData({ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null,type:''});
+      setEventData({ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null,type:'',latitude:0,longitude:0});
     }
   }, [isEditMode, initialEventData]);
 
@@ -67,11 +70,11 @@ const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = f
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Create an Event</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextField label="Event Name" name="title" fullWidth onChange={handleChange} value={eventData.title} />
-        <TextField label="Organizer" name="organizer" fullWidth onChange={handleChange} value={eventData.organizer} />
-        <TextField label="Description" name="description" fullWidth onChange={handleChange} value={eventData.description} />
-        <TextField label="Location" name="location" fullWidth onChange={handleChange} value={eventData.location} />
-        <TextField label="Date" name="date" fullWidth onChange={handleChange} value={eventData.date} />
+        <TextField label="Event Name" name="title" fullWidth onChange={handleChange} value={eventData.title} required />
+        <TextField label="Organizer" name="organizer" fullWidth onChange={handleChange} value={eventData.organizer} required/>
+        <TextField label="Description" name="description" fullWidth onChange={handleChange} value={eventData.description} required />
+        <TextField label="Location" name="location" fullWidth onChange={handleChange} value={eventData.location} required/>
+        <TextField label="Date" name="date" fullWidth onChange={handleChange} value={eventData.date} required/>
         <FormControl fullWidth>
           <InputLabel>Type</InputLabel>
           <Select
