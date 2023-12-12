@@ -71,7 +71,13 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
         <CardContent sx={{ padding: "0px" }}>
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
             <Typography
-              sx={{ marginBottom: "10px", cursor: "pointer" }}
+              sx={{
+                marginBottom: "10px",
+                cursor: "pointer",
+                ":hover": {
+                  textDecoration: "underline", // Add your desired hover effect
+                },
+              }}
               variant="h3"
               fontWeight="bold"
               onClick={handleCardClick}
