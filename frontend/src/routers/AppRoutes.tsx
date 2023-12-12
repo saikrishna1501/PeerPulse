@@ -21,12 +21,14 @@ import {
   USER_DASHBOARD_ROUTE,
   HOUSING_DETAIL_ROUTE,
   BLOGS_VIEW,
+  BLOGS_EDIT,
 } from "../constants/routes";
 import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
 import BlogForm from "../pages/BlogFormPage/BlogForm";
 import UserDashboardPage from "../pages/UserDashboardPage/UserDashboardPage";
 import HousingDetailsPage from "../pages/HousingPage/HousingDetailsPage";
 import BlogView from "../pages/Blog View/BlogView";
+import { BlogUpdate } from "../pages/Blog Update/BlogUpdate";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -56,6 +58,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path={BLOG_FORM_ROUTE}
             element={<ProtectedRoute component={BlogForm} />}
+          />
+          <Route
+            path={BLOGS_EDIT}
+            element={<ProtectedRoute component={BlogUpdate} />}
           />
 
           <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />

@@ -12,6 +12,8 @@ import {
 import Blog from "../../models/blogs";
 import { useNavigate } from "react-router-dom";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import EditIcon from "@mui/icons-material/Edit";
+
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBlogById } from "../../store/blogs";
 const BlogCard = ({ blog }: { blog: Blog }) => {
@@ -45,6 +47,10 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
   const deleteBlog = (blog: any) => {
     dispatch(deleteBlogById(blog._id));
     // navigate("/blogs");
+  };
+
+  const updateBlog = (blog: any) => {
+    navigate(`/blogs/${blog._id}/edit`);
   };
 
   return (
@@ -94,10 +100,16 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
               {blog.title}
             </Typography>
             {isAuthor(blog) && (
-              <RemoveCircleIcon
-                sx={{ marginLeft: "10px", cursor: "pointer" }}
-                onClick={() => deleteBlog(blog)}
-              />
+              <>
+                <RemoveCircleIcon
+                  sx={{ marginLeft: "10px" }}
+                  onClick={() => deleteBlog(blog)}
+                />
+                <EditIcon
+                  sx={{ marginLeft: "10px" }}
+                  onClick={() => updateBlog(blog)}
+                />
+              </>
             )}
           </Stack>
 
