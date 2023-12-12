@@ -1,5 +1,5 @@
 export interface Housing {
-    id: string;
+    _id: string;
     title: string;
     description: string;
     location: string;
@@ -9,5 +9,8 @@ export interface Housing {
     longitude: number;
     beds: number;
     type: string;
-    amenities: string;
+    amenities1: string;
+    amenities2: string;
+    amenities3: string;
+    amenities4: string;
 }

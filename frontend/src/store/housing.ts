@@ -27,7 +27,7 @@ const housingSlice = createSlice({
 export const loadHousing = () =>({
     type : apiCallBegan.type,
     payload : {
-      url : '/housing',
+      url : '/housings',
       method : 'get',
       onSuccess : housingReceived.type, //helps dispatch another action 
       onError : apiCallFailure

@@ -1,21 +1,26 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Paper, Typography, Button } from '@mui/material';
+import { Paper, Typography, Button} from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
-import { testhousingdata } from './testhousingdata';
+import {Housing} from '../../models/housing'
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const HousingDetailsPage: React.FC = () => {
   const { housingId } = useParams<{ housingId: string }>();
-  const housing = testhousingdata.find(e => e.id === housingId); // Replace with your state management or API call
+  const housingList = useSelector((state: any) => state.entities.housing.list.data);
+  const housing = housingList.find((e: Housing)=> e._id === housingId);
+  const user = useSelector((state: any) => state.auth.user);
+  const dispatch = useDispatch();
 
   if (!housing) {
-    return <Typography variant="h5">Event not found</Typography>;
+    return <Typography variant="h5">No available housing</Typography>;
   }
 
   return (
     <Paper sx={{ padding: 2 }}>
       <img src={housing.imageUrl} alt={housing.title} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
-      <Typography variant="h4">{housing.title}</Typography>
+      <Typography variant="h2">{housing.title}</Typography>
       <Typography variant="body1" color="text.secondary">
         <PlaceIcon /> {housing.location}
       </Typography>
