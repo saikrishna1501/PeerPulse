@@ -12,7 +12,7 @@ const BlogView = () => {
   const dispatch = useDispatch();
 
   // Fetch the list of blogs from the store
-  const blogs = useSelector((state: any) => state.entities.blogs.list.data);
+  const blogs = useSelector((state: any) => state.entities.blogs.list);
 
   // Find the specific blog with the given id
   const blog = blogs.find((blog: any) => blog._id == id);

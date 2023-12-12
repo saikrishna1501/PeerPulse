@@ -15,12 +15,21 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllUsers, loadUsers } from "../../store/users";
 
 interface Props {
   blog: Blog;
 }
 
 const ViewBlogDetails = ({ blog }: Props) => {
+  const dispatch = useDispatch();
+
+  const users = useSelector((state: any) => state.entities.users.list);
+
+  const user = users.find((user: any) => user._id == blog.author);
+
   const handleUpvote = () => {
     // Add your upvote logic here
     console.log("Upvoted!");
@@ -30,6 +39,11 @@ const ViewBlogDetails = ({ blog }: Props) => {
     // Add your downvote logic here
     console.log("Downvoted!");
   };
+
+  useEffect(() => {
+    // Dispatch the action when the id changes
+    dispatch(getAllUsers());
+  }, []);
 
   return (
     <Container
@@ -57,7 +71,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             <>
               <Avatar
                 alt="Author Avatar"
-                src={blog.author.avatarUrl}
+                src={(user && user.profilePic) || ""}
                 sx={{ width: 36, height: 36 }}
               />
               <Stack>
@@ -65,18 +79,18 @@ const ViewBlogDetails = ({ blog }: Props) => {
                   sx={{
                     fontSize: "18px",
                     padding: "0px",
-                    marginLeft: "15px", // Adjust the value based on your preference
+                    marginLeft: "15px",
                     color: "#242424",
                   }}
                 >
-                  {blog.author.name || "Raveena"}
+                  {(user && user.firstName + " " + user.lastName) || "Raveena"}
                 </Typography>
                 <Typography
                   sx={{
                     fontSize: "12px",
                     color: "rgb(117, 117, 117)",
                     padding: "0px",
-                    marginLeft: "15px", // Adjust the value based on your preference
+                    marginLeft: "15px",
                   }}
                 >
                   {new Date(blog!.createdAt).toLocaleDateString(undefined, {
@@ -127,16 +141,6 @@ const ViewBlogDetails = ({ blog }: Props) => {
         </Box>
         <Divider
           sx={{ width: "100%", my: 2, opacity: 0.5, marginTop: "8px" }}
-        />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
-        />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
         />
         <ReactQuill
           value={blog.content}
