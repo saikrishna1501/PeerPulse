@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { fetchEvents } from '../features/events/eventsSlice'; to be implemented
-import { testhousingdata } from './testhousingdata';
+import { loadHousing } from '../../store/housing';
 import { Housing } from '../../models/housing';
 import HousingCard from './HousingCard';
-//import MapView from './MapView';
 import FiltersComponent from './FiltersComponent';
-import { Button, Container, Grid, Paper, TextField} from '@mui/material';
+import {Container, Grid, Paper, TextField} from '@mui/material';
+
 
 interface FiltersState {
   upto1K: boolean;
@@ -27,13 +26,13 @@ interface FiltersState {
 }
 
 const HousingPage: React.FC = () => {
-  const [housing, setHousing] = useState<Housing[]>([]);
-  const [filteredHousing, setFilteredHousing] = useState<Housing[]>([]);
+  const housing = useSelector((state: any) => state.entities.housing.list.data);
+  const dispatch = useDispatch();
+  const [filteredHousing, setFilteredHousing] = useState<Housing[]>(housing);
   const [searchQuery, setSearchQuery] = useState('');
-  // let state = useSelector(state=> state);
-  const userid = useSelector(
-    (state: any) => state
-  );
+  
+ 
+
   const [filters, setFilters] = useState<FiltersState>({
     upto1K: false,
     upto3K: false,
@@ -54,8 +53,7 @@ const HousingPage: React.FC = () => {
 
   useEffect(() => {
     // Mock data fetching
-    setHousing(testhousingdata);
-    setFilteredHousing(testhousingdata);
+    dispatch(loadHousing());
   }, []);
 
   const handleSearchChange = (housingLocation: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +63,7 @@ const HousingPage: React.FC = () => {
   };
 
   const applyFilters = (query: string, filterOptions: FiltersState) => {
-    let result = housing.filter((housing) => {
+    let result = housing.filter((housing: Housing)=>{
       const queryCheck = housing.location.toLowerCase().includes(query.toLowerCase());
       const priceCheck = (!filterOptions.upto1K || housing.price.includes('$500 - $1000')) &&
                               (!filterOptions.upto3K || housing.price.includes('$1001 - $3000')) &&
@@ -111,7 +109,7 @@ const HousingPage: React.FC = () => {
           <Grid item xs={12} sm={7}>
             <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Location" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
             {filteredHousing.map(housing => (
-              <HousingCard key={housing.id} housing={housing} onSave={saveHousing} />
+              <HousingCard key={housing._id} housing={housing} onSave={saveHousing} />
             ))}
           </Grid>
           {/* <Grid item xs={12} sm={3}>
@@ -127,3 +125,5 @@ const HousingPage: React.FC = () => {
 
 
 export default HousingPage;
+
+
