@@ -5,7 +5,9 @@ import { apiCallBegan, apiCallFailure } from './api';
 const slice = createSlice({
   name: 'blogs',
   initialState: {
-    list: [] as Blog[],
+    list: {
+      data: [] as Blog[]
+    },
     loading: false,
     lastFetch: null as number | null,
   },
@@ -23,20 +25,20 @@ const slice = createSlice({
       blogs.loading = false;
     },
     blogAdded: (blogs, action: PayloadAction<Blog>) => {
-      blogs.list.push(action.payload);
+      blogs.list.data.push(action.payload);
     },
     blogUpdated: (blogs, action: PayloadAction<Blog>) => {
       const updatedBlog = action.payload;
-      const index = blogs.list.findIndex(blog => blog._id === updatedBlog._id);
+      const index = blogs.list.data.findIndex(blog => blog._id === updatedBlog._id);
 
       if (index !== -1) {
         // Update the blog if found
-        blogs.list[index] = updatedBlog;
+        blogs.list.data[index] = updatedBlog;
       }
     },
     blogDeleted: (blogs, action: PayloadAction<string>) => {
         const blogIdToDelete = action.payload;
-        blogs.list = blogs.list.filter(blog => {
+        blogs.list.data= blogs.list.data.filter(blog => {
           // Check if both ids exist and are equal
           if (blog._id && blogIdToDelete && blog._id.toString() === blogIdToDelete) {
             return false; // Exclude the blog with the matching id
@@ -52,7 +54,6 @@ export const loadBlogs = () =>({
   payload : {
     url : '/blogs',
     method : 'get',
-    dataInStoreCheck: 'entities.blogs.list',
     onSuccess : blogsReceived.type, //helps dispatch another action 
     onError : apiCallFailure
   }

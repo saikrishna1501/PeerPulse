@@ -17,6 +17,7 @@ const BlogsPage = (props: any) => {
   const blogs = useSelector((state: any) => state.entities.blogs.list.data);
 
   useEffect(() => {
+    console.log("Dispatching");
     dispatch(loadBlogs());
   }, []);
 

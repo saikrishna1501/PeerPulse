@@ -3,6 +3,9 @@ import { loadBlogById } from "../../store/blogs";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import BlogCard from "../../components/Blogs/BlogCard";
+import { Container } from "@mui/material";
+import ViewBlogDetails from "../../components/Blogs/ViewBlogDetails";
 
 const BlogView = () => {
   const { id } = useParams();
@@ -22,10 +25,9 @@ const BlogView = () => {
 
   return (
     <>
-      <div>Blog View</div>
-      <p>Blog ID: {id}</p>
-      {blog.title}
-      {blog.content}
+      <Container maxWidth="md">
+        <ViewBlogDetails blog={blog} />
+      </Container>
     </>
   );
 };
