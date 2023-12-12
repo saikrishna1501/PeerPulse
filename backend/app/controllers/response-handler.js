@@ -1,4 +1,6 @@
 //imports
+import AlreadyNotRegisteredEvent from "../exceptions/already-not-registered-event.js";
+import AlreadyRegisteredEvent from "../exceptions/already-registered-event.js";
 import ExpiredInvalidTokenException from "../exceptions/expired-invalid-token-exception.js";
 import PasswordMissMatchError from "../exceptions/password-missmatch-error.js";
 import UnAuthorizedException from "../exceptions/unauthorized-exception.js";
@@ -64,6 +66,18 @@ export const setErrorResponse = (err, response) => {
         response.status(err.statusCode()).json({
             code: "UnVerifiedEmail",
             message: "Email not verified by the user"
+        })
+    }
+    else if(err instanceof AlreadyRegisteredEvent) {
+        response.status(err.statusCode()).json({
+            code: "AlreadyRegisteredEvent",
+            message: "User has already registered for this event"
+        })
+    }
+    else if(err instanceof AlreadyNotRegisteredEvent) {
+        response.status(err.statusCode()).json({
+            code: "AlreadyNotRegisteredEvent",
+            message: "User has not registered for this event. So, no action needed"
         })
     }
     //if none of the above Exceptions match then return a Generic Response

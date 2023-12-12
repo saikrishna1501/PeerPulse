@@ -17,4 +17,11 @@ router.route('/:id')
     .put(authorize, checkRoles([Roles.ADMIN, Roles.MODERATOR]), eventController.updateEvent)
     .delete(authorize, checkRoles([Roles.ADMIN, Roles.MODERATOR]), eventController.deleteEvent);
 
+// Define the route for register
+router.route('/register')
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), eventController.registerEvent);
+
+    router.route('/unregister')
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), eventController.unregisterEvent);
+
 export default router;
