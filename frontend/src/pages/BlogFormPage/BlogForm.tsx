@@ -5,7 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import { useForm } from "react-hook-form";
 
 import { Container, TextField, Button, Alert, Snackbar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewBlog } from "../../store/blogs";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const BlogForm = () => {
   // Store Config
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const author = "6568a18d7bb787e0dadb3081"; //useSelector((state: any) => state.auth.user.id);
+  const author = useSelector((state: any) => state.auth.user._id);
   const containerRef = useRef(null);
 
   // Quill Config

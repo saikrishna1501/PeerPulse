@@ -37,7 +37,11 @@ const BlogsPage = (props: any) => {
           justifyContent="space-between"
         >
           <BlogList blogs={blogs} />
-          <Stack direction="column" spacing={5}>
+          <Stack
+            direction="column"
+            spacing={5}
+            sx={{ padding: "40px", borderLeft: "1px solid #F2F2F2" }}
+          >
             <Button
               variant="contained"
               sx={{

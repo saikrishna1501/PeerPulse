@@ -11,22 +11,39 @@ import {
 } from "@mui/material";
 import Blog from "../../models/blogs";
 import { useNavigate } from "react-router-dom";
-
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import { useSelector } from "react-redux";
 const BlogCard = ({ blog }: { blog: Blog }) => {
   const stripHtmlTags = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
+
+  const user = useSelector((state: any) => state.auth.user);
+
   const navigate = useNavigate();
   const handleCardClick = () => {
     // Navigate to /blogs/:id when the CardContent is clicked
     navigate(`/blogs/${blog!._id}`);
   };
 
+  const isAuthor = (blog: any) => {
+    console.log("User Id ", user._id);
+    console.log("Blog Author ", blog.author);
+
+    return user._id == blog.author;
+  };
+
+  const deleteBlog = (blog: any) => {
+    console.log("Deleted! ");
+  };
+
   return (
     <>
       <Card
         sx={{
+          borderBottom: "1px solid #F2F2F2",
+          paddingBottom: "20px",
           marginBottom: "40px",
           boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
         }}
@@ -52,14 +69,22 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
         />
 
         <CardContent sx={{ padding: "0px" }}>
-          <Typography
-            sx={{ marginBottom: "10px", cursor: "pointer" }}
-            variant="h3"
-            fontWeight="bold"
-            onClick={handleCardClick}
-          >
-            {blog.title}
-          </Typography>
+          <Stack direction={"row"} sx={{ alignItems: "center" }}>
+            <Typography
+              sx={{ marginBottom: "10px", cursor: "pointer" }}
+              variant="h3"
+              fontWeight="bold"
+              onClick={handleCardClick}
+            >
+              {blog.title}
+            </Typography>
+            {isAuthor(blog) && (
+              <RemoveCircleIcon
+                sx={{ marginLeft: "10px" }}
+                onClick={deleteBlog}
+              />
+            )}
+          </Stack>
 
           <Typography
             sx={{ marginBottom: "10px", fontSize: "20px" }}
