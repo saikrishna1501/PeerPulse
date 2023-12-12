@@ -45,15 +45,21 @@ const AppRoutes: React.FC = () => {
             path={HOUSING_ROUTE}
             element={<ProtectedRoute component={HousingPage} />}
           />
-          {/* <Route
+          <Route
             path={BLOGS_ROUTE}
             element={<ProtectedRoute component={BlogsPage} />}
-          /> */}
-          <Route path={BLOGS_ROUTE} element={<BlogsPage />} />
-          <Route path={BLOGS_VIEW} element={<BlogView />} />
+          />
+          <Route
+            path={BLOGS_VIEW}
+            element={<ProtectedRoute component={BlogView} />}
+          />
+          <Route
+            path={BLOG_FORM_ROUTE}
+            element={<ProtectedRoute component={BlogForm} />}
+          />
+
           <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />
           <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
-          <Route path={BLOG_FORM_ROUTE} element={<BlogForm />} />
           <Route path={HOUSING_DETAIL_ROUTE} element={<HousingDetailsPage />} />
         </Route>
       </Routes>
