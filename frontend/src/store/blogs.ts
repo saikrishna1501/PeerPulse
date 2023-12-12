@@ -5,9 +5,7 @@ import { apiCallBegan, apiCallFailure } from './api';
 const slice = createSlice({
   name: 'blogs',
   initialState: {
-    list: {
-      data: [] as Blog[]
-    },
+    list:  [] as Blog[],
     loading: false,
     lastFetch: null as number | null,
   },
@@ -25,20 +23,20 @@ const slice = createSlice({
       blogs.loading = false;
     },
     blogAdded: (blogs, action: PayloadAction<Blog>) => {
-      blogs.list.data.push(action.payload);
+      blogs.list.push(action.payload);
     },
     blogUpdated: (blogs, action: PayloadAction<Blog>) => {
       const updatedBlog = action.payload;
-      const index = blogs.list.data.findIndex(blog => blog._id === updatedBlog._id);
+      const index = blogs.list.findIndex(blog => blog._id === updatedBlog._id);
 
       if (index !== -1) {
         // Update the blog if found
-        blogs.list.data[index] = updatedBlog;
+        blogs.list[index] = updatedBlog;
       }
     },
     blogDeleted: (blogs, action: PayloadAction<string>) => {
         const blogIdToDelete = action.payload;
-        blogs.list.data= blogs.list.data.filter(blog => {
+        blogs.list = blogs.list.filter(blog => {
           // Check if both ids exist and are equal
           if (blog._id && blogIdToDelete && blog._id.toString() === blogIdToDelete) {
             return false; // Exclude the blog with the matching id

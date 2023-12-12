@@ -15,13 +15,13 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
     // Resolved: Dispatch onSuccess
     try{
         const response = await axios.request({
-            baseURL : `http://localhost:5000`,
+            baseURL : `http://localhost:5001`,
             url,
             data,
             method,
             withCredentials: true
         });
-        dispatch({ type: onSuccess, payload : response }); 
+        dispatch({ type: onSuccess, payload : response.data }); 
     }
     // Rejected: Dispatch onError
     catch(error){
