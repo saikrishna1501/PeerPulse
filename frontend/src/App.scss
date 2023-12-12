@@ -88,6 +88,23 @@ body {
   height: 600px;
 }
 
-.ql-editor{
+.ql-container .ql-editor{
   overflow-y: scroll;
+  img{
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  p{
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 20px; 
+  }
+}
+
+.view-blog-author-header{
+  text-align: left;
+  padding: "0px";
+  display: flex;
+  marginBottom: "15px";
+  alignItems: "center";
 }
