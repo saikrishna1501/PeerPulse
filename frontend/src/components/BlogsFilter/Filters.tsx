@@ -1,99 +1,97 @@
 import React, { useState } from "react";
 import FilterIcon from "@mui/icons-material/Filter";
 import {
-  Box,
-  Card,
-  CardContent,
   List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Checkbox,
+  Button, // Import Button from @mui/material
+  Typography,
+  Stack,
 } from "@mui/material";
-import theme from "../../theme/theme";
 
-const Filters = () => {
+interface Props {
+  onFilterChange?: (filtername: string, value: boolean) => void;
+}
+
+const Filters = ({ onFilterChange }: Props) => {
   const [pastWeek, setPastWeek] = useState(false);
-  const [pastMonth, setPastMonth] = useState(false);
   const [postUpvotes, setPostUpvotes] = useState(false);
+  const [sortByTitle, setSortByTitle] = useState(false);
+  const [resetFilters, setResetFilters] = useState(false);
 
   const handlePastWeekChange = () => {
     setPastWeek(!pastWeek);
-    // Perform any additional actions when Past 1 week changes
-  };
-
-  const handlePastMonthChange = () => {
-    setPastMonth(!pastMonth);
-    // Perform any additional actions when Past 1 month changes
+    onFilterChange!("Last7Days", !pastWeek);
   };
 
   const handlePostUpvotesChange = () => {
     setPostUpvotes(!postUpvotes);
+    onFilterChange!("PostGreaterThan10upvotes", !postUpvotes);
+
     // Perform any additional actions when Post > 10 upvotes changes
   };
 
+  const handleSortByTitle = () => {
+    setSortByTitle(!sortByTitle);
+    onFilterChange!("Last7Days", !sortByTitle);
+  };
+
+  const handleResetFilters = () => {
+    setResetFilters(!resetFilters);
+    onFilterChange!("ResetFilters", !resetFilters);
+  };
+
+  // Define filterOptions array
+  const filterOptions = [
+    {
+      label: "Last 7 Days",
+      onChange: handlePastWeekChange,
+      checked: pastWeek,
+    },
+    {
+      label: "Post > 10 Upvotes",
+      onChange: handlePostUpvotesChange,
+      checked: postUpvotes,
+    },
+    {
+      label: "Sort By Title",
+      onChange: handleSortByTitle,
+      checked: sortByTitle,
+    },
+    {
+      label: "Reset",
+      onChange: handleResetFilters,
+      checked: sortByTitle,
+    },
+  ];
+
   return (
-    <Card
-      sx={{
-        flex: 1.5,
-        textAlign: "center",
-        height: "300px",
-        top: 100,
-        display: { xs: "none", sm: "block" },
-        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)", // Box shadow for a subtle effect
-        borderRadius: theme.shape.borderRadius * 2, // Rounded corners
-      }}
-    >
-      <CardContent>
-        <List>
-          <ListItem>
-            <ListItemButton>
-              <ListItemIcon>
-                <FilterIcon sx={{ width: 30, height: 30 }} />
-              </ListItemIcon>
-              <ListItemText primary="Filters" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePastWeekChange}>
-              <Checkbox checked={pastWeek} />
-              <ListItemText
-                primary="Last 7 Days"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePastMonthChange}>
-              <Checkbox checked={pastMonth} color="primary" />
-              <ListItemText
-                primary="Past 1 month"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePostUpvotesChange}>
-              <Checkbox checked={postUpvotes} color="primary" />
-              <ListItemText
-                primary="Post > 10 upvotes"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </CardContent>
-    </Card>
+    <List sx={{ position: "sticky", top: 180 }}>
+      <Typography
+        sx={{
+          fontSize: "20px",
+          fontWeight: "600",
+          paddingBottom: "10px",
+          borderBottom: "1px solid #F2F2F2",
+        }}
+      >
+        Search Criteria
+      </Typography>
+
+      <Stack direction="column" spacing={1}>
+        {filterOptions.map((option) => (
+          <Button
+            onClick={option.onChange}
+            sx={{
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+              borderRadius: "10px",
+              color: "black",
+            }}
+            color="primary"
+          >
+            {option.label}
+          </Button>
+        ))}
+      </Stack>
+    </List>
   );
 };
 
