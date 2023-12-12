@@ -16,7 +16,12 @@ import { useSelector } from "react-redux";
 const BlogCard = ({ blog }: { blog: Blog }) => {
   const stripHtmlTags = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
+
+    // Remove img tags
+    const imgTags = doc.body.querySelectorAll("img");
+    imgTags.forEach((img) => img.remove());
+
+    return doc.body.textContent?.slice(0, 150) || "";
   };
 
   const user = useSelector((state: any) => state.auth.user);
@@ -97,8 +102,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             variant="inherit"
             color="text.secondary"
           >
-            {blog.content.length > 150
-              ? `${stripHtmlTags(blog.content.slice(0, 150))}...`
+            {blog.content && blog.content.length > 150
+              ? `${stripHtmlTags(blog.content)}...`
               : stripHtmlTags(blog.content)}
           </Typography>
         </CardContent>
