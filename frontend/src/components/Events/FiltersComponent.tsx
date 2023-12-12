@@ -50,11 +50,11 @@ const FiltersComponent: React.FC<FiltersComponentProps> = ({ filters, onFilterCh
         <div>Type:</div>
         <FormControlLabel
           control={<Checkbox checked={filters.virtual} onChange={(e) => onFilterChange('virtual', e.target.checked)} />}
-          label="virtual"
+          label="Virtual"
         />
         <FormControlLabel
           control={<Checkbox checked={filters.inPerson} onChange={(e) => onFilterChange('inPerson', e.target.checked)} />}
-          label="in-person"
+          label="In-person"
         />
       </div>
     </FormGroup>

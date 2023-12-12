@@ -110,9 +110,14 @@ const EventsPage: React.FC = () => {
   }
 
   const handleDelete=(eventId: string)=>{
-    dispatch(deleteEvent(eventId));
-    dispatch(loadEvents());
-    setFilteredEvents(events);
+    try{
+      dispatch(deleteEvent(eventId));
+      setFilteredEvents(events.filter((e: any)=>e._id!==eventId))
+    }
+    catch(e){
+      console.log("Error: "+e)
+    }
+    
   }
 
   const focusEventOnMap = (location: string) => {
@@ -137,14 +142,13 @@ const EventsPage: React.FC = () => {
             {filteredEvents.map(event => (
               <EventCard key={event._id} event={event} onSave={saveEvent} onEdit={handleEdit}
               onDelete={handleDelete}
-              isCreator={true}/> //event.creatorId === currentUserId
+              isCreator={event.creatorId === currentUserId}/>
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
             <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} />
             <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
           </Grid>
-          
         </Grid>
       </Container>
     </>

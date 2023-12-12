@@ -32,8 +32,8 @@ const eventSlice = createSlice({
         events.list[index] = updatedEvent;
       }
     },
-    eventDeleted: (events, action: PayloadAction<string>) => {
-      events.list = events.list.filter(event => event._id !== action.payload);
+    eventDeleted: (events, action: PayloadAction<Event>) => {
+      events.list = events.list.filter(event => event._id !== action.payload._id);
     }
   },
 });
