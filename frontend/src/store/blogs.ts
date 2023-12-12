@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Blog from "../models/blogs";
-import { apiCallBegan, apiCallFailure } from "./api";
+import { apiCallBegan, apiCallFailure } from './api';
 
 const slice = createSlice({
   name: 'blogs',
   initialState: {
-    list: [] as Blog[],
+    list: {
+      data: [] as Blog[]
+    },
     loading: false,
     lastFetch: null as number | null,
   },
@@ -23,22 +25,22 @@ const slice = createSlice({
       blogs.loading = false;
     },
     blogAdded: (blogs, action: PayloadAction<Blog>) => {
-      blogs.list.push(action.payload);
+      blogs.list.data.push(action.payload);
     },
     blogUpdated: (blogs, action: PayloadAction<Blog>) => {
       const updatedBlog = action.payload;
-      const index = blogs.list.findIndex(blog => blog.id === updatedBlog.id);
+      const index = blogs.list.data.findIndex(blog => blog._id === updatedBlog._id);
 
       if (index !== -1) {
         // Update the blog if found
-        blogs.list[index] = updatedBlog;
+        blogs.list.data[index] = updatedBlog;
       }
     },
     blogDeleted: (blogs, action: PayloadAction<string>) => {
         const blogIdToDelete = action.payload;
-        blogs.list = blogs.list.filter(blog => {
+        blogs.list.data= blogs.list.data.filter(blog => {
           // Check if both ids exist and are equal
-          if (blog.id && blogIdToDelete && blog.id.toString() === blogIdToDelete) {
+          if (blog._id && blogIdToDelete && blog._id.toString() === blogIdToDelete) {
             return false; // Exclude the blog with the matching id
           }
           return true; // Include other blogs
@@ -56,6 +58,18 @@ export const loadBlogs = () =>({
     onError : apiCallFailure
   }
 });
+
+export const loadBlogById = (id: any) => ({
+  type: apiCallBegan.type,
+  payload: {
+    url: `/blogs/${id}`,
+    method: "get",
+    dataInStoreCheck: 'entities.blogs.list',
+    onSuccess: blogAdded.type,
+    onError: apiCallFailure,
+  },
+})
+
 
 export const createNewBlog = (data: Partial<Blog>) => ({
   type : apiCallBegan.type,
