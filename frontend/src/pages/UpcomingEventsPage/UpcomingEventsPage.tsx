@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Paper, TextField } from "@mui/material";
+import { Button, Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -27,12 +27,13 @@ const UpcomingEventsPage = () => {
     return (
     <>
         <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-        <h1>{userDetails.upcomingEvents.length}</h1>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={7}>
-            {upcomingEvents.map((event: Event, index)  => (
+            {upcomingEvents.length !== 0 ? upcomingEvents.map((event: Event, index)  => (
               <EventCard key={event._id} event={event} />
-            ))}
+            )): <Typography variant="h4" component="h4">
+            No upcoming events
+          </Typography> }
           </Grid>
           
         </Grid>

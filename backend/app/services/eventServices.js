@@ -2,6 +2,7 @@ import Event from "../models/eventModel.js";
 
 // Function to get all events, possibly filtered by certain criteria
 export const getAllEvents = async (filters) => {
+  console.log("Executing");
   let query = {};
   console.log("Filters", filters);
   // filters events happening on or after this date
