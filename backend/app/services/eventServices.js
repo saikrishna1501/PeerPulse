@@ -2,7 +2,9 @@ import Event from "../models/eventModel.js";
 
 // Function to get all events, possibly filtered by certain criteria
 export const getAllEvents = async (filters) => {
+  console.log("Executing");
   let query = {};
+  console.log("Filters", filters);
   // filters events happening on or after this date
   if (filters.date) {
     query.date = { $gte: new Date(filters.date) };
@@ -15,6 +17,12 @@ export const getAllEvents = async (filters) => {
   if (filters.isPaid !== undefined) {
     query.isPaid = filters.isPaid === 'true';
   }
+  if(filters.ids !== undefined) {
+    query._id = { $in: filters.ids }
+  }
+  console.log("Query", query);
+
+  // console.log(Event)
   return await Event.find(query).exec();
 };
 

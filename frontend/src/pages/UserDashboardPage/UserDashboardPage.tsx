@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import user from "../../services/UserService"
 import { UserRoles } from '../../services/UserService'
 import ManageUsersPage from "../ManageUsersPage/ManageUsersPage"
+import UpcomingEventsPage from "../UpcomingEventsPage/UpcomingEventsPage"
 
 const UserDashboardPage = () => {
     // let mapping = [{ textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 }];
@@ -16,7 +17,8 @@ const UserDashboardPage = () => {
             setMapping([
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
                 { textOnTab: "Saved Events", componentToRender: (<div>Saved Events</div>), order: 0 },
-                { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing</div>), order: 0 }
+                { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing</div>), order: 0 },
+                { textOnTab: "Registered Events", componentToRender: (<UpcomingEventsPage/>), order: 0 },
             ]);
         }
         else if(user.role === UserRoles.MODERATOR) {
@@ -24,6 +26,7 @@ const UserDashboardPage = () => {
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
                 { textOnTab: "Saved Events", componentToRender: (<div>Saved Events</div>), order: 0 },
                 { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing</div>), order: 0 },
+                { textOnTab: "Registered Events", componentToRender: (<UpcomingEventsPage/>), order: 0 },
                 // { textOnTab: "Manage Users", componentToRender: (<div>Manage Users</div>), order: 0 },
                 { textOnTab: "Manage Reports", componentToRender: (<div>Manage Reports</div>), order: 0 }
             ]);
@@ -33,6 +36,7 @@ const UserDashboardPage = () => {
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
                 { textOnTab: "Saved Events", componentToRender: (<div>Saved events</div>), order: 0 },
                 { textOnTab: "Saved Housing", componentToRender: (<div>Saved Housing`</div>), order: 0 },
+                { textOnTab: "Registered Events", componentToRender: (<UpcomingEventsPage/>), order: 0 },
                 { textOnTab: "Manage Users", componentToRender: (<div><ManageUsersPage /></div>), order: 0 },
             ]);
         }

@@ -11,6 +11,9 @@ router.route('/')
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),eventController.getEvents)
     .post(authorize, checkRoles([Roles.ADMIN, Roles.MODERATOR, Roles.STUDENT]),eventController.createEvent)
 
+router.route('/filter')
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),eventController.getEvents);
+
 // Define the route for paths with an 'id' parameter (e.g., '/123')
 router.route('/:id')
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), eventController.getEventById)
@@ -21,7 +24,8 @@ router.route('/:id')
 router.route('/register')
     .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), eventController.registerEvent);
 
-    router.route('/unregister')
+// Define the route for unregister
+router.route('/unregister')
     .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), eventController.unregisterEvent);
 
 export default router;
