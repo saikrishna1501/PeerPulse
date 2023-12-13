@@ -10,6 +10,14 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useNavigate } from "react-router-dom";
 import PaginationContainer from "../../components/PaginationContainer/PaginationContainer";
 import { getAllUsers } from "../../store/users";
+
+interface FilterState {
+  Last7Days: boolean;
+  PostGreaterThan10upvotes: boolean;
+  SortByTitle: boolean;
+  ResetFilters: boolean;
+}
+
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +59,23 @@ const BlogsPage = (props: any) => {
   useEffect(() => {
     dispatch(getAllUsers());
   }, []);
+
+  // Filter
+  // Filtering
+  const [filters, setFilters] = useState<FilterState>({
+    Last7Days: false,
+    SortByTitle: false,
+    PostGreaterThan10upvotes: false,
+    ResetFilters: false,
+  });
+
+  const handleFilterChange = (filterName: string, value: boolean) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+    console.log(filters, value);
+  };
 
   return (
     <>
@@ -99,7 +124,7 @@ const BlogsPage = (props: any) => {
                 Write
               </Typography>
             </Button>
-            <Filters />
+            <Filters onFilterChange={handleFilterChange} />
           </Stack>
         </Stack>
       </Container>

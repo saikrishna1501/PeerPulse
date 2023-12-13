@@ -63,9 +63,6 @@ const BlogCard = ({ blog, author }: Props) => {
   };
 
   const isAuthor = (blog: any) => {
-    console.log("User Id ", loggedIn._id);
-    console.log("Blog Author ", blog.author);
-
     return loggedIn._id == blog.author;
   };
 
