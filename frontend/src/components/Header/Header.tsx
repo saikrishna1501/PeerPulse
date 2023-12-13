@@ -8,6 +8,7 @@ import {
   Button,
   Container,
   IconButton,
+  ListItemText,
   Menu,
   MenuItem,
   Tab,
@@ -31,9 +32,12 @@ import { useSelector } from "react-redux";
 import { AccountCircle } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { apiCallForLogout, updateAuthDetails } from "../../store/auth";
+import { changeLanguage } from "../../store/language";
+import Language from "../../models/language";
 
 const Header: React.FC = () => {
   const location = useLocation();
+  const currentLanguage = useSelector((state: any) => state.language.selectedLanguage)
   const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
   const user = useSelector((state: any) => state.auth.user)
   const navigate = useNavigate();
@@ -41,15 +45,23 @@ const Header: React.FC = () => {
   const [value, setValue] = useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [languageAnchorEl, setLanguageAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>{
       setAnchorEl(event.currentTarget);
   }
 
+  const handleLanguageMenuOpen = (event: React.MouseEvent<HTMLElement>) =>{
+    // console.log("Executing");
+    setLanguageAnchorEl(event.currentTarget);
+}
+
   const handleMenuClose = () => setAnchorEl(null);
+
+  const handleLanguageMenuClose = () => setLanguageAnchorEl(null);
 
   const handleLogout = () => {
     //dispatch(updateAuthDetails())
-    console.log("Executing");
+    // console.log("Executing");
     handleMenuClose();
     navigateTo(HOME_ROUTE)();
     localStorage.clear();
@@ -71,6 +83,11 @@ const Header: React.FC = () => {
   const handleDashboardClick = () => {
     navigateTo(USER_DASHBOARD_ROUTE)();
     handleMenuClose();
+  }
+
+  const languageChangeHandler = (language: Language) => {
+    dispatch(changeLanguage({ language: language }))
+    handleLanguageMenuClose();
   }
 
   const navigateTo = (route: string) => () => navigate(route);
@@ -123,13 +140,43 @@ const Header: React.FC = () => {
               <CustomTab label="Housing" onClick={navigateTo(HOUSING_ROUTE)} style={{opacity: checkStartsWith(location.pathname,"/housing")? 1: 0.6}}/>
               <CustomTab label="Blogs" onClick={navigateTo(BLOGS_ROUTE)} style={{opacity: checkStartsWith(location.pathname,"/blog")? 1: 0.6}}/>
             </Tabs>
-            <LanguageIcon
-              sx={{
-                marginRight: 1,
-                width: 50,
-                height: 35,
-              }}
-            />
+            <div>
+            <IconButton
+                size="large"
+                edge="end"
+                aria-label="language options"
+                aria-controls="more-language-options-menu"
+                aria-haspopup="true"
+                onClick={handleLanguageMenuOpen}
+                color="inherit"
+                >
+                  <LanguageIcon
+                    sx={{
+                      marginRight: 1,
+                      width: 50,
+                      height: 35,
+                    }}
+                  />
+              </IconButton>
+              <Menu
+                    id="more-language-options-menu"
+                    anchorEl={languageAnchorEl}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                    }}
+                    open={Boolean(languageAnchorEl)}
+                    onClose={handleLanguageMenuClose}
+                    >
+                    <MenuItem onClick={()=> {languageChangeHandler(Language.ENGLISH)}}><ListItemText>English</ListItemText></MenuItem>
+                    <MenuItem onClick={()=> {languageChangeHandler(Language.SPANISH)}}><ListItemText>Spanish</ListItemText></MenuItem>
+                </Menu>
+              </div>
             <Button
               variant="contained"
               onClick={navigateTo(AUTH_ROUTE)}
