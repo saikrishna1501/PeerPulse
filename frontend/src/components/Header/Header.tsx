@@ -7,6 +7,8 @@ import {
   Button,
   Container,
   IconButton,
+  Menu,
+  MenuItem,
   Tab,
   Tabs,
   Toolbar,
@@ -24,17 +26,36 @@ import {
   USER_DASHBOARD_ROUTE
 } from "../../constants/routes";
 import theme from "../../theme/theme";
+import { useSelector } from "react-redux";
+import { AccountCircle } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { updateAuthDetails } from "../../store/auth";
 
 const Header: React.FC = () => {
+  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>{
+      setAnchorEl(event.currentTarget);
+  }
+
+  const handleMenuClose = () => setAnchorEl(null);
+
+  const handleLogout = () => {
+    //dispatch(updateAuthDetails())
+    handleMenuClose();
+    navigateTo(HOME_ROUTE);
+  };
 
   const navigateTo = (route: string) => () => navigate(route);
 
-  const StyledToolbar = styled(Toolbar)({
-    display: "flex",
-    justifyContent: "space-between",
-  });
+  // const StyledToolbar = styled(Toolbar)({
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  // });
 
   const CustomTab = styled(Tab)({
     fontFamily: theme.typography.fontFamily,
@@ -45,7 +66,7 @@ const Header: React.FC = () => {
     <React.Fragment>
       <AppBar position="sticky">
         <Container>
-          <StyledToolbar>
+          <Toolbar>
             <Typography
               variant="h2"
               sx={{
@@ -106,10 +127,48 @@ const Header: React.FC = () => {
             >
               SignUp
             </Button>
-          </StyledToolbar>
+            <div>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle sx={{
+                marginRight: 1,
+                width: 50,
+                height: 35,
+              }}/>
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={() => navigateTo(USER_DASHBOARD_ROUTE)}>Dashboard</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
+            </div>
+
+            
+          </Toolbar>
         </Container>
       </AppBar>
     </React.Fragment>
+    
   );
 };
 

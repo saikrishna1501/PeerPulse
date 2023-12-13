@@ -15,12 +15,20 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import CommentCard from "../Comments/CommentCard";
+import CommentInput from "../Comments/CommentInput";
+import { textAlign } from "@mui/system";
+import CommentsContainer from "../Comments/CommentsContainer";
+import { useRef } from "react";
 
 interface Props {
   blog: Blog;
 }
 
+
+
 const ViewBlogDetails = ({ blog }: Props) => {
+  // const commentsRef = useRef<HTMLDivElement>(null);
   const handleUpvote = () => {
     // Add your upvote logic here
     console.log("Upvoted!");
@@ -30,6 +38,13 @@ const ViewBlogDetails = ({ blog }: Props) => {
     // Add your downvote logic here
     console.log("Downvoted!");
   };
+
+  const handleComment = () => {
+    const childElement = document.getElementById("my-child-component");
+    if(childElement) {
+      childElement.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   return (
     <Container
@@ -46,7 +61,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             marginTop: "80px",
             fontWeight: "800",
             fontSize: "60px",
-            textAlign: "left",
+            textAlign: "left"
           }}
         >
           {blog.title}
@@ -117,7 +132,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             <ThumbDownIcon sx={{ color: "rgb(117, 117, 117)" }} />
           </IconButton>
           <Typography>{blog.downvotes}</Typography>
-          <IconButton onClick={handleDownvote}>
+          <IconButton onClick={handleComment}>
             <ChatBubbleOutlineIcon sx={{ color: "rgb(117, 117, 117)" }} />
           </IconButton>
           <Typography>{blog.comments!.length}</Typography>
@@ -143,6 +158,8 @@ const ViewBlogDetails = ({ blog }: Props) => {
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
+        <CommentsContainer blog={blog}/>
+        
       </Stack>
     </Container>
   );
