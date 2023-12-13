@@ -7,6 +7,7 @@ import MapView from '../../components/Events/MapView';
 import FiltersComponent from '../../components/Events/FiltersComponent';
 import { Button, Container, Grid, Paper, TextField} from '@mui/material';
 import EventForm from '../../components/Events/EventForm';
+import axios from 'axios';
 
 interface FiltersState {
   meetAndGreet: boolean;
@@ -21,14 +22,16 @@ interface FiltersState {
 }
 
 const EventsPage: React.FC = () => {
-  const events = useSelector((state: any) => state.entities.events.list);
+  //const events = useSelector((state: any) => state.entities.events.list);
   // to filter events
-  const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
+  //const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   //to know if the author and current user are same
   const currentUserId = useSelector((state: any) => state.auth.user._id);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   //to open create event dialog
   const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
@@ -42,7 +45,18 @@ const EventsPage: React.FC = () => {
   const [editingEventData, setEditingEvent] = useState<Event | null>(null);
 
   useEffect(() => {
-    dispatch(loadEvents());
+    //dispatch(loadEvents());
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/events`, { withCredentials: true });
+        setEvents(response.data);
+        setFilteredEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
   }, []);
 
   const [filters, setFilters] = useState<FiltersState>({
@@ -67,7 +81,7 @@ const EventsPage: React.FC = () => {
     let allFiltersInactive = Object.values(filterOptions).every(val => val === false);
 
     let result = events.filter((event: Event) => {
-      if (allFiltersInactive) return true; // If all filters are inactive, return all events
+      
   
       const queryCheck = event.title.toLowerCase().includes(query.toLowerCase());
       // Check for each filter category
@@ -85,7 +99,7 @@ const EventsPage: React.FC = () => {
 
       // Determine if the event matches any of the active filters
       const matchesFilters = categoryChecks.some(Boolean); // 'some' checks if at least one condition is true
-
+      if (allFiltersInactive) return true; // If all filters are inactive, return all events
       return queryCheck && matchesFilters;
     });
   
@@ -102,21 +116,28 @@ const EventsPage: React.FC = () => {
       console.log(eventId)
   }
 
-  const handleEdit=(event: Event)=>{
-    setEditingEvent(event);
+  const handleEdit=async (updatedEvent: Event)=>{
+    setEditingEvent(updatedEvent);
     handleOpenEditForm();
-    dispatch(loadEvents());
-    setFilteredEvents(events);
+    // dispatch(loadEvents());
+    // setFilteredEvents(events);
   }
 
-  const handleDelete=(eventId: string)=>{
-    try{
-      dispatch(deleteEvent(eventId));
-      setFilteredEvents(events.filter((e: any)=>e._id!==eventId))
+  const handleDelete= async (eventId: string)=>{
+    try {
+      await axios.delete(`http://localhost:5000/events/${eventId}`, { withCredentials: true });
+      setEvents(events.filter(event => event._id !== eventId));
+      setFilteredEvents(filteredEvents.filter(event => event._id !== eventId));
+    } catch (error) {
+      console.error('Error deleting event:', error);
     }
-    catch(e){
-      console.log("Error: "+e)
-    }
+    // try{
+    //   dispatch(deleteEvent(eventId));
+    //   setFilteredEvents(events.filter((e: any)=>e._id!==eventId))
+    // }
+    // catch(e){
+    //   console.log("Error: "+e)
+    // }
     
   }
 
@@ -135,7 +156,7 @@ const EventsPage: React.FC = () => {
              <Button onClick={handleOpenCreateEventForm} variant="contained" color="primary">
               Create Event
             </Button>
-            <EventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} />
+            <EventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} setEvents={setEvents} setFilteredEvents={setFilteredEvents}/>
           </Grid>
           <Grid item xs={12} sm={7}>
             <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Events" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
@@ -146,7 +167,7 @@ const EventsPage: React.FC = () => {
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
-            <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} />
+            <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} setEvents={setEvents} setFilteredEvents={setFilteredEvents}/>
             <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
           </Grid>
         </Grid>
