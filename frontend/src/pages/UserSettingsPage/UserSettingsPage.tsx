@@ -1,5 +1,4 @@
 import { Box, Button, Grid, Paper, TextField, styled } from "@mui/material"
-import user from "../../services/UserService"
 import React, { useEffect } from "react"
 import ProfilePictureUpload from "./ProfilePictureUploadComponent.tsx/ProfilePictureUpload"
 import { useDispatch, useSelector } from "react-redux";

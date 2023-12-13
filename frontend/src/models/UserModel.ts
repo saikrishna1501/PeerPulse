@@ -7,4 +7,11 @@ interface User {
     role: string
 }
 
+
+export const UserRoles = {
+    STUDENT: "student",
+    ADMIN: "admin",
+    MODERATOR: "moderator"
+}
+
 export default User;
