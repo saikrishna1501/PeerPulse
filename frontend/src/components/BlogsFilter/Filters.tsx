@@ -55,6 +55,7 @@ const Filters = ({ onFilterChange }: Props) => {
           fontSize: "20px",
           fontWeight: "600",
           paddingBottom: "10px",
+          marginBottom: "10px",
           borderBottom: "1px solid #F2F2F2",
         }}
       >
