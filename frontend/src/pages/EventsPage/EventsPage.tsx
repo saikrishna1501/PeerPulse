@@ -8,6 +8,7 @@ import FiltersComponent from '../../components/Events/FiltersComponent';
 import { Button, Container, Grid, Paper, TextField} from '@mui/material';
 import EventForm from '../../components/Events/EventForm';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 interface FiltersState {
   meetAndGreet: boolean;
@@ -128,6 +129,16 @@ const EventsPage: React.FC = () => {
       await axios.delete(`http://localhost:5000/events/${eventId}`, { withCredentials: true });
       setEvents(events.filter(event => event._id !== eventId));
       setFilteredEvents(filteredEvents.filter(event => event._id !== eventId));
+      toast.success('Deleted event successfully!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     } catch (error) {
       console.error('Error deleting event:', error);
     }

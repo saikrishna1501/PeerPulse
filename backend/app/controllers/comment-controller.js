@@ -93,7 +93,7 @@ export const deleteCommentById = async (request, response) => {
             await BlogService.updateBlogByID(blogId, blog);
             await CommentService.deleteCommentById(commentId);
 
-            response.status(204).send();
+            response.status(200).json({message: "Successfully deleted comment"});
         } else {
             // If commentId was not found, return a 404 response
             return response.status(404).json({ error: "Comment not found" });

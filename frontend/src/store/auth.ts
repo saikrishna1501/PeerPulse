@@ -2,6 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import User from '../models/users';
 import { apiCallBegan } from './api';
 import {produce} from "immer";
+import { toast } from 'react-toastify';
 
 
 const authUrl = '/users/auth';
@@ -34,15 +35,44 @@ const userSlice = createSlice({
             };
         },
         forgotPasswordSucess: (state, action: any) => {
-            state.isEmailSent = 'Hey, email has been sent successfully for the registered email.'
+            toast.success('Password reset email sent!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+            // state.isEmailSent = 'Hey, email has been sent successfully for the registered email.'
         },
 
         forgotPasswordFailure : (state : any, action: any) => {
-            state.isEmailSent = 'Provided email doesnot exist. Please sign up to explore PEER PULSE!'
+            toast.error('Provided email doesnot exist', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+            // state.isEmailSent = 'Provided email doesnot exist. Please sign up to explore PEER PULSE!'
+        },
+        logoutUser: (state: any) => {
+            return {
+                user: null as User | null,
+                isAuthenticated: false,
+                accessToken: null as string | null,
+                refreshToken: null as string | null,
+                isEmailSent: null as string | null,
+            }
         },
         forgotPasswordMessage: (state: any, action: PayloadAction<string | null>) => {
             state.isEmailSent = action.payload;
-    }
+        }
 
        }
 });
@@ -93,6 +123,20 @@ export const apiCallForPasswordReset = (email: string, password: string, token:s
         data: { email, password },
         onSuccess: forgotPasswordSucess.type,
         onError: forgotPasswordFailure.type,
+    }
+})
+
+export const apiCallForLogout = (email: string) => ({
+    type: apiCallBegan.type,
+    meta: {
+        skipAuth: true
+    },
+    payload: {
+        url: `users/logout`,
+        method: 'post',
+        data: { email },
+        onSuccess: userSlice.actions.logoutUser,
+        onError: loginFailed.type,
     }
 })
 

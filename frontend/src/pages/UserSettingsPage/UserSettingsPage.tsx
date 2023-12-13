@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../store/users";
 import { updateAuthDetails } from "../../store/auth";
 import User from "../../models/users";
+import { toast } from "react-toastify";
 
 const formSxStyles = {
     '& .MuiTextField-root': { m: 1, width: '40ch' },
@@ -65,6 +66,17 @@ const UserSettingsPage = () => {
                 profilePic: userDetailsFormData.profilePic,
               } as any));
             alert("Updated details Successfully");
+            toast.success('Updated details Successfully!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+
         }
         else {
             console.error("Not all the required fields were entered");
