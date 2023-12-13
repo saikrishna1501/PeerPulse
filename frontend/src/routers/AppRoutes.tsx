@@ -43,7 +43,7 @@ const AppRoutes: React.FC = () => {
           <Route path={AUTH_ROUTE} element={<Login />} />
           <Route path={PASSWORD_RESET_ROUTE} element={<ForgotPassword />} />
           <Route path={NEW_PASSWORD_SETUP_ROUTE} element={<PasswordReset />} />
-          <Route path={REGISTER_ROUTE} element={<Register />} />
+          {/* <Route path={REGISTER_ROUTE} element={<Register />} /> */}
           <Route
             path={USER_DASHBOARD_ROUTE}
             element={<ProtectedRoute component={UserDashboardPage} />}
