@@ -340,6 +340,16 @@ export const resetPasswordRequestController = async (req, res, next) => {
                         sameSite: 'Strict',
                         maxAge: 0  
                     }
+                },
+                {
+                    name: "accessToken",
+                    value: "",
+                    options: {
+                        httpOnly: true,
+                        secure: false, // Use 'secure' in production for HTTPS
+                        sameSite: 'Strict',
+                        maxAge: 0  
+                    }
                 }
             ],
             response

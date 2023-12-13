@@ -7,7 +7,7 @@ export const getHousing = async (request, response) => {
         // Fetch housing data based on query parameters
         const housinglist = await housingService.fetchAllHousing(request.query);
         // Send JSON response with the fetched housing data
-        response.json(housinglist);
+        // response.json(housinglist);
          // Set custom response headers or perform additional response handling
         setResponse(housinglist, response)
     } catch (err) {

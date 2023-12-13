@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LanguageIcon from "@mui/icons-material/Language";
+import { toast } from "react-toastify";
 import {
   AppBar,
   Box,
@@ -29,25 +30,49 @@ import theme from "../../theme/theme";
 import { useSelector } from "react-redux";
 import { AccountCircle } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import { updateAuthDetails } from "../../store/auth";
+import { apiCallForLogout, updateAuthDetails } from "../../store/auth";
 
 const Header: React.FC = () => {
-  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+  const location = useLocation();
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
+  const user = useSelector((state: any) => state.auth.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) =>{
-      setAnchorEl(event.currentTarget);
-  }
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleMenuClose = () => setAnchorEl(null);
 
   const handleLogout = () => {
     //dispatch(updateAuthDetails())
+    console.log("Executing");
     handleMenuClose();
-    navigateTo(HOME_ROUTE);
+    navigateTo(HOME_ROUTE)();
+    localStorage.clear();
+    if (user) {
+      dispatch(apiCallForLogout(user.email));
+    }
+    toast.success("Successfully logged out!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const handleDashboardClick = () => {
+    navigateTo(USER_DASHBOARD_ROUTE)();
+    handleMenuClose();
   };
 
   const navigateTo = (route: string) => () => navigate(route);
@@ -56,6 +81,10 @@ const Header: React.FC = () => {
   //   display: "flex",
   //   justifyContent: "space-between",
   // });
+
+  const checkStartsWith = (stringToCheck: string, prefix: string) => {
+    return stringToCheck.startsWith(prefix);
+  };
 
   const CustomTab = styled(Tab)({
     fontFamily: theme.typography.fontFamily,
@@ -91,13 +120,37 @@ const Header: React.FC = () => {
               value={value}
               onChange={(e, newValue) => setValue(newValue)}
             >
-              <CustomTab label="Home" onClick={navigateTo(HOME_ROUTE)} />
-              <CustomTab label="Events" onClick={navigateTo(EVENTS_ROUTE)} />
-              <CustomTab label="Housing" onClick={navigateTo(HOUSING_ROUTE)} />
-              <CustomTab label="Blogs" onClick={navigateTo(BLOGS_ROUTE)} />
               <CustomTab
-                label="Users"
-                onClick={navigateTo(USER_DASHBOARD_ROUTE)}
+                label="Home"
+                onClick={navigateTo(HOME_ROUTE)}
+                style={{ opacity: location.pathname === "/" ? 1 : 0.6 }}
+              />
+              <CustomTab
+                label="Events"
+                onClick={navigateTo(EVENTS_ROUTE)}
+                style={{
+                  opacity: checkStartsWith(location.pathname, "/event")
+                    ? 1
+                    : 0.6,
+                }}
+              />
+              <CustomTab
+                label="Housing"
+                onClick={navigateTo(HOUSING_ROUTE)}
+                style={{
+                  opacity: checkStartsWith(location.pathname, "/housing")
+                    ? 1
+                    : 0.6,
+                }}
+              />
+              <CustomTab
+                label="Blogs"
+                onClick={navigateTo(BLOGS_ROUTE)}
+                style={{
+                  opacity: checkStartsWith(location.pathname, "/blog")
+                    ? 1
+                    : 0.6,
+                }}
               />
             </Tabs>
             <LanguageIcon
@@ -115,6 +168,7 @@ const Header: React.FC = () => {
                 backgroundColor: "#fff", // Update with your desired color
                 color: "#333", // Update with your desired color
                 fontFamily: theme.typography.fontFamily,
+                display: isAuthenticated ? "none" : "inline-flex",
               }}
             >
               Login
@@ -126,52 +180,53 @@ const Header: React.FC = () => {
                 backgroundColor: "#fff", // Update with your desired color
                 color: "#333", // Update with your desired color
                 fontFamily: theme.typography.fontFamily,
+                display: isAuthenticated ? "none" : "inline-flex",
               }}
             >
               SignUp
             </Button>
             <div>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle sx={{
-                marginRight: 1,
-                width: 50,
-                height: 35,
-              }}/>
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={() => navigateTo(USER_DASHBOARD_ROUTE)}>Dashboard</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+                sx={{ display: isAuthenticated ? "inline-flex" : "none" }}
+              >
+                <AccountCircle
+                  sx={{
+                    marginRight: 1,
+                    width: 50,
+                    height: 35,
+                  }}
+                />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleDashboardClick}>Dashboard</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
             </div>
-
-            
           </Toolbar>
         </Container>
       </AppBar>
     </React.Fragment>
-    
   );
 };
 

@@ -20,6 +20,7 @@ import {
   blogUpdated,
   removeACommentFromBlog,
 } from "../../store/blogs";
+import { toast } from "react-toastify";
 
 const commentContainer = {
   marginLeft: 6,
@@ -136,6 +137,45 @@ const CommentsContainer = ({ blog }: Props) => {
   };
 
   const renderedComments = commentsList.map((comment: any) => {
+    const onCommentDelete = async (
+      commentId: string | ObjectId | undefined
+    ) => {
+      const response = await deleteComment(blog._id, commentId);
+      dispatch(removeACommentFromBlog({ blogId: blog._id, commentId }));
+      if (response) {
+        setCommentsList(
+          commentsList.filter((comment: any) => comment._id !== commentId)
+        );
+      }
+      toast.error("Deleted Comment Successfully!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    };
+
+    const renderedComments = commentsList.map((comment: any) => {
+      return (
+        <Box sx={commentContainer}>
+          <CommentCard
+            key={comment._id}
+            authorName={comment.authorName}
+            authorId={comment.author}
+            commentId={comment._id}
+            content={comment.comment}
+            avatarUrl={comment.avatarUrl}
+            onCommentEdit={onCommentEdit}
+            onCommentDelete={onCommentDelete}
+          />
+        </Box>
+      );
+    });
+
     return (
       <Box sx={commentContainer}>
         <CommentCard

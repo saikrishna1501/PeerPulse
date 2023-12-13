@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Flex } from "antd";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -76,14 +77,33 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/users",
+        "http://localhost:5000/users",
         userData
       );
-      console.log("Registration successful", response.data);
+      toast.success("Registration successful! Please verify the email id", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // console.log('Registration successful', response.data);
       setUserData(initialState);
       // Redirect logic here
     } catch (error) {
-      console.error("Error in registration", error);
+      toast.error("Registration failed. Please try again", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 

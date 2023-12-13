@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {RootState} from '../../store/reducer';
 import { AnyAction } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 const ManageUsersPage = () => {
     // const [listOfUsers,setListOfUsers] = useState<User[]>([]);
@@ -43,10 +44,28 @@ const ManageUsersPage = () => {
               setTimeout(() => dispatch(loadUsers(currentPage,pageSize)), 300);
               //dispatch(deleteUser(userId));
               // Optional: Additional logic to execute after successful deletion
-              console.log('User deleted successfully!');
+              toast.success('User deleted successfully!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
             } catch (error) {
               // Handle errors, if any
-              console.error('Error deleting user:', error);
+              toast.error('Error Deleting User. Please try again', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
             }
         // dispatch(loadUsers(currentPage,pageSize));
         // setTimeout(() => dispatch(loadUsers(currentPage,pageSize)), 2000);

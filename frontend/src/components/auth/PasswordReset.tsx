@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import { apiCallForPasswordReset } from "../../store/auth";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const PasswordResetForm = () => {
 
@@ -22,6 +23,16 @@ const location = useLocation();
     e.preventDefault();
     // Validate the form data, perform necessary actions, and call onPasswordSubmit
     dispatch(apiCallForPasswordReset(email, newPassword, token));
+    toast.success('Your Password Reset is successful', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      });
   };
 
 
