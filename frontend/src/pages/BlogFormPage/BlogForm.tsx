@@ -81,7 +81,10 @@ const BlogForm = ({ blog }: Props) => {
     } else {
       dispatch(createNewBlog(blogData));
     }
-    navigate("/blogs", { replace: true });
+
+    window.alert("Blog submitted successfully!");
+
+    navigate("/blogs");
   };
 
   const editorContent = watch("content");

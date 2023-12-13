@@ -52,7 +52,14 @@ const BlogCard = ({ blog, author }: Props) => {
   };
 
   const deleteBlog = (blog: any) => {
-    dispatch(deleteBlogById(blog._id));
+    const input = window.confirm(
+      "Are you sure you want to delete this blog permanently?"
+    );
+
+    if (input) {
+      dispatch(deleteBlogById(blog._id));
+    }
+
     // navigate("/blogs");
   };
 
