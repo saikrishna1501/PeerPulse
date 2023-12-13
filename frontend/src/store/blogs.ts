@@ -23,8 +23,20 @@ const slice = createSlice({
       blogs.loading = false;
     },
     blogAdded: (blogs, action: PayloadAction<Blog>) => {
-      blogs.list.push(action.payload);
+      const newBlog = action.payload;
+    
+      // Check if the blog with the same ID already exists in the list
+      const existingBlogIndex = blogs.list.findIndex(blog => blog._id === newBlog._id);
+    
+      if (existingBlogIndex === -1) {
+        // If not, add the new blog to the list
+        blogs.list.push(newBlog);
+      } else {
+        // If it exists, update the existing blog with the new data
+        blogs.list[existingBlogIndex] = newBlog;
+      }
     },
+    
     blogUpdated: (blogs, action: PayloadAction<Blog>) => {
       const updatedBlog = action.payload;
       const index = blogs.list.findIndex(blog => blog._id === updatedBlog._id);
@@ -63,6 +75,8 @@ export const loadBlogById = (id: any) => ({
     url: `/blogs/${id}`,
     method: "get",
   },
+  onSuccess: blogAdded.type,
+  onError: apiCallFailure
 })
 
 
