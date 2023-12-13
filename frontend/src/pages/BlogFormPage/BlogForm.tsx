@@ -10,6 +10,11 @@ import {
   Snackbar,
   Autocomplete,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewBlog, updateBlog } from "../../store/blogs";
@@ -22,6 +27,17 @@ interface Props {
 }
 
 const BlogForm = ({ blog }: Props) => {
+  // Alert Dialog
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   // Store Config
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -82,9 +98,8 @@ const BlogForm = ({ blog }: Props) => {
       dispatch(createNewBlog(blogData));
     }
 
-    window.alert("Blog submitted successfully!");
-
-    navigate("/blogs");
+    // Open the success dialog
+    handleClickOpenDialog();
   };
 
   const editorContent = watch("content");
@@ -167,6 +182,32 @@ const BlogForm = ({ blog }: Props) => {
           Submit
         </Button>
       </form>
+      {/* Success Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText
+            sx={{ fontSize: "18px" }}
+            id="alert-dialog-description"
+          >
+            Blog submitted successfully!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+              navigate("/blogs");
+            }}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

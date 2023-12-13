@@ -8,6 +8,12 @@ import {
   Stack,
   Chip,
   Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import Blog from "../../models/blogs";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +23,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBlogById } from "../../store/blogs";
 import User from "../../models/users";
+import { useState } from "react";
 
 interface Props {
   blog: Blog;
@@ -24,6 +31,17 @@ interface Props {
 }
 
 const BlogCard = ({ blog, author }: Props) => {
+  // Alert Dialog
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = (blog: Blog) => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const dispatch = useDispatch();
 
   const stripHtmlTags = (html: string): string => {
@@ -51,16 +69,19 @@ const BlogCard = ({ blog, author }: Props) => {
     return loggedIn._id == blog.author;
   };
 
-  const deleteBlog = (blog: any) => {
-    const input = window.confirm(
-      "Are you sure you want to delete this blog permanently?"
-    );
+  const deleteBlog = async () => {
+    if (blog && blog._id) {
+      // Dispatch the action to delete the blog
+      await dispatch(deleteBlogById(blog._id));
 
-    if (input) {
-      dispatch(deleteBlogById(blog._id));
+      // Navigate to "/blogs" after successful deletion
+      navigate("/blogs");
+
+      // Close the dialog
+      handleCloseDialog();
+    } else {
+      console.error("Invalid blog object:", blog);
     }
-
-    // navigate("/blogs");
   };
 
   const updateBlog = (blog: any) => {
@@ -117,7 +138,7 @@ const BlogCard = ({ blog, author }: Props) => {
               <>
                 <RemoveCircleIcon
                   sx={{ marginLeft: "10px" }}
-                  onClick={() => deleteBlog(blog)}
+                  onClick={() => handleClickOpenDialog(blog)}
                 />
                 <EditIcon
                   sx={{ marginLeft: "10px" }}
@@ -152,6 +173,40 @@ const BlogCard = ({ blog, author }: Props) => {
           </Stack>
         </CardActions>
       </Card>
+      {/* Success Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText
+            sx={{ fontSize: "18px" }}
+            id="alert-dialog-description"
+          >
+            Are you sure you want to delete this blog permanently?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ fontSize: "18px" }}>
+          <Button
+            onClick={() => {
+              deleteBlog();
+              handleCloseDialog();
+              navigate("/blogs");
+            }}
+          >
+            Yes
+          </Button>
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+            }}
+          >
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
