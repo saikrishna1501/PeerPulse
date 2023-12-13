@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { apiCallForLogin } from "../../store/auth";
 import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
@@ -67,6 +67,9 @@ const Login: React.FC = () => {
             value={credentials.password}
             onChange={handleChange}
           />
+          <Link to="/users/forgotPassword" style={{ marginTop: '8px', textDecoration: 'none', color: 'primary' }}>
+            Forgot Password?
+          </Link>
           <Button
             type="submit"
             fullWidth

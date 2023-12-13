@@ -10,7 +10,9 @@ export const TokenType = {
 };
 
 export const findToken = async(filter) => {
+    console.log(filter);
     let tokenDetails = await UserToken.findOne(filter);
+    console.log(tokenDetails);
     if(tokenDetails) {
         return tokenDetails;
     }

@@ -11,3 +11,5 @@ export const BLOG_FORM_ROUTE="/blogs/new";
 export const USER_DASHBOARD_ROUTE="/users/dashboard";
 export const HOUSING_DETAIL_ROUTE="/housing/:housingId";
 export const BLOGS_EDIT = "/blogs/:id/edit";
+export const PASSWORD_RESET_ROUTE="/users/forgotPassword";
+export const NEW_PASSWORD_SETUP_ROUTE="/passwordReset";

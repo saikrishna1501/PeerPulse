@@ -18,6 +18,11 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllUsers, loadUsers } from "../../store/users";
+import CommentCard from "../Comments/CommentCard";
+import CommentInput from "../Comments/CommentInput";
+import { textAlign } from "@mui/system";
+import CommentsContainer from "../Comments/CommentsContainer";
+import { useRef } from "react";
 
 interface Props {
   blog: Blog;
@@ -44,6 +49,12 @@ const ViewBlogDetails = ({ blog }: Props) => {
     // Dispatch the action when the id changes
     dispatch(getAllUsers());
   }, []);
+  const handleComment = () => {
+    const childElement = document.getElementById("my-child-component");
+    if (childElement) {
+      childElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <Container
@@ -131,7 +142,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             <ThumbDownIcon sx={{ color: "rgb(117, 117, 117)" }} />
           </IconButton>
           <Typography>{blog.downvotes}</Typography>
-          <IconButton onClick={handleDownvote}>
+          <IconButton onClick={handleComment}>
             <ChatBubbleOutlineIcon sx={{ color: "rgb(117, 117, 117)" }} />
           </IconButton>
           <Typography>{blog.comments!.length}</Typography>
@@ -147,6 +158,17 @@ const ViewBlogDetails = ({ blog }: Props) => {
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
+        <ReactQuill
+          value={blog.content}
+          readOnly={true} // Make the editor read-only
+          theme="bubble" // or use another theme
+        />
+        <ReactQuill
+          value={blog.content}
+          readOnly={true} // Make the editor read-only
+          theme="bubble" // or use another theme
+        />
+        <CommentsContainer blog={blog} />
       </Stack>
     </Container>
   );

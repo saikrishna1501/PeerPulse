@@ -9,6 +9,8 @@ import BlogsPage from "../pages/BlogsPage/BlogsPage";
 import MainLayout from "../layouts/MainLayout/MainLayout";
 import EventDetailsPage from "../pages/EventsPage/EventDetailsPage";
 import ProtectedRoute from "./ProtectedRoutes";
+import ForgotPassword from "../components/auth/ForgotPassword";
+import PasswordReset from "../components/auth/PasswordReset";
 import {
   AUTH_ROUTE,
   BLOGS_ROUTE,
@@ -22,6 +24,8 @@ import {
   HOUSING_DETAIL_ROUTE,
   BLOGS_VIEW,
   BLOGS_EDIT,
+  PASSWORD_RESET_ROUTE,
+  NEW_PASSWORD_SETUP_ROUTE,
 } from "../constants/routes";
 import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
 import BlogForm from "../pages/BlogFormPage/BlogForm";
@@ -37,6 +41,8 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<LandingPage />} />
           <Route path={AUTH_ROUTE} element={<Login />} />
+          <Route path={PASSWORD_RESET_ROUTE} element={<ForgotPassword />} />
+          <Route path={NEW_PASSWORD_SETUP_ROUTE} element={<PasswordReset />} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
           <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage />} />
           <Route

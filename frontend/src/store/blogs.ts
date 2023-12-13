@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Blog from "../models/blogs";
 import { apiCallBegan, apiCallFailure } from './api';
+import { ObjectId } from "bson";
+import Comment from "../models/comments";
 
 const slice = createSlice({
   name: 'blogs',
@@ -46,6 +48,22 @@ const slice = createSlice({
         blogs.list[index] = updatedBlog;
       }
     },
+    removeACommentFromBlog: (blogs, action: PayloadAction<{blogId: string | ObjectId | undefined, commentId: string | ObjectId | undefined}>) => {
+      blogs.list = blogs.list.map((blog: Blog)=> {
+        if(blog._id === action.payload.blogId) {
+          blog.comments = blog.comments?.filter((comment) => comment._id !== action.payload.commentId)
+        }
+        return blog;
+      })
+    },
+    addACommentToBlog: (blogs, action: PayloadAction<{blogId: string | ObjectId | undefined, comment: Comment}>) => {
+      blogs.list = blogs.list.map((blog: Blog)=> {
+        if(blog._id === action.payload.blogId) {
+          blog.comments?.push(action.payload.comment);
+        }
+        return blog;
+      })
+    },
     blogDeleted: (blogs, action: PayloadAction<string>) => {
         const blogIdToDelete = action.payload;
         blogs.list = blogs.list.filter(blog => {
@@ -56,7 +74,7 @@ const slice = createSlice({
           return true; // Include other blogs
         });
       },
-  },
+  }
 });
 
 export const loadBlogs = () =>({
@@ -114,5 +132,5 @@ export const deleteBlogById = (id: any) => ({
 });
 
 
-export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted } = slice.actions;
+export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted, removeACommentFromBlog, addACommentToBlog } = slice.actions;
 export default slice.reducer;
