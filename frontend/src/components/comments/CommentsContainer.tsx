@@ -11,6 +11,7 @@ import { deleteComment, editComment, loadComments, postComment } from "../../ser
 import { fetchUserById } from "../../services/UserService";
 import { ObjectId } from "bson";
 import { addACommentToBlog, blogUpdated, removeACommentFromBlog } from "../../store/blogs";
+import { toast } from "react-toastify";
 
 const commentContainer = {
     marginLeft: 6,
@@ -99,6 +100,16 @@ const CommentsContainer = ({ blog }: Props) => {
         if(response) {
             setCommentsList(commentsList.filter((comment: any) => comment._id !== commentId));
         }
+        toast.error('Deleted Comment Successfully!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
     }
 
     const renderedComments = commentsList.map((comment: any) => {

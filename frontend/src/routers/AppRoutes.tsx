@@ -42,7 +42,7 @@ const AppRoutes: React.FC = () => {
           <Route path={PASSWORD_RESET_ROUTE} element={<ForgotPassword/>} />
           <Route path={NEW_PASSWORD_SETUP_ROUTE} element={<PasswordReset/>} />
           <Route path={REGISTER_ROUTE} element={<Register />} />
-          <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage />} />
+          <Route path={USER_DASHBOARD_ROUTE} element={<ProtectedRoute component={UserDashboardPage} />} />
           <Route
             path={EVENTS_ROUTE}
             element={<ProtectedRoute component={EventsPage} />}
@@ -55,12 +55,12 @@ const AppRoutes: React.FC = () => {
             path={BLOGS_ROUTE}
             element={<ProtectedRoute component={BlogsPage} />}
           /> */}
-          <Route path={BLOGS_ROUTE} element={<BlogsPage />} />
-          <Route path={BLOGS_VIEW} element={<BlogView />} />
-          <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />
+          <Route path={BLOGS_ROUTE} element={<ProtectedRoute component={BlogsPage} />} />
+          <Route path={BLOGS_VIEW} element={<ProtectedRoute component={BlogView} />} />
+          <Route path={EVENT_DETAIL_ROUTE} element={<ProtectedRoute component={EventDetailsPage} />} />
           <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
-          <Route path={BLOG_FORM_ROUTE} element={<BlogForm />} />
-          <Route path={HOUSING_DETAIL_ROUTE} element={<HousingDetailsPage />} />
+          <Route path={BLOG_FORM_ROUTE} element={<ProtectedRoute component={BlogForm} />} />
+          <Route path={HOUSING_DETAIL_ROUTE} element={<ProtectedRoute component={HousingDetailsPage}/>} />
         </Route>
       </Routes>
     </Router>

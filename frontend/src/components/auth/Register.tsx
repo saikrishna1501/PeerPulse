@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const Register: React.FC = () => {
   const initialState = {
@@ -59,11 +60,30 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/users', userData);
-      console.log('Registration successful', response.data);
+      toast.success('Registration successful! Please verify the email id', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+      // console.log('Registration successful', response.data);
       setUserData(initialState);
       // Redirect logic here
     } catch (error) {
-      console.error('Error in registration', error);
+      toast.error('Registration failed. Please try again', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
     }
   };
 
