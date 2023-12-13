@@ -81,6 +81,10 @@ const AppRoutes: React.FC = () => {
             path={HOUSING_DETAIL_ROUTE}
             element={<ProtectedRoute component={HousingDetailsPage} />}
           />
+          <Route
+            path={BLOGS_EDIT}
+            element={<ProtectedRoute component={BlogUpdate} />}
+          />
         </Route>
         <Route>
           <Route path={REGISTER_ROUTE} element={<Register />} />
