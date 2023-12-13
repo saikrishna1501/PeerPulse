@@ -3,7 +3,9 @@ import User from '../models/users';
 import { apiCallBegan } from './api';
 import {produce} from "immer";
 
+
 const authUrl = '/users/auth';
+
 
 const userSlice = createSlice({
     name : 'auth',
@@ -12,6 +14,7 @@ const userSlice = createSlice({
         isAuthenticated: false,
         accessToken: null as string | null,
         refreshToken: null as string | null,
+        isEmailSent: null as string | null,
     },
     reducers : {
         loginSuccess: (state, action: any) => {
@@ -29,9 +32,19 @@ const userSlice = createSlice({
                 ...state,
                 user: { ...state.user, ...action.payload },
             };
-        }
+        },
+        forgotPasswordSucess: (state, action: any) => {
+            state.isEmailSent = 'Hey, email has been sent successfully for the registered email.'
+        },
+
+        forgotPasswordFailure : (state : any, action: any) => {
+            state.isEmailSent = 'Provided email doesnot exist. Please sign up to explore PEER PULSE!'
+        },
+        forgotPasswordMessage: (state: any, action: PayloadAction<string | null>) => {
+            state.isEmailSent = action.payload;
     }
 
+       }
 });
 
 // Creator for logIn action
@@ -55,5 +68,34 @@ export const selectIsLoggedIn = createSelector(
     (auth) => auth.isAuthenticated
 );
 
-export const { loginSuccess, loginFailed, updateAuthDetails } = userSlice.actions;
+export const apiCallForForgotPassword = (email: string) => ({
+    type: apiCallBegan.type,
+    meta: {
+        skipAuth: true
+    },
+    payload: {
+        url: `${authUrl}/requestResetPassword`,
+        method: 'post',
+        data: { email },
+        onSuccess: forgotPasswordSucess.type,
+        onError: forgotPasswordFailure.type,
+    }
+})
+
+export const apiCallForPasswordReset = (email: string, password: string, token:string) => ({
+    type: apiCallBegan.type,
+    meta: {
+        skipAuth: true
+    },
+    payload: {
+        url: `${authUrl}/resetPassword?activation_token=${token}`,
+        method: 'post',
+        data: { email, password },
+        onSuccess: forgotPasswordSucess.type,
+        onError: forgotPasswordFailure.type,
+    }
+})
+
+
+export const { loginSuccess, loginFailed, updateAuthDetails, forgotPasswordSucess, forgotPasswordFailure, forgotPasswordMessage } = userSlice.actions;
 export default userSlice.reducer;
