@@ -21,7 +21,7 @@ import {
   HOME_ROUTE,
   HOUSING_ROUTE,
   REGISTER_ROUTE,
-  USER_DASHBOARD_ROUTE
+  USER_DASHBOARD_ROUTE,
 } from "../../constants/routes";
 import theme from "../../theme/theme";
 
@@ -74,7 +74,10 @@ const Header: React.FC = () => {
               <CustomTab label="Events" onClick={navigateTo(EVENTS_ROUTE)} />
               <CustomTab label="Housing" onClick={navigateTo(HOUSING_ROUTE)} />
               <CustomTab label="Blogs" onClick={navigateTo(BLOGS_ROUTE)} />
-              <CustomTab label="Users" onClick={navigateTo(USER_DASHBOARD_ROUTE)} />
+              <CustomTab
+                label="Users"
+                onClick={navigateTo(USER_DASHBOARD_ROUTE)}
+              />
             </Tabs>
             <LanguageIcon
               sx={{
