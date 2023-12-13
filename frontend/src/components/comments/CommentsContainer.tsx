@@ -97,7 +97,7 @@ const CommentsContainer = ({ blog }: Props) => {
         const response = await deleteComment(blog._id, commentId);
         dispatch(removeACommentFromBlog({blogId: blog._id, commentId}));
         if(response) {
-            setCommentsList(commentsList.filter((comment: any) => comment._id != commentId));
+            setCommentsList(commentsList.filter((comment: any) => comment._id !== commentId));
         }
     }
 

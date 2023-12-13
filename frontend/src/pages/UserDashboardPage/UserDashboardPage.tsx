@@ -3,16 +3,16 @@ import { Outlet } from "react-router-dom"
 import VerticalTabs from "../../components/VerticleTabs/VerticleTabs"
 import UserSettingsPage from "../UserSettingsPage/UserSettingsPage"
 import { useEffect, useState } from "react"
-import user from "../../services/UserService"
-import { UserRoles } from '../../services/UserService'
+import { UserRoles } from '../../models/UserModel';
 import ManageUsersPage from "../ManageUsersPage/ManageUsersPage"
 import UpcomingEventsPage from "../UpcomingEventsPage/UpcomingEventsPage"
+import { useSelector } from "react-redux"
 
 const UserDashboardPage = () => {
     // let mapping = [{ textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 }];
     let [mapping,setMapping] = useState([{ textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 }]);
+    const user = useSelector((state:any) => state.auth.user);
     useEffect(() => {
-        
         if(user.role === UserRoles.STUDENT) {
             setMapping([
                 { textOnTab: "Settings", componentToRender: <UserSettingsPage />, order: 0 },
