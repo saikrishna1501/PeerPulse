@@ -1,13 +1,12 @@
 import { useParams } from "react-router-dom";
-import { loadBlogById } from "../../store/blogs";
-import { useDispatch } from "react-redux";
+import BlogForm from "../BlogFormPage/BlogForm";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Container } from "@mui/material";
-import ViewBlogDetails from "../../components/Blogs/ViewBlogDetails";
+import { loadBlogById } from "../../store/blogs";
 
-const BlogView = () => {
+export const BlogUpdate = () => {
   const { id } = useParams();
+
   const dispatch = useDispatch();
 
   // Fetch the list of blogs from the store
@@ -19,15 +18,13 @@ const BlogView = () => {
   useEffect(() => {
     // Dispatch the action when the id changes
     dispatch(loadBlogById(id));
-  }, []); // Add id and dispatch to the dependency array
-
+    console.log("Blog", blog);
+  }, [id, dispatch]); // Add id and dispatch to the dependency array
   return (
     <>
-      <Container maxWidth="md">
-        <ViewBlogDetails blog={blog} />
-      </Container>
+      <div>
+        <BlogForm blog={blog} />
+      </div>
     </>
   );
 };
-
-export default BlogView;

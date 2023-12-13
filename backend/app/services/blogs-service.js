@@ -109,3 +109,22 @@ export const patchBlogById = async (blogId, updateData) => {
     throw error;
   }
 };
+
+
+// Function to retrieve blogs using start and end indices
+export const getBlogsByStartAndEndIndices = async ({ startIndex = 0, endIndex = 10 }) => {
+  try {
+    // Use Mongoose's find method with skip and limit to implement pagination
+    const blogs = await Blog.find().skip(startIndex).limit(endIndex - startIndex).exec();
+
+    return blogs;
+  } catch (error) {
+    console.error("Error fetching blogs by indices:", error);
+    throw error;
+  }
+};
+
+export const countBlogs = async() => {
+  return Blog.countDocuments();
+}
+

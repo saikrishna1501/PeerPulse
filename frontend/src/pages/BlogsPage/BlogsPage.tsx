@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import BlogList from "../../components/Blogs/BlogList";
 import Filters from "../../components/BlogsFilter/Filters";
-import Rightbar from "../../components/BlogsFilter/Rightbar";
 import { BlogHeader } from "../../components/Blogs/BlogHeader";
-import Blog from "../../models/blogs";
 import { useDispatch } from "react-redux";
 import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useNavigate } from "react-router-dom";
+import PaginationContainer from "../../components/PaginationContainer/PaginationContainer";
+import { getAllUsers } from "../../store/users";
+
+interface FilterState {
+  Last7Days: boolean;
+  PostGreaterThan10upvotes: boolean;
+  SortByTitle: boolean;
+  ResetFilters: boolean;
+}
+
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,6 +34,49 @@ const BlogsPage = (props: any) => {
     navigate("/blogs/new");
   };
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const noOfPages = useSelector(
+    (state: any) => state.entities.users.numberOfPages
+  );
+
+  const onPageChange = (clickedPage: number) => {
+    // const newUsers = [...listOfUsers, {
+    //     _id: "656a9421c56c68861c127ac",
+    //     email: "gaddam.sai@northeastern.edu",
+    //     firstName: "Dummy",
+    //     lastName: "User",
+    //     role: "student"
+    // }]
+    // // setListOfUsers(newUsers);
+    // dispatch(loadUsers(clickedPage,pageSize));
+    // setCurrentPage(clickedPage);
+    // setTotalNoOfPages(users.numberOfPages);
+  };
+
+  // Fetch Users
+  const users = useSelector((state: any) => state.entities.users.list);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
+  // Filter
+  // Filtering
+  const [filters, setFilters] = useState<FilterState>({
+    Last7Days: false,
+    SortByTitle: false,
+    PostGreaterThan10upvotes: false,
+    ResetFilters: false,
+  });
+
+  const handleFilterChange = (filterName: string, value: boolean) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+    console.log(filters, value);
+  };
+
   return (
     <>
       <BlogHeader />
@@ -36,7 +87,15 @@ const BlogsPage = (props: any) => {
           marginTop={5}
           justifyContent="space-between"
         >
-          <BlogList blogs={blogs} />
+          <Stack direction={"column"}>
+            <BlogList blogs={blogs} users={users} />
+            <PaginationContainer
+              onPageChange={onPageChange}
+              currentPage={currentPage}
+              noOfPages={noOfPages}
+            ></PaginationContainer>
+          </Stack>
+
           <Stack
             direction="column"
             spacing={5}
@@ -65,7 +124,7 @@ const BlogsPage = (props: any) => {
                 Write
               </Typography>
             </Button>
-            <Filters />
+            <Filters onFilterChange={handleFilterChange} />
           </Stack>
         </Stack>
       </Container>

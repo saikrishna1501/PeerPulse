@@ -1,4 +1,4 @@
-import { apiCallBegan } from "../api";
+import { apiCallBegan, apiCallFailure } from "../api";
 import axios from 'axios';
 
 const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
@@ -21,11 +21,22 @@ const api = ({ dispatch } : any) => (next : any) => async (action : any) => {
             method,
             withCredentials: true
         });
-        dispatch({ type: onSuccess, payload : response.data }); 
+
+        if(method == 'delete'){
+            dispatch({ type: onSuccess, payload : data }); 
+            return;
+        }
+
+        onSuccess && dispatch({ type: onSuccess, payload : response.data }); 
     }
     // Rejected: Dispatch onError
     catch(error){
-        dispatch({ type : onError, payload : error });
+        if(onError)
+            dispatch({ type : onError, payload : error });
+        else    
+            dispatch({ type : apiCallFailure, payload : error });
+
+
     }
 }
 

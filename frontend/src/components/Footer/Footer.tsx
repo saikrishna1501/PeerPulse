@@ -1,19 +1,18 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import theme from '../../theme/theme';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import theme from "../../theme/theme";
 
 const Footer = () => {
   return (
     <Paper
       sx={{
-        textAlign: 'center',
+        textAlign: "center",
         p: 6,
-        backgroundColor: '#f0f0f0', // Set your desired background color
+        backgroundColor: "#f0f0f0", // Set your desired background color
         // flexShrink: 0,
         // marginTop: 'auto', // Push the footer to the bottom of the page
         width: "100%",
-        mt: 10,
         background: [theme.palette.info.main],
       }}
     >

@@ -23,7 +23,7 @@ const store = configureStore({
             logger('console'),
             func,
             // auth,
-            checkDataInStore,
+            // checkDataInStore,
             api
         ]
     });
