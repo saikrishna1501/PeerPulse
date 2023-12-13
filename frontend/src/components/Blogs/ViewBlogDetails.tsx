@@ -156,16 +156,6 @@ const ViewBlogDetails = ({ blog }: Props) => {
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
-        />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
-        />
         <CommentsContainer blog={blog} />
       </Stack>
     </Container>
