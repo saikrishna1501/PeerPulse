@@ -170,7 +170,7 @@ const Register: React.FC = () => {
             </Box>
           </Paper>
         </Container>
-        <img src={backgroundImage} width="40%" alt="Signup Background" />
+        <img src={backgroundImage} width="45%" alt="Signup Background" />
       </Stack>
     </>
   );

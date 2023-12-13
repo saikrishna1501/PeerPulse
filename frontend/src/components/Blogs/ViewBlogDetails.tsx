@@ -18,11 +18,9 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllUsers, loadUsers } from "../../store/users";
-import CommentCard from "../Comments/CommentCard";
-import CommentInput from "../Comments/CommentInput";
 import { textAlign } from "@mui/system";
-import CommentsContainer from "../Comments/CommentsContainer";
 import { useRef } from "react";
+import CommentsContainer from "../comments/CommentsContainer";
 
 interface Props {
   blog: Blog;

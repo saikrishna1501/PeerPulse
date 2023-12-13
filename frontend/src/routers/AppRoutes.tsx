@@ -43,7 +43,6 @@ const AppRoutes: React.FC = () => {
           <Route path={AUTH_ROUTE} element={<Login />} />
           <Route path={PASSWORD_RESET_ROUTE} element={<ForgotPassword />} />
           <Route path={NEW_PASSWORD_SETUP_ROUTE} element={<PasswordReset />} />
-          <Route path={REGISTER_ROUTE} element={<Register />} />
           <Route path={USER_DASHBOARD_ROUTE} element={<UserDashboardPage />} />
           <Route
             path={EVENTS_ROUTE}
@@ -73,6 +72,9 @@ const AppRoutes: React.FC = () => {
           <Route path={EVENT_DETAIL_ROUTE} element={<EventDetailsPage />} />
           <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
           <Route path={HOUSING_DETAIL_ROUTE} element={<HousingDetailsPage />} />
+        </Route>
+        <Route>
+          <Route path={REGISTER_ROUTE} element={<Register />} />
         </Route>
       </Routes>
     </Router>
