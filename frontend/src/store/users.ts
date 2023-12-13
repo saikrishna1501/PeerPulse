@@ -54,7 +54,6 @@ export const getAllUsers = () => ({
     payload: {
         url: `/users`,
         method: 'get',
-        dataInStoreCheck: 'entities.users.list',
         onSuccess: slice.actions.usersReceived.type,
         onError: apiCallFailure.type
     }

@@ -16,7 +16,14 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBlogById } from "../../store/blogs";
-const BlogCard = ({ blog }: { blog: Blog }) => {
+import User from "../../models/users";
+
+interface Props {
+  blog: Blog;
+  author: User;
+}
+
+const BlogCard = ({ blog, author }: Props) => {
   const dispatch = useDispatch();
 
   const stripHtmlTags = (html: string): string => {
@@ -29,7 +36,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
     return doc.body.textContent?.slice(0, 150) || "";
   };
 
-  const user = useSelector((state: any) => state.auth.user);
+  const loggedIn = useSelector((state: any) => state.auth.user);
 
   const navigate = useNavigate();
   const handleCardClick = () => {
@@ -38,10 +45,10 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
   };
 
   const isAuthor = (blog: any) => {
-    console.log("User Id ", user._id);
+    console.log("User Id ", loggedIn._id);
     console.log("Blog Author ", blog.author);
 
-    return user._id == blog.author;
+    return loggedIn._id == blog.author;
   };
 
   const deleteBlog = (blog: any) => {
@@ -69,7 +76,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             <>
               <Avatar
                 alt="Author Avatar"
-                src={blog.author.avatarUrl}
+                src={author.profilePic}
                 sx={{ width: 26, height: 26 }}
               />
               <Typography
@@ -77,7 +84,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                 fontWeight="500"
                 sx={{ padding: "0px", marginLeft: 1, color: "#242424" }}
               >
-                {blog.author.name || "Raveena"}
+                {author.firstName + " " + author.lastName || "Raveena"}
               </Typography>
             </>
           }

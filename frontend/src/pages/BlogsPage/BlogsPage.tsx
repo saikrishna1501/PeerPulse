@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import BlogList from "../../components/Blogs/BlogList";
 import Filters from "../../components/BlogsFilter/Filters";
-import Rightbar from "../../components/BlogsFilter/Rightbar";
 import { BlogHeader } from "../../components/Blogs/BlogHeader";
-import Blog from "../../models/blogs";
 import { useDispatch } from "react-redux";
 import { loadBlogs } from "../../store/blogs";
 import { useSelector } from "react-redux";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useNavigate } from "react-router-dom";
 import PaginationContainer from "../../components/PaginationContainer/PaginationContainer";
+import { getAllUsers } from "../../store/users";
 const BlogsPage = (props: any) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,6 +45,13 @@ const BlogsPage = (props: any) => {
     // setTotalNoOfPages(users.numberOfPages);
   };
 
+  // Fetch Users
+  const users = useSelector((state: any) => state.entities.users.list);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
   return (
     <>
       <BlogHeader />
@@ -57,7 +63,7 @@ const BlogsPage = (props: any) => {
           justifyContent="space-between"
         >
           <Stack direction={"column"}>
-            <BlogList blogs={blogs} />
+            <BlogList blogs={blogs} users={users} />
             <PaginationContainer
               onPageChange={onPageChange}
               currentPage={currentPage}
