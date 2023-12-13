@@ -21,7 +21,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onSave, onEdit, onDelete, 
       <CardContent sx={{ flex: '1 0 auto' }}>
         <Typography variant="h5">{event.title}</Typography>
         <Typography variant="body2" color="text.secondary">
-          <EventIcon fontSize="small" /> {event.date}
+          <EventIcon fontSize="small" /> {new Date(event.date).toISOString().split('T')[0]}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           <PlaceIcon fontSize="small" /> {event.location}

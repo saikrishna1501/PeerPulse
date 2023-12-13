@@ -5,9 +5,6 @@ import PlaceIcon from '@mui/icons-material/Place';
 import  {Event, RegistrationStatus}  from '../../models/event';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../store/users';
-import { updateAuthDetails } from '../../store/auth';
-import { ObjectId } from 'mongodb';
 import { registerEvent, unRegisterEvent } from '../../store/events';
 
 
@@ -17,6 +14,7 @@ const EventDetailsPage: React.FC = () => {
   const event = events.find((e: Event)=> e._id === eventId);
   const user = useSelector((state: any) => state.auth.user);
   const dispatch = useDispatch();
+  const googleMapsUrl = `https://www.google.com/maps/?q=${event.latitude},${event.longitude}`;
 
   const [registrationStatus, setRegistrationStatus] = useState<RegistrationStatus>(RegistrationStatus.NOT_REGISTERED); 
 
@@ -57,13 +55,23 @@ const EventDetailsPage: React.FC = () => {
   }
 
   return (
-    <Paper sx={{ padding: 2 }}>
+    <Paper sx={{ padding: 2 , margin:'20px'}}>
       <img src={event.imageUrl} alt={event.title} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
       <Typography variant="h4">{event.title}</Typography>
       <Typography variant="body1" color="text.secondary">
         <PlaceIcon /> {event.location}
       </Typography>
       <Typography variant="body1">{event.description}</Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        href={googleMapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{marginRight:'20px'}}
+      >
+        Location Details
+      </Button>
       <Button disabled={registrationStatus === RegistrationStatus.NOT_REGISTERED || registrationStatus === RegistrationStatus.REGISTERED ? false: true} variant="contained" onClick={(e) => {handleClick(event)}}>
         {registrationStatus === RegistrationStatus.NOT_REGISTERED || registrationStatus === RegistrationStatus.CANT_REGISTER ? "Register": "UnRegister"}
       </Button>

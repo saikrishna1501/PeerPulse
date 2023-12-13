@@ -4,7 +4,7 @@ export interface Event {
     organizer: string;
     description: string;
     location: string;
-    date: string;
+    date: Date;
     categories: string[];
     creatorId: string;
     imageUrl: string;
