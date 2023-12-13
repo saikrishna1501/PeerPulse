@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from '../../store/events';
 import { Event } from '../../models/event';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Input, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import axios from 'axios';
 
 interface EventFormProps {
      open: boolean, 
      handleClose: () => void, 
      isEditMode?: boolean, 
-     initialEventData?: Event | null
+     initialEventData?: Event | null,
+     setEvents: React.Dispatch<React.SetStateAction<any>>,
+     setFilteredEvents: React.Dispatch<React.SetStateAction<any>>
 }
 
 export interface EventData {
@@ -16,7 +21,7 @@ export interface EventData {
   organizer: string;
   location: string;
   description: string;
-  date: string;
+  date: Date;
   creatorId: string;
   proofDocument?: File | null ;
   latitude: number;
@@ -24,17 +29,18 @@ export interface EventData {
   type: string;
 }
 
-const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = false, initialEventData }) => {
-  const events = useSelector((state:any)=>state.entities.events.list);
+const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode, initialEventData , setEvents, setFilteredEvents}) => {
+  //const events = useSelector((state:any)=>state.entities.events.list);
   const userId = useSelector((state: any) => state.auth.user._id);
-  const [eventData, setEventData] = useState<EventData>(initialEventData ||{ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null, type:'', latitude:0,longitude:0});
+  const emptyState={ title: '', organizer:'', location: '', description:'', date: new Date(), creatorId:userId, proofDocument:null, type:'', latitude:0.0,longitude:0.0};
+  const [eventData, setEventData] = useState<EventData>(initialEventData ||emptyState);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditMode && initialEventData) {
       setEventData(initialEventData);
     } else {
-      setEventData({ title: '', organizer:'', location: '', description:'', date: '', creatorId:userId, proofDocument:null,type:'',latitude:0,longitude:0});
+      setEventData(emptyState);
     }
   }, [isEditMode, initialEventData]);
 
@@ -46,6 +52,9 @@ const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = f
     }
   };
 
+  const setDate=(dateVal: Date)=>{
+    setEventData({...eventData,date:dateVal})
+  }
   const handleSubmit = () => {
     // const formData = new FormData();
     // formData.append('title', eventData.title);
@@ -58,11 +67,38 @@ const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = f
     //   eventData.proofDocument = 
     // }
     if(isEditMode && initialEventData){
-      dispatch(updateEvent(initialEventData._id, eventData));
+      //dispatch(updateEvent(initialEventData._id, eventData));
+      
+    const editEventData = async()=>{
+      try {
+        await axios.put(`http://localhost:5000/events/${initialEventData._id}`, eventData, { withCredentials: true });
+        const updatedEvents = await axios.get('http://localhost:5000/events', { withCredentials: true });
+        setEvents(updatedEvents.data);
+        setFilteredEvents(updatedEvents.data);
+      } catch (error) {
+        console.error('Error updating event:', error);
+      }
+    }
+    editEventData();
     }
     else{
-      dispatch(createEvent(eventData));
+
+      const addEventData=async()=>{
+        try {
+          const addedEvent = await axios.post('http://localhost:5000/events',eventData, { withCredentials: true });
+          //console.log(response)
+          const response= await axios.get('http://localhost:5000/events', { withCredentials: true });
+          setEvents(response.data);
+          setFilteredEvents(response.data);
+        } catch (error) {
+          console.error('Error fetching events:', error);
+        }
+      
+      }
+      addEventData();
+      //dispatch(createEvent(eventData));
     }
+    setEventData(emptyState)
     handleClose();
   };
 
@@ -74,7 +110,16 @@ const EventForm: React.FC<EventFormProps> = ({ open, handleClose, isEditMode = f
         <TextField label="Organizer" name="organizer" fullWidth onChange={handleChange} value={eventData.organizer} required/>
         <TextField label="Description" name="description" fullWidth onChange={handleChange} value={eventData.description} required />
         <TextField label="Location" name="location" fullWidth onChange={handleChange} value={eventData.location} required/>
-        <TextField label="Date" name="date" fullWidth onChange={handleChange} value={eventData.date} required/>
+        <DatePicker
+          //selected={eventData.date}
+          onChange={setDate}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="time"
+          dateFormat="MMMM d, yyyy h:mm aa"
+        />
+        
         <FormControl fullWidth>
           <InputLabel>Type</InputLabel>
           <Select
