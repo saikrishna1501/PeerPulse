@@ -6,14 +6,20 @@ import {
   Box,
   Button,
   Container,
+  Link,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import { Flex } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
+
+  const navigateTo = (route: string) => () => navigate(route);
+
   const initialState = {
     email: "",
     firstName: "",
@@ -70,7 +76,7 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/users",
+        "http://localhost:5001/users",
         userData
       );
       console.log("Registration successful", response.data);
@@ -167,6 +173,11 @@ const Register: React.FC = () => {
               <Button type="submit" variant="contained" size="large">
                 Register
               </Button>
+              <Typography
+                sx={{ fontSize: "20px", fontWeight: "200", paddingTop: "10px" }}
+              >
+                Already a user? <Link href="/users/auth">Login</Link>
+              </Typography>
             </Box>
           </Paper>
         </Container>
