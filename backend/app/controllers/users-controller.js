@@ -296,13 +296,9 @@ export const resetPasswordRequestController = async (req, res, next) => {
         if(!tokenDetails) {
             return res.status(400).json({message: 'token expired or not found!'});
         }
-        let passwordResetToken = await tokenService.findToken(tokenDetails);
-        if (!passwordResetToken) {
-            return res.status(401).json({message: "Invalid or expired password reset token"});
-        }
     await userService.resetPassword(
       req.body.email,
-      passwordResetToken,
+      tokenDetails.token,
       req.body.password
     );
     return res.status(200).json({message: 'succesfully password is reset!'});

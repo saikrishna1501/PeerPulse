@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 
 const HousingDetailsPage: React.FC = () => {
   const { housingId } = useParams<{ housingId: string }>();
-  const housingList = useSelector((state: any) => state.entities.housing.list.data);
+  const housingList = useSelector((state: any) => state.entities.housing.list);
   const housing = housingList.find((e: Housing)=> e._id === housingId);
   const user = useSelector((state: any) => state.auth.user);
   const dispatch = useDispatch();

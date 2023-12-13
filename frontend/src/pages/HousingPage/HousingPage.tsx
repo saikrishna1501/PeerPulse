@@ -26,7 +26,7 @@ interface FiltersState {
 }
 
 const HousingPage: React.FC = () => {
-  const housing = useSelector((state: any) => state.entities.housing.list.data);
+  const housing = useSelector((state: any) => state.entities.housing.list);
   const dispatch = useDispatch();
   const [filteredHousing, setFilteredHousing] = useState<Housing[]>(housing);
   const [searchQuery, setSearchQuery] = useState('');
