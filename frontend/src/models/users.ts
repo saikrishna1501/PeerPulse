@@ -8,7 +8,7 @@ class User {
     profilePic!: string;
     savedEvents!: string[];
     upcomingEvents!: ObjectId[] | string[];
-    role!: 'admin' | 'moderator' | 'student';
+    role!: 'admin' | 'student';
     isValid!: boolean;
   
     constructor(
@@ -20,7 +20,7 @@ class User {
       profilePic: string = '',
       savedEvents: string[] = [],
       upcomingEvents: ObjectId[] | string[] = [],
-      role: 'admin' | 'moderator' | 'student' = 'student',
+      role: 'admin'  | 'student' = 'student',
       isValid: boolean = false
     ) {
       this._id = _id;

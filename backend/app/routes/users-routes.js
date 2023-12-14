@@ -10,11 +10,11 @@ const router = express.Router();
 
 //get requires authentication but creating a user doesn't require authentication(sign up)
 router.route("/")
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT,Roles.MODERATOR]),userController.getUsers)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),userController.getUsers)
     .post(userController.register)
 
 router.route("/pages")
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT,Roles.MODERATOR]),userController.getNoOfPages)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),userController.getNoOfPages)
 //login route(no authentication required)
 router.route("/auth")
     .post(userController.login)
@@ -41,8 +41,8 @@ router.route("/auth-check")
 
 //fetch, update and delete routes for a particular user
 router.route("/:id")
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.findUserById)
-    .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),userController.updateUser)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),userController.findUserById)
+    .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),userController.updateUser)
     .delete(authorize, checkRoles([Roles.ADMIN]), userController.deleteUser);
 
 router.route("/logout")
