@@ -4,7 +4,8 @@ import { loadHousing } from "../../store/housing";
 import { Housing } from "../../models/housing";
 import HousingCard from "./HousingCard";
 import FiltersComponent from "./FiltersComponent";
-import { Container, Grid, Paper, TextField } from "@mui/material";
+import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
+
 
 interface FiltersState {
   upto1K: boolean;
@@ -63,26 +64,35 @@ const HousingPage: React.FC = () => {
 
   const applyFilters = (query: string, filterOptions: FiltersState) => {
     let result = housing.filter((housing: Housing) => {
-      const queryCheck = housing.location
-        .toLowerCase()
-        .includes(query.toLowerCase());
+      const queryCheck = housing.location.toLowerCase().includes(query.toLowerCase());
       const priceCheck =
-        (!filterOptions.upto1K || housing.price.includes("$500 - $1000")) &&
-        (!filterOptions.upto3K || housing.price.includes("$1001 - $3000")) &&
-        (!filterOptions.upto5K || housing.price.includes("$3001 - $5000")) &&
-        (!filterOptions.more5K || housing.price.includes("$5001 - more"));
+        (!filterOptions.upto1K || (housing.price >= 500 && housing.price <= 1000))   ||
+        (!filterOptions.upto3K || (housing.price >= 1001 && housing.price <= 3000)) ||
+        (!filterOptions.upto5K || (housing.price >= 3001 && housing.price <= 5000)) ||
+        (!filterOptions.more5K || housing.price > 5000);
 
       const typeCheck =
-        (!filterOptions.apartments || housing.type.includes("Apartment")) &&
-        (!filterOptions.condos || housing.type.includes("Condos")) &&
-        (!filterOptions.houses || housing.type.includes("Houses"));
+        (!filterOptions.apartments || housing.type.includes('Apartment')) &&
+        (!filterOptions.condos || housing.type.includes('Condo')) &&
+        (!filterOptions.houses || housing.type.includes('House'));
 
-      //const pricingCheck = (!filterOptions.free || !housing.isPaid) && (!filterOptions.paid || housing.isPaid);
+      const bedsCheck =
+        (!filterOptions.one || housing.beds.toString().includes('1')) &&
+        (!filterOptions.two || housing.beds.toString().includes('2')) &&
+        (!filterOptions.three || housing.beds.toString().includes('3')) &&
+        (!filterOptions.fourPlus || housing.beds.toString().includes('4+'));
 
-      return queryCheck && priceCheck && typeCheck; //&& pricingCheck;
+      const amenitiesCheck =
+        (!filterOptions.laundry || housing.amenities1.includes('laundry')) &&
+        (!filterOptions.dishwasher || housing.amenities2.includes('Dishwasher')) &&
+        (!filterOptions.ac || housing.amenities3.includes('AC')) &&
+        (!filterOptions.parking || housing.amenities4.includes('Parking'));
+
+      return queryCheck && priceCheck && typeCheck && bedsCheck && amenitiesCheck;
     });
     setFilteredHousing(result);
   };
+
 
   const handleFilterChange = (name: string, checked: boolean) => {
     const newFilters = { ...filters, [name]: checked };
@@ -100,6 +110,22 @@ const HousingPage: React.FC = () => {
 
   return (
     <>
+        <Typography
+        variant="h3"
+        align="center"
+        sx={{
+          background: "linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), #3f51b5",
+          height: "50vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+          transition: "opacity 0.5s ease-in-out",
+        }}
+      ><h1>Looking for Cozy and Affordable Place?</h1>
+      <br></br>
+      <h3>Feel feel to explore...!!!</h3>
+      </Typography>
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={2}>

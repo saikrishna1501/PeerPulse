@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import { getAllUsers, loadUsers } from "../../store/users";
 import { textAlign } from "@mui/system";
 import { useRef } from "react";
-import CommentsContainer from "../comments/CommentsContainer";
+import CommentsContainer from "../Comments/CommentsContainer";
 
 interface Props {
   blog: Blog;
