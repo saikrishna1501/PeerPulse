@@ -44,17 +44,19 @@ const EventsPage: React.FC = () => {
   const handleCloseEditForm=()=>setIsEditFormOpen(false);
   const [editingEventData, setEditingEvent] = useState<Event | null>(null);
 
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/events`, { withCredentials: true });
+      setEvents(response.data);
+      setFilteredEvents(response.data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
   useEffect(() => {
     //dispatch(loadEvents());
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/events`, { withCredentials: true });
-        setEvents(response.data);
-        setFilteredEvents(response.data);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-      }
-    };
+    
 
     fetchEvents();
   }, []);
@@ -112,16 +114,11 @@ const EventsPage: React.FC = () => {
     applyFilters(searchQuery, newFilters);
   };
 
-  const saveEvent = (eventId: string)=>{
-      console.log(eventId)
-  }
-
   const handleEdit=async (updatedEvent: Event)=>{
     setEditingEvent(updatedEvent);
     handleOpenEditForm();
-    // dispatch(loadEvents());
-    // setFilteredEvents(events);
-  }
+    
+  };
 
   const handleDelete= async (eventId: string)=>{
     try {
@@ -131,18 +128,7 @@ const EventsPage: React.FC = () => {
     } catch (error) {
       console.error('Error deleting event:', error);
     }
-    // try{
-    //   dispatch(deleteEvent(eventId));
-    //   setFilteredEvents(events.filter((e: any)=>e._id!==eventId))
-    // }
-    // catch(e){
-    //   console.log("Error: "+e)
-    // }
     
-  }
-
-  const focusEventOnMap = (location: string) => {
-    alert(location)
   };
 
   return (
@@ -159,16 +145,27 @@ const EventsPage: React.FC = () => {
             <EventForm open={isCreateEventFormOpen} handleClose={handleCloseCreateEventForm} setEvents={setEvents} setFilteredEvents={setFilteredEvents}/>
           </Grid>
           <Grid item xs={12} sm={7}>
-            <TextField fullWidth sx={{paddingBottom:'10px'}} label="Search Events" variant="outlined" value={searchQuery} onChange={handleSearchChange} />
-            {filteredEvents.map(event => (
-              <EventCard key={event._id} event={event} onSave={saveEvent} onEdit={handleEdit}
-              onDelete={handleDelete}
-              isCreator={event.creatorId === currentUserId}/>
+            <TextField
+              fullWidth
+              sx={{ paddingBottom: "10px" }}
+              label="Search Events"
+              variant="outlined"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            {filteredEvents.map((event) => (
+              <EventCard
+                key={event._id}
+                event={event}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                isCreator={event.creatorId === currentUserId}
+              />
             ))}
           </Grid>
           <Grid item xs={12} sm={3}>
             <EventForm open={isEditFormOpen} handleClose={handleCloseEditForm} isEditMode={Boolean(editingEventData)} initialEventData={editingEventData} setEvents={setEvents} setFilteredEvents={setFilteredEvents}/>
-            <MapView events={filteredEvents} onLocationSelect={focusEventOnMap}/>
+            <MapView events={filteredEvents}/>
           </Grid>
         </Grid>
       </Container>

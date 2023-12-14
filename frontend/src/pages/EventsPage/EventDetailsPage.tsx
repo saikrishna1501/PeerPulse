@@ -6,12 +6,25 @@ import  {Event, RegistrationStatus}  from '../../models/event';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { registerEvent, unRegisterEvent } from '../../store/events';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 
 const EventDetailsPage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
-  const events = useSelector((state: any) => state.entities.events.list);
-  const event = events.find((e: Event)=> e._id === eventId);
+  //const events = useSelector((state: any) => state.entities.events.list);
+  const [events,setEvents] = useState<Event[]>([]);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/events`, { withCredentials: true });
+      setEvents(response.data);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+  const event = events.find((e: Event)=> e._id === eventId) || {} as Event;
+  console.log(event)
   const user = useSelector((state: any) => state.auth.user);
   const dispatch = useDispatch();
   const googleMapsUrl = `https://www.google.com/maps/?q=${event.latitude},${event.longitude}`;
@@ -19,6 +32,7 @@ const EventDetailsPage: React.FC = () => {
   const [registrationStatus, setRegistrationStatus] = useState<RegistrationStatus>(RegistrationStatus.NOT_REGISTERED); 
 
   useEffect(() => {
+    fetchEvents();
     console.log(user.upcomingEvents);
     if(user.upcomingEvents.includes(event._id)) {
       setRegistrationStatus(RegistrationStatus.REGISTERED);
@@ -56,7 +70,7 @@ const EventDetailsPage: React.FC = () => {
 
   return (
     <Paper sx={{ padding: 2 , margin:'20px'}}>
-      <img src={event.imageUrl} alt={event.title} style={{ width: '100%', maxHeight: '400px', objectFit: 'cover' }} />
+      <img src={event.imageUrl} alt={event.title} style={{ width: '100%', maxHeight: '50vh', objectFit: 'cover' }} />
       <Typography variant="h4">{event.title}</Typography>
       <Typography variant="body1" color="text.secondary">
         <PlaceIcon /> {event.location}
