@@ -3,7 +3,7 @@ export interface Housing {
     title: string;
     description: string;
     location: string;
-    price: string;
+    price: number;
     imageUrl: string;
     latitude: number;
     longitude: number;
@@ -13,4 +13,5 @@ export interface Housing {
     amenities2: string;
     amenities3: string;
     amenities4: string;
+    images: [];
 }
