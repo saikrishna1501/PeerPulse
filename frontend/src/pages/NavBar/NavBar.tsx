@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -12,8 +12,11 @@ import {
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import theme from "../../theme/theme";
+import getLanguageObject from "../../utils/getLanguageObject";
 //import { RootState } from './store'; // Import the type of your root state
 //import { setAuthenticated } from './authSlice'; // Import the action to update the state
+
+
 
 const Navbar: React.FC = () => {
   //const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -34,6 +37,9 @@ const Navbar: React.FC = () => {
     navigate("/");
   };
 
+  const languageSelector = useSelector((state:any)=> state.language.selectedLanguage);
+  const choosenLanguage: any = getLanguageObject(languageSelector);
+
   return (
     <AppBar position="static" className="navbar-color">
       <Toolbar>
@@ -44,25 +50,25 @@ const Navbar: React.FC = () => {
           to="/"
           sx={{ flexGrow: 1 }}
         >
-          PeerPulse
+          {choosenLanguage.logo}
         </Typography>
         <div>
           <Button color="inherit" component={Link} to="/events">
-            Events
+          {choosenLanguage.events}
           </Button>
           <Button color="inherit" component={Link} to="/housing">
-            Housing
+          {choosenLanguage.Housing}
           </Button>
           <Button color="inherit" component={Link} to="/blogs">
-            Blogs
+          {choosenLanguage.Blogs}
           </Button>
           {!isAuthenticated ? (
             <>
               <Button color="inherit" component={Link} to="/login">
-                Login
+              {choosenLanguage.Login}
               </Button>
               <Button color="inherit" component={Link} to="/signup">
-                Signup
+              {choosenLanguage.Signup}
               </Button>
             </>
           ) : (
@@ -95,7 +101,7 @@ const Navbar: React.FC = () => {
           onClose={handleMenuClose}
         >
           <MenuItem onClick={() => navigate("/dashboard")}>Dashboard</MenuItem>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>{choosenLanguage.Logout}</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>

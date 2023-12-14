@@ -15,32 +15,32 @@ const router = express.Router();
 
 //Post and get routes requires authentication for blogs
 router.route("/")
-.post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.createBlog)
-.get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),blogsController.getBlogs)
+.post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),blogsController.createBlog)
+.get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),blogsController.getBlogs)
 
 //post a comment 
 router.route('/:id/comments/:commentId')
-    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.deleteCommentById)
-    .patch(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.updateCommentById)
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.findCommentById)
+    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), commentsController.deleteCommentById)
+    .patch(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), commentsController.updateCommentById)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), commentsController.findCommentById)
 
 
 //post a comment 
 router.route('/:id/comments')
-    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.addComment)
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), commentsController.getComments);
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), commentsController.addComment)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), commentsController.getComments);
 
 
 router.route('/search')
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.getBlogsByTag);
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.getBlogsByTag);
 
 //both put and delete blogs routes require authentication
 router.route('/:id')
     //Route for handling PUT and DELETE requests related to a specific blog entry by ID.
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.findBlogById)
-    .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.updateBlog)
-    .patch(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.patchBlog)
-    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.deleteBlog)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.findBlogById)
+    .put(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.updateBlog)
+    .patch(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.patchBlog)
+    .delete(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.deleteBlog)
 
 
 router.route('/:id/upvote')
@@ -48,8 +48,8 @@ router.route('/:id/upvote')
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.getUpvotes)
 
     router.route('/:id/downvote')
-    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.handleDownvote)
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.getDownVote)
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.handleDownvote)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]), blogsController.getDownVote)
 
 //export blogs router
 export default router;

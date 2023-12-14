@@ -10,7 +10,7 @@ const router = express.Router();
 
 //Define a route for handling GET requests to fetch housing data.
 router.route('/')
-    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]),housingController.getHousing)
+    .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT]),housingController.getHousing)
 
 //Export the housing router for use in the main application.    
 export default router;

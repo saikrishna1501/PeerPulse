@@ -6,8 +6,16 @@ import EventsButton from "../Button/EventsButton";
 import BlogsButton from "../Button/BlogsButton";
 import { LandingNote } from "./LandiingNote";
 import HousingButton from "../Button/HosuingButton";
+import { useSelector } from "react-redux";
+import getLanguageObject from "../../utils/getLanguageObject";
+
+
+
+
 
 export const LandingBody = () => {
+const languageSelector = useSelector((state:any)=> state.language.selectedLanguage);
+const choosenLanguage: any = getLanguageObject(languageSelector);
   return (
     <>
       <Container maxWidth="xl">
@@ -29,10 +37,7 @@ export const LandingBody = () => {
           <Stack direction="column" spacing={10}>
             <div className="animated-item">
               <div>
-                Supercharge your team's collaboration and efficiency with
-                uniquely tailored events designed to perfectly match your needs.
-                Unleash the power of customization for unforgettable and
-                impactful experiences.
+                {choosenLanguage.Intro1}
               </div>
               <br />
               <EventsButton />
@@ -42,7 +47,7 @@ export const LandingBody = () => {
         <LandingNote
           showImage={true}
           text={
-            "Tailored for +15,000 Northeastern Huskies, because your journey deserves the extra sparkle! 🌟"
+            choosenLanguage.Intro2
           }
         />
         <Stack
@@ -54,11 +59,7 @@ export const LandingBody = () => {
           <Stack direction="column" spacing={10}>
             <div className="animated-item">
               <div>
-                Ignite your knowledge and inspiration as you explore a diverse
-                array of blogs meticulously crafted to cater to your interests
-                and needs. Discover captivating insights, stay informed, and
-                elevate your understanding with our thoughtfully curated blog
-                content.
+              {choosenLanguage.Intro3}
               </div>
               <br />
               <BlogsButton />
@@ -76,9 +77,7 @@ export const LandingBody = () => {
         </Stack>
         <LandingNote
           showImage={false}
-          text={
-            "🌟  Dive into an exciting Huskies-crafted experience for Huskies!  🌟"
-          }
+          text={choosenLanguage.Intro4}
         />
         <Stack
           direction="row"
@@ -98,9 +97,7 @@ export const LandingBody = () => {
           <Stack direction="column" spacing={10}>
             <div className="animated-item">
               <div>
-                Discover your perfect sanctuary with our tailored housing
-                solutions—where comfort meets convenience, and your ideal home
-                awaits.
+              {choosenLanguage.Intro5}
               </div>
               <br />
               <HousingButton />

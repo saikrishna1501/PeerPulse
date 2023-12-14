@@ -18,7 +18,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { getAllUsers } from "../../store/users";
 import CommentsContainer from "../comments/CommentsContainer";
 import _ from "lodash";
-import { loadBlogById, loadBlogs, upvoteBlog } from "../../store/blogs";
+import { loadBlogs, upvoteBlog } from "../../store/blogs";
 
 interface Props {
   blog: Blog;
