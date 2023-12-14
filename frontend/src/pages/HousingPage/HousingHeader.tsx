@@ -21,7 +21,7 @@ export const HousingHeader = () => {
                 type: "tween",
                 padding: resetStyles ? 0 : 20,
               }}
-              className="main-content"
+              className="event-content"
             >
               <h3>
                 Live the American dream <br />

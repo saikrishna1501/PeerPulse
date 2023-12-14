@@ -16,7 +16,7 @@ const EventDetailsPage: React.FC = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/events`, {
+      const response = await axios.get(`http://localhost:5001/events`, {
         withCredentials: true,
       });
       setEvents(response.data);

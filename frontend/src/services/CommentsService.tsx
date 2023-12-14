@@ -5,7 +5,7 @@ import Comment from "../models/comments";
 export const loadComments = async (blogId: string | ObjectId | undefined) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/blogs/${blogId}/comments`,
+      `http://localhost:5001/blogs/${blogId}/comments`,
       {
         withCredentials: true,
       }
@@ -22,7 +22,7 @@ export const postComment = async (
 ): Promise<any> => {
   try {
     const response: any = await axios.post(
-      `http://localhost:5000/blogs/${blogId}/comments/`,
+      `http://localhost:5001/blogs/${blogId}/comments/`,
       data,
       {
         withCredentials: true,
@@ -41,7 +41,7 @@ export const editComment = async (
 ) => {
   try {
     const response = await axios.patch(
-      `http://localhost:5000/blogs/${blogId}/comments/${commentId}`,
+      `http://localhost:5001/blogs/${blogId}/comments/${commentId}`,
       data,
       {
         withCredentials: true,
@@ -59,7 +59,7 @@ export const deleteComment = async (
 ) => {
   try {
     const response = await axios.delete(
-      `http://localhost:5000/blogs/${blogId}/comments/${commentId}`,
+      `http://localhost:5001/blogs/${blogId}/comments/${commentId}`,
       {
         withCredentials: true,
       }

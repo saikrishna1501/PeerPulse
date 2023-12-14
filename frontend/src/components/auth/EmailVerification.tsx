@@ -8,7 +8,7 @@ const EmailVerification: React.FC = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        await axios.post("http://localhost:5000/users/verify-email", { token });
+        await axios.post("http://localhost:5001/users/verify-email", { token });
         console.log("Email verified successfully");
         // Redirect or update UI action required
       } catch (error) {

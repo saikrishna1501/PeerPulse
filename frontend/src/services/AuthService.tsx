@@ -4,7 +4,7 @@ import axios from "axios";
 export const checkAuthStatus = async (): Promise<boolean> => {
   try {
     // Calling API endpoint for checking authentication
-    const response = await axios.get("http://localhost:5000/users/auth-check", {
+    const response = await axios.get("http://localhost:5001/users/auth-check", {
       withCredentials: true,
     });
     console.log(response);

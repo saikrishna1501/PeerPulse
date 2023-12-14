@@ -7,7 +7,7 @@ export const getUpcomingEventDetails = async (
   console.log("Upcoming Events", upcomingEventsIdsList);
   console.log(typeof upcomingEventsIdsList[0]);
   const upcomingEventsDetails = await axios.post(
-    "http://localhost:5000/events/filter",
+    "http://localhost:5001/events/filter",
     { ids: upcomingEventsIdsList },
     {
       withCredentials: true,

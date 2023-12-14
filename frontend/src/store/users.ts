@@ -33,7 +33,7 @@ const slice = createSlice({
                 }
                 return true;
             })
-            axios.get(`http://localhost:5000/users/pages?pageSize=${users.pageSize}`, {
+            axios.get(`http://localhost:5001/users/pages?pageSize=${users.pageSize}`, {
                 withCredentials: true
             })
             .then((response) =>{
