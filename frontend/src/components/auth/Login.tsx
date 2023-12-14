@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { apiCallForLogin } from "../../store/auth";
-import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,9 +44,20 @@ const Login: React.FC = () => {
   }, [isAuthenticated]);
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper elevation={6} sx={{ marginTop: 8, padding: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography component="h1" variant="h5">Sign in</Typography>
+    <Container maxWidth="xs" sx={{ border: "none" }}>
+      <Paper
+        sx={{
+          marginTop: 15,
+          padding: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          boxShadow: "none",
+        }}
+      >
+        <Typography sx={{ fontSize: "35px" }}>
+          Log in to your account
+        </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             variant="outlined"
@@ -67,6 +85,16 @@ const Login: React.FC = () => {
             value={credentials.password}
             onChange={handleChange}
           />
+          <Link
+            to="/users/forgotPassword"
+            style={{
+              marginTop: "8px",
+              textDecoration: "none",
+              color: "primary",
+            }}
+          >
+            Forgot Password?
+          </Link>
           <Button
             type="submit"
             fullWidth
@@ -77,6 +105,12 @@ const Login: React.FC = () => {
           >
             Sign In
           </Button>
+
+          <Typography
+            sx={{ fontSize: "20px", fontWeight: "200", paddingTop: "10px" }}
+          >
+            Don't have an account yet? <Link to="/users/register"> Signup</Link>
+          </Typography>
         </Box>
       </Paper>
     </Container>

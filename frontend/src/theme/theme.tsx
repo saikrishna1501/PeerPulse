@@ -20,7 +20,7 @@ const theme = createTheme({
       main: blue[300],
     },
     success: {
-      main: green[500],
+      main: green[300],
     },
   },
   typography: {

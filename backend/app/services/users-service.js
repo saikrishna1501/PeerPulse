@@ -131,9 +131,8 @@ export const requestPasswordReset = async (email) => {
     const user = await User.findOne({ email });
     if (!user) throw new Error("Email does not exist");
     const verify = TokenService.TokenType.VERIFY;
-    console.log(verify);
     let token = await TokenService.createToken(user, verify);
-    const link = `${process.env.SERVER_URI}:${process.env.PORT}/passwordReset?token=${token}&id=${email}`;
+    const link = `${process.env.SERVER_URI}:${3000}/passwordReset?token=${token}&id=${email}`;
 //     await sendEmail.sendEmail(
 //         user.email,
 //         link,
@@ -150,6 +149,5 @@ export const requestPasswordReset = async (email) => {
       { $set: { password: hash } },
       { new: true }
     );
-    await TokenService.deleteToken(passwordToken);
-
+    await TokenService.deleteToken({ token: passwordToken});
   };

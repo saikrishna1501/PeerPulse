@@ -54,12 +54,32 @@ const EventDetailsPage: React.FC = () => {
       if(registrationStatus === RegistrationStatus.REGISTERED) {
         dispatch(unRegisterEvent({userId: user._id, eventId: event._id}));
         setRegistrationStatus(RegistrationStatus.NOT_REGISTERED);
-        alert("Unregistration Successful");
+        // alert("Unregistration Successful");
+        toast.success('Successfully Unregistered!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       }
       else {
         dispatch(registerEvent({userId: user._id, eventId: event._id}));
         setRegistrationStatus(RegistrationStatus.REGISTERED);
-        alert("Registration Successful");
+        // alert("Registration Successful");
+        toast.success('Successfully Registered!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       }
       
     }
