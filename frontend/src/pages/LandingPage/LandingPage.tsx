@@ -6,8 +6,6 @@ import { LandingHeader } from "../../components/Landing/LandingHeader";
 import LandingBody from "../../components/Landing/LandingBody";
 
 const LandingPage: React.FC = () => {
-  const languageSelector = useSelector((state: any) => state.language.selectedLanguage);
-  const chosenLanguage = getLanguageObject(languageSelector);
   return (
     <>
       <LandingHeader />
