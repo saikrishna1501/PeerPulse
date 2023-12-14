@@ -77,7 +77,7 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/users",
+        "http://localhost:5000/users",
         userData
       );
       toast.success("Registration successful! Please verify the email id", {

@@ -3,7 +3,7 @@ info:
   title: User API
   description: This REST API simplifies user management, offering seamless operations to retrieve, create, update, authenticate, and delete user information.
 servers:
-  - url: http://localhost:5001
+  - url: http://localhost:5000
 paths:
   /users:
     get:
@@ -39,7 +39,7 @@ paths:
                       firstName: "Sai"
                       lastName: "Gaddam"
                       phoneNumber: "+1234567890"
-                      profilePic: "https://localhost:5001/profile-pictures/test.png"
+                      profilePic: "https://localhost:5000/profile-pictures/test.png"
         "401":
           description: Unauthenticated request
           content:
@@ -327,7 +327,7 @@ components:
         profilePic:
           type: string
           examples:
-            - https://localhost:5001/profile-pictures/test.png
+            - https://localhost:5000/profile-pictures/test.png
     UserDetails:
       allOf:
         - $ref: '#/components/schemas/BasicUserDetails'

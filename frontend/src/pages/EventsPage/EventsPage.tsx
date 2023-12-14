@@ -44,7 +44,7 @@ const EventsPage: React.FC = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/events`, {
+      const response = await axios.get(`http://localhost:5000/events`, {
         withCredentials: true,
       });
       setEvents(response.data);
@@ -125,7 +125,7 @@ const EventsPage: React.FC = () => {
 
   const handleDelete = async (eventId: string) => {
     try {
-      await axios.delete(`http://localhost:5001/events/${eventId}`, {
+      await axios.delete(`http://localhost:5000/events/${eventId}`, {
         withCredentials: true,
       });
       setEvents(events.filter((event) => event._id !== eventId));

@@ -100,12 +100,12 @@ const EventForm: React.FC<EventFormProps> = ({
       const editEventData = async () => {
         try {
           await axios.put(
-            `http://localhost:5001/events/${initialEventData._id}`,
+            `http://localhost:5000/events/${initialEventData._id}`,
             eventData,
             { withCredentials: true }
           );
           const updatedEvents = await axios.get(
-            "http://localhost:5001/events",
+            "http://localhost:5000/events",
             { withCredentials: true }
           );
           setEvents(updatedEvents.data);
@@ -119,12 +119,12 @@ const EventForm: React.FC<EventFormProps> = ({
       const addEventData = async () => {
         try {
           const addedEvent = await axios.post(
-            "http://localhost:5001/events",
+            "http://localhost:5000/events",
             eventData,
             { withCredentials: true }
           );
 
-          const response = await axios.get("http://localhost:5001/events", {
+          const response = await axios.get("http://localhost:5000/events", {
             withCredentials: true,
           });
           setEvents(response.data);
