@@ -1,6 +1,5 @@
-// components/EventCard.tsx
 import React from 'react';
-import { Card, CardActionArea, CardActions, CardContent, IconButton, Typography } from '@mui/material';
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import PlaceIcon from '@mui/icons-material/Place';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,6 +15,15 @@ interface EventCardProps {
 const EventCard: React.FC<EventCardProps> = ({ event, onEdit, onDelete, isCreator }) => {
   return (
     <Card sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+      {event.imageUrl && (
+        <CardMedia
+          component="img"
+          height="150"
+          width={"90"}
+          image={event.imageUrl}
+          alt={event.title}
+        />
+      )}
       <CardActionArea onClick={() => window.open(`/event/${event._id}`, '_blank')}>
       <CardContent sx={{ flex: '1 0 auto' }}>
         <Typography variant="h5">{event.title}</Typography>

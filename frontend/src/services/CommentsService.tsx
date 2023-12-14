@@ -1,6 +1,5 @@
 import axios from "axios";
 import { ObjectId } from "bson";
-import Comment from "../models/comments";
 
 export const loadComments = async (blogId: string | ObjectId | undefined) => {
   try {

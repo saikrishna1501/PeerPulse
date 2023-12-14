@@ -86,6 +86,7 @@ const HousingPage: React.FC = () => {
         (!filterOptions.three || housing.beds.toString().includes('3')) &&
         (!filterOptions.fourPlus || housing.beds.toString().includes('4+'));
 
+
       const amenitiesCheck =
         (!filterOptions.laundry || housing.amenities1.includes('laundry')) &&
         (!filterOptions.dishwasher || housing.amenities2.includes('Dishwasher')) &&
@@ -93,6 +94,7 @@ const HousingPage: React.FC = () => {
         (!filterOptions.parking || housing.amenities4.includes('Parking'));
 
       return queryCheck && priceCheck && typeCheck && bedsCheck && amenitiesCheck;
+
 
     });
     setFilteredHousing(result);

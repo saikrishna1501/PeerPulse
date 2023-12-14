@@ -12,7 +12,6 @@ import axios from 'axios';
 
 const EventDetailsPage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
-  //const events = useSelector((state: any) => state.entities.events.list);
   const [events,setEvents] = useState<Event[]>([]);
 
   const fetchEvents = async () => {
@@ -54,7 +53,6 @@ const EventDetailsPage: React.FC = () => {
       if(registrationStatus === RegistrationStatus.REGISTERED) {
         dispatch(unRegisterEvent({userId: user._id, eventId: event._id}));
         setRegistrationStatus(RegistrationStatus.NOT_REGISTERED);
-        // alert("Unregistration Successful");
         toast.success('Successfully Unregistered!', {
           position: "top-center",
           autoClose: 5000,
@@ -69,7 +67,6 @@ const EventDetailsPage: React.FC = () => {
       else {
         dispatch(registerEvent({userId: user._id, eventId: event._id}));
         setRegistrationStatus(RegistrationStatus.REGISTERED);
-        // alert("Registration Successful");
         toast.success('Successfully Registered!', {
           position: "top-center",
           autoClose: 5000,

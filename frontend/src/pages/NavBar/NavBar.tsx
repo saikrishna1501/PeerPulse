@@ -12,14 +12,13 @@ import {
 } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import theme from "../../theme/theme";
+
 import getLanguageObject from "../../utils/getLanguageObject";
-//import { RootState } from './store'; // Import the type of your root state
-//import { setAuthenticated } from './authSlice'; // Import the action to update the state
+
 
 
 
 const Navbar: React.FC = () => {
-  //const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   let isAuthenticated = true;
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -1,5 +1,3 @@
-import { Grid } from "@mui/material"
-import { Outlet } from "react-router-dom"
 import VerticalTabs from "../../components/VerticleTabs/VerticleTabs"
 import UserSettingsPage from "../UserSettingsPage/UserSettingsPage"
 import { useEffect, useState } from "react"
