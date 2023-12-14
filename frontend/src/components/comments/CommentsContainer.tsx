@@ -47,13 +47,13 @@ const CommentsContainer = ({ blog }: Props) => {
         const response = await loadComments(blog._id);
 
         // Check if the response status is 403 (Forbidden)
-        if (response.status === 403) {
-          // Do nothing or handle the case as needed
-          console.error("Forbidden: Unable to fetch comments.");
-          return;
-        }
+        // if (response.status === 403) {
+        //   // Do nothing or handle the case as needed
+        //   console.error("Forbidden: Unable to fetch comments.");
+        //   return;
+        // }
 
-        const fetchedComments: Comment[] = await response.json();
+        const fetchedComments: Comment[] = await response;
 
         // Use map and Promise.all to fetch user details for each comment
         const commentsList = await Promise.all(
