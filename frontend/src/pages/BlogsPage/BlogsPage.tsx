@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import BlogList from "../../components/Blogs/BlogList";
 import Filters from "../../components/BlogsFilter/Filters";
 import { BlogHeader } from "../../components/Blogs/BlogHeader";
@@ -32,25 +32,6 @@ const BlogsPage = (props: any) => {
   const handleClick = () => {
     // Navigate to /blogs/new
     navigate("/blogs/new");
-  };
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const noOfPages = useSelector(
-    (state: any) => state.entities.users.numberOfPages
-  );
-
-  const onPageChange = (clickedPage: number) => {
-    // const newUsers = [...listOfUsers, {
-    //     _id: "656a9421c56c68861c127ac",
-    //     email: "gaddam.sai@northeastern.edu",
-    //     firstName: "Dummy",
-    //     lastName: "User",
-    //     role: "student"
-    // }]
-    // // setListOfUsers(newUsers);
-    // dispatch(loadUsers(clickedPage,pageSize));
-    // setCurrentPage(clickedPage);
-    // setTotalNoOfPages(users.numberOfPages);
   };
 
   // Fetch Users
@@ -89,11 +70,6 @@ const BlogsPage = (props: any) => {
         >
           <Stack direction={"column"}>
             <BlogList blogs={blogs} users={users} />
-            <PaginationContainer
-              onPageChange={onPageChange}
-              currentPage={currentPage}
-              noOfPages={noOfPages}
-            ></PaginationContainer>
           </Stack>
 
           <Stack
@@ -124,7 +100,7 @@ const BlogsPage = (props: any) => {
                 Write
               </Typography>
             </Button>
-            <Filters onFilterChange={handleFilterChange} />
+            <Grid>Top 3 Authors</Grid>
           </Stack>
         </Stack>
       </Container>

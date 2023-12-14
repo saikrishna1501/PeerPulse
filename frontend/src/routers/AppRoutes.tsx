@@ -27,7 +27,6 @@ import {
   PASSWORD_RESET_ROUTE,
   NEW_PASSWORD_SETUP_ROUTE,
 } from "../constants/routes";
-import { LoginRequiredPage } from "../components/auth/LoginRequiredPage";
 import BlogForm from "../pages/BlogFormPage/BlogForm";
 import UserDashboardPage from "../pages/UserDashboardPage/UserDashboardPage";
 import HousingDetailsPage from "../pages/HousingPage/HousingDetailsPage";
@@ -72,7 +71,7 @@ const AppRoutes: React.FC = () => {
             path={EVENT_DETAIL_ROUTE}
             element={<ProtectedRoute component={EventDetailsPage} />}
           />
-          <Route path={LOGIN_PATH} element={<LoginRequiredPage />} />
+
           <Route
             path={BLOG_FORM_ROUTE}
             element={<ProtectedRoute component={BlogForm} />}

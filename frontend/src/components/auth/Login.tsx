@@ -44,19 +44,19 @@ const Login: React.FC = () => {
   }, [isAuthenticated]);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container maxWidth="xs" sx={{ border: "none" }}>
       <Paper
-        elevation={6}
         sx={{
-          marginTop: 8,
+          marginTop: 15,
           padding: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          boxShadow: "none",
         }}
       >
-        <Typography component="h1" variant="h5">
-          Sign in
+        <Typography sx={{ fontSize: "35px" }}>
+          Log in to your account
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
@@ -105,6 +105,12 @@ const Login: React.FC = () => {
           >
             Sign In
           </Button>
+
+          <Typography
+            sx={{ fontSize: "20px", fontWeight: "200", paddingTop: "10px" }}
+          >
+            Don't have an account yet? <Link to="/users/register"> Signup</Link>
+          </Typography>
         </Box>
       </Paper>
     </Container>

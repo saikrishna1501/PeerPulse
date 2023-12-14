@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 //ENUM data for Roles
 export const Roles = {
     ADMIN: "admin",
-    MODERATOR: "moderator",
     STUDENT: "student"
 }
 
@@ -47,7 +46,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: [Roles.ADMIN, Roles.MODERATOR, Roles.STUDENT],
+        enum: [Roles.ADMIN, Roles.STUDENT],
         default: "student"
     },
     password: { //password hash

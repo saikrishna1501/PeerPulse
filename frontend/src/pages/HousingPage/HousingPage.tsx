@@ -8,10 +8,11 @@ import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
 
 
 interface FiltersState {
-  upto1K: boolean;
-  upto3K: boolean;
-  upto5K: boolean;
-  more5K: boolean;
+  price: boolean;
+  price1k3k: boolean;
+  price3k5k: boolean;
+  price5k: boolean;
+  priceMore5k: boolean;
   apartments: boolean;
   condos: boolean;
   houses: boolean;
@@ -32,10 +33,11 @@ const HousingPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState<FiltersState>({
-    upto1K: false,
-    upto3K: false,
-    upto5K: false,
-    more5K: false,
+    price: false,
+  price1k3k: false,
+  price3k5k: false,
+  price5k: false,
+  priceMore5k: false,
     apartments: false,
     condos: false,
     houses: false,
@@ -66,6 +68,7 @@ const HousingPage: React.FC = () => {
     let result = housing.filter((housing: Housing) => {
       const queryCheck = housing.location.toLowerCase().includes(query.toLowerCase());
       const priceCheck =
+
         (!filterOptions.upto1K || (housing.price >= 500 && housing.price <= 1000))   ||
         (!filterOptions.upto3K || (housing.price >= 1001 && housing.price <= 3000)) ||
         (!filterOptions.upto5K || (housing.price >= 3001 && housing.price <= 5000)) ||
@@ -89,6 +92,7 @@ const HousingPage: React.FC = () => {
         (!filterOptions.parking || housing.amenities4.includes('Parking'));
 
       return queryCheck && priceCheck && typeCheck && bedsCheck && amenitiesCheck;
+
     });
     setFilteredHousing(result);
   };

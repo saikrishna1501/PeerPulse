@@ -6,10 +6,9 @@ import { Event } from "../../models/event";
 
 interface MapViewProps {
   events: Event[];
-  onLocationSelect: (location: string) => void;
 }
 
-const MapView: React.FC<MapViewProps> = ({ events, onLocationSelect }) => {
+const MapView: React.FC<MapViewProps> = ({ events }) => {
   return (
     <MapContainer
       center={[42.3601, -71.0589]}
@@ -21,11 +20,7 @@ const MapView: React.FC<MapViewProps> = ({ events, onLocationSelect }) => {
         <Marker
           key={event._id}
           position={[event.latitude, event.longitude]}
-          eventHandlers={{
-            click: () => {
-              onLocationSelect(event.location);
-            },
-          }}
+          
         >
           <Popup>{event.title}</Popup>
         </Marker>
