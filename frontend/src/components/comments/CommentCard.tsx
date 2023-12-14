@@ -42,7 +42,7 @@ const CommentCard = ({ authorName, content, avatarUrl, authorId, onCommentEdit, 
     }
 
     const setEditable = () => {
-        setIsEdit(true)
+        setIsEdit(true);
     }
 
     const unsetEditable = () => {

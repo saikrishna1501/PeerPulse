@@ -13,4 +13,5 @@ export interface Housing {
     amenities2: string;
     amenities3: string;
     amenities4: string;
+    images: [];
 }
