@@ -115,6 +115,8 @@ const EventsPage: React.FC = () => {
   };
 
   const handleEdit=async (updatedEvent: Event)=>{
+    console.log('updatedEvent', updatedEvent);
+    updatedEvent.date = new Date(updatedEvent.date);
     setEditingEvent(updatedEvent);
     handleOpenEditForm();
     
