@@ -100,7 +100,7 @@ const BlogsPage = (props: any) => {
                 Write
               </Typography>
             </Button>
-            <Grid>Top 3 Authors</Grid>
+            {/* <Grid>Top 3 Authors</Grid> */}
           </Stack>
         </Stack>
       </Container>

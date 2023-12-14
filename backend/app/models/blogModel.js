@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from "mongoose";
 
 const blogSchema = new Schema({
     title: {
@@ -11,12 +10,18 @@ const blogSchema = new Schema({
         required: true
     },
     upvotes: {
+        count: {
+            type: Number,
+            default: 0,
+        },
+        users: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+    },
+    downvotes: {
         type: Number,
         default: 0
-    },
-    downvotes:{
-        type : Number,
-        default : 0
     },
     comments: [{
         type: Schema.Types.ObjectId,

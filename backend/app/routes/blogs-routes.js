@@ -5,6 +5,7 @@ import * as blogsController from '../controllers/blogs-controllers.js';
 
 import authorize from '../middlewares/auth-middleware.js';
 import checkRoles from '../middlewares/check-roles-middleware.js';
+import upvoteLimiter from '../middlewares/upvote-limiter.js'
 import { Roles } from '../models/users-model.js';
 
 import * as commentsController from '../controllers/comment-controller.js'; 
@@ -43,7 +44,7 @@ router.route('/:id')
 
 
 router.route('/:id/upvote')
-    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.handleUpvote)
+    .post(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), upvoteLimiter, blogsController.handleUpvote)
     .get(authorize, checkRoles([Roles.ADMIN, Roles.STUDENT, Roles.MODERATOR]), blogsController.getUpvotes)
 
     router.route('/:id/downvote')

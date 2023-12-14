@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Typography,
   Container,
@@ -12,15 +14,11 @@ import {
 import Blog from "../../models/blogs";
 import ReactQuill from "react-quill";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getAllUsers, loadUsers } from "../../store/users";
-import { textAlign } from "@mui/system";
-import { useRef } from "react";
+import { getAllUsers } from "../../store/users";
 import CommentsContainer from "../comments/CommentsContainer";
+import _ from "lodash";
+import { loadBlogById, loadBlogs, upvoteBlog } from "../../store/blogs";
 
 interface Props {
   blog: Blog;
@@ -28,25 +26,37 @@ interface Props {
 
 const ViewBlogDetails = ({ blog }: Props) => {
   const dispatch = useDispatch();
+  const [isUpvoted, setIsUpvoted] = useState(false);
+  const [upvote, setUpvote] = useState(blog ? blog.upvotes.count : 0);
 
   const users = useSelector((state: any) => state.entities.users.list);
-
-  const user = users.find((user: any) => user._id == blog.author);
-
-  const handleUpvote = () => {
-    // Add your upvote logic here
-    console.log("Upvoted!");
-  };
-
-  const handleDownvote = () => {
-    // Add your downvote logic here
-    console.log("Downvoted!");
-  };
+  const user = users && users.find((user: any) => user._id == blog.author);
+  const loggedIn = useSelector((state: any) => state.auth.user);
 
   useEffect(() => {
+    if (!blog) dispatch(loadBlogs());
+  }, []);
+
+  useEffect(() => {
+    // Set initial upvote state
+    setIsUpvoted(
+      blog.upvotes.count > 0 && blog.upvotes.users.includes(loggedIn._id)
+    );
+
     // Dispatch the action when the id changes
     dispatch(getAllUsers());
-  }, []);
+  }, [dispatch, blog.upvotes.count, blog.upvotes.users, loggedIn._id]);
+
+  const handleUpvote = _.debounce(() => {
+    const action = upvoteBlog(blog._id, loggedIn._id);
+    dispatch(action);
+
+    // Update upvote state
+    setIsUpvoted(!isUpvoted);
+    // Update upvote count
+    setUpvote(isUpvoted ? upvote - 1 : upvote + 1);
+  }, 1000);
+
   const handleComment = () => {
     const childElement = document.getElementById("my-child-component");
     if (childElement) {
@@ -115,7 +125,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
                 sx={{ paddingLeft: "20px", ml: "auto", textAlign: "center" }}
               >
                 {blog.tag?.map((t) => (
-                  <Chip label={t} />
+                  <Chip label={t} key={t} />
                 ))}
               </Stack>
             </>
@@ -133,29 +143,30 @@ const ViewBlogDetails = ({ blog }: Props) => {
           }}
         >
           <IconButton onClick={handleUpvote}>
-            <ThumbUpIcon sx={{ color: "rgb(117, 117, 117)" }} />
+            <ThumbUpIcon
+              sx={{
+                color: isUpvoted ? "primary.main" : "rgb(117, 117, 117)",
+              }}
+            />
           </IconButton>
-          <Typography sx={{ textAlign: "center" }}>{blog.upvotes}</Typography>
-          <IconButton onClick={handleDownvote}>
-            <ThumbDownIcon sx={{ color: "rgb(117, 117, 117)" }} />
-          </IconButton>
-          <Typography>{blog.downvotes}</Typography>
+
+          <Typography sx={{ textAlign: "center" }}>{upvote}</Typography>
           <IconButton onClick={handleComment}>
             <ChatBubbleOutlineIcon sx={{ color: "rgb(117, 117, 117)" }} />
           </IconButton>
           <Typography>{blog.comments!.length}</Typography>
-          <IconButton onClick={handleDownvote} sx={{ marginLeft: "600px" }}>
-            <MoreHorizIcon sx={{ color: "rgb(117, 117, 117)" }} />
-          </IconButton>
         </Box>
+
         <Divider
           sx={{ width: "100%", my: 2, opacity: 0.5, marginTop: "8px" }}
         />
+
         <ReactQuill
           value={blog.content}
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
+
         <CommentsContainer blog={blog} />
       </Stack>
     </Container>

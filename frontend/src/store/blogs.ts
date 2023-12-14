@@ -74,7 +74,25 @@ const slice = createSlice({
           return true; // Include other blogs
         });
       },
-  }
+       updateUpvoteInBlog: (blogs, action) => {
+        const { count, users, blogId } = action.payload;
+      
+        blogs.list = blogs.list.map(blog => {
+          // Check if both ids exist and are equal
+          if (blog._id && blogId && blog._id.toString() === blogId) {
+            // Update the upvotes property with the new count and users
+            blog.upvotes = { count, users };
+          }
+      
+          return blog; // Return the modified or unmodified blog
+        });
+      
+        return blogs;
+      }
+      
+  },
+
+
 });
 
 export const loadBlogs = () =>({
@@ -131,6 +149,19 @@ export const deleteBlogById = (id: any) => ({
   }
 });
 
+export const upvoteBlog = (blogId: any, userId: any) => ({
+  type: apiCallBegan.type,
+  payload: {
+    url: `/blogs/${blogId}/upvote`,
+    method: 'post',
+    data: {
+      userId
+    },
+    onSuccess: updateUpvoteInBlog.type,
+    onError : apiCallFailure
+  }
+});
 
-export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted, removeACommentFromBlog, addACommentToBlog } = slice.actions;
+
+export const { blogsRequested, blogsReceived, blogsRequestFailed, blogAdded, blogUpdated, blogDeleted, removeACommentFromBlog, addACommentToBlog, updateUpvoteInBlog} = slice.actions;
 export default slice.reducer;

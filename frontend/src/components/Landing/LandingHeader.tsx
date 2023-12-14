@@ -17,7 +17,7 @@ export const LandingHeader = () => {
                 new way of studying
               </h3>
               <h6>
-                What would you like to study with{" "}
+                What would you like to explore with{" "}
                 <strong> peerpulse.com?</strong>
               </h6>
               <SignupButton />
