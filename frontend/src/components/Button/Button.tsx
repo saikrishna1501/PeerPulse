@@ -1,8 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { useNavigate } from "react-router-dom";
-import { REGISTER_ROUTE } from "../../constants/routes";
-import { ClassNames } from "@emotion/react";
 
 interface Props {
   text: string;

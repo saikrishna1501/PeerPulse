@@ -1,7 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import User from '../models/users';
 import { apiCallBegan } from './api';
-import {produce} from "immer";
 import { toast } from 'react-toastify';
 
 

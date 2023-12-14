@@ -1,4 +1,3 @@
-// components/EventCard.tsx
 import React from 'react';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';

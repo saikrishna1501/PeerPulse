@@ -77,8 +77,6 @@ const HousingPage: React.FC = () => {
         (!filterOptions.condos || housing.type.includes("Condos")) &&
         (!filterOptions.houses || housing.type.includes("Houses"));
 
-      //const pricingCheck = (!filterOptions.free || !housing.isPaid) && (!filterOptions.paid || housing.isPaid);
-
       return queryCheck && priceCheck && typeCheck; //&& pricingCheck;
     });
     setFilteredHousing(result);
