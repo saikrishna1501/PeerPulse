@@ -22,7 +22,6 @@ interface FiltersState {
 }
 
 const EventsPage: React.FC = () => {
-  //const events = useSelector((state: any) => state.entities.events.list);
   // to filter events
   //const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const [events, setEvents] = useState<Event[]>([]);
