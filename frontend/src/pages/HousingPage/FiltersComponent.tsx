@@ -12,19 +12,19 @@ const FiltersComponent: React.FC<FiltersComponentProps> = ({ filters, onFilterCh
       <div>
         <div>Price</div>
         <FormControlLabel
-          control={<Checkbox checked={filters.upto1K} onChange={(e) => onFilterChange('upto1K', e.target.checked)} />}
+          control={<Checkbox checked={filters.price} onChange={(e) => onFilterChange('price', e.target.checked)} />}
           label="$500 - $1000"
         />
         <FormControlLabel
-          control={<Checkbox checked={filters.upto3K} onChange={(e) => onFilterChange('upto3K', e.target.checked)} />}
+          control={<Checkbox checked={filters.price1k3k} onChange={(e) => onFilterChange('price1k3k', e.target.checked)} />}
           label="$1001 - $3000"
         />
         <FormControlLabel
-          control={<Checkbox checked={filters.upto5K} onChange={(e) => onFilterChange('upto5K', e.target.checked)} />}
+          control={<Checkbox checked={filters.price3k5k} onChange={(e) => onFilterChange('price3k5k', e.target.checked)} />}
           label="$3001 - $5000"
         />
         <FormControlLabel
-          control={<Checkbox checked={filters.more5K} onChange={(e) => onFilterChange('more5K', e.target.checked)} />}
+          control={<Checkbox checked={filters.price5k} onChange={(e) => onFilterChange('price5k', e.target.checked)} />}
           label="$5001 - more"
         />
       </div>

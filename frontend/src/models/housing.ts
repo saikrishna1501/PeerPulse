@@ -3,7 +3,7 @@ export interface Housing {
     title: string;
     description: string;
     location: string;
-    price: string;
+    price: number;
     imageUrl: string;
     latitude: number;
     longitude: number;
