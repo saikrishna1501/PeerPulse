@@ -15,20 +15,24 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import CommentCard from "../Comments/CommentCard";
-import CommentInput from "../Comments/CommentInput";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllUsers, loadUsers } from "../../store/users";
 import { textAlign } from "@mui/system";
-import CommentsContainer from "../Comments/CommentsContainer";
 import { useRef } from "react";
+import CommentsContainer from "../comments/CommentsContainer";
 
 interface Props {
   blog: Blog;
 }
 
-
-
 const ViewBlogDetails = ({ blog }: Props) => {
-  // const commentsRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+
+  const users = useSelector((state: any) => state.entities.users.list);
+
+  const user = users.find((user: any) => user._id == blog.author);
+
   const handleUpvote = () => {
     // Add your upvote logic here
     console.log("Upvoted!");
@@ -39,12 +43,16 @@ const ViewBlogDetails = ({ blog }: Props) => {
     console.log("Downvoted!");
   };
 
+  useEffect(() => {
+    // Dispatch the action when the id changes
+    dispatch(getAllUsers());
+  }, []);
   const handleComment = () => {
     const childElement = document.getElementById("my-child-component");
-    if(childElement) {
+    if (childElement) {
       childElement.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   return (
     <Container
@@ -61,7 +69,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             marginTop: "80px",
             fontWeight: "800",
             fontSize: "60px",
-            textAlign: "left"
+            textAlign: "left",
           }}
         >
           {blog.title}
@@ -72,7 +80,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
             <>
               <Avatar
                 alt="Author Avatar"
-                src={blog.author.avatarUrl}
+                src={(user && user.profilePic) || ""}
                 sx={{ width: 36, height: 36 }}
               />
               <Stack>
@@ -80,18 +88,18 @@ const ViewBlogDetails = ({ blog }: Props) => {
                   sx={{
                     fontSize: "18px",
                     padding: "0px",
-                    marginLeft: "15px", // Adjust the value based on your preference
+                    marginLeft: "15px",
                     color: "#242424",
                   }}
                 >
-                  {blog.author.name || "Raveena"}
+                  {(user && user.firstName + " " + user.lastName) || "Raveena"}
                 </Typography>
                 <Typography
                   sx={{
                     fontSize: "12px",
                     color: "rgb(117, 117, 117)",
                     padding: "0px",
-                    marginLeft: "15px", // Adjust the value based on your preference
+                    marginLeft: "15px",
                   }}
                 >
                   {new Date(blog!.createdAt).toLocaleDateString(undefined, {
@@ -148,18 +156,7 @@ const ViewBlogDetails = ({ blog }: Props) => {
           readOnly={true} // Make the editor read-only
           theme="bubble" // or use another theme
         />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
-        />
-        <ReactQuill
-          value={blog.content}
-          readOnly={true} // Make the editor read-only
-          theme="bubble" // or use another theme
-        />
-        <CommentsContainer blog={blog}/>
-        
+        <CommentsContainer blog={blog} />
       </Stack>
     </Container>
   );

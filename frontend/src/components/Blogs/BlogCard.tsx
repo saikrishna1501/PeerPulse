@@ -8,18 +8,53 @@ import {
   Stack,
   Chip,
   Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from "@mui/material";
 import Blog from "../../models/blogs";
 import { useNavigate } from "react-router-dom";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { useSelector } from "react-redux";
-const BlogCard = ({ blog }: { blog: Blog }) => {
-  const stripHtmlTags = (html: string): string => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
+import EditIcon from "@mui/icons-material/Edit";
+
+import { useDispatch, useSelector } from "react-redux";
+import { deleteBlogById } from "../../store/blogs";
+import User from "../../models/users";
+import { useState } from "react";
+
+interface Props {
+  blog: Blog;
+  author: User;
+}
+
+const BlogCard = ({ blog, author }: Props) => {
+  // Alert Dialog
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = (blog: Blog) => {
+    setOpenDialog(true);
   };
 
-  const user = useSelector((state: any) => state.auth.user);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const dispatch = useDispatch();
+
+  const stripHtmlTags = (html: string): string => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+
+    // Remove img tags
+    const imgTags = doc.body.querySelectorAll("img");
+    imgTags.forEach((img) => img.remove());
+
+    return doc.body.textContent?.slice(0, 150) || "";
+  };
+
+  const loggedIn = useSelector((state: any) => state.auth.user);
 
   const navigate = useNavigate();
   const handleCardClick = () => {
@@ -28,14 +63,26 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
   };
 
   const isAuthor = (blog: any) => {
-    console.log("User Id ", user._id);
-    console.log("Blog Author ", blog.author);
-
-    return user._id == blog.author;
+    return loggedIn._id == blog.author;
   };
 
-  const deleteBlog = (blog: any) => {
-    console.log("Deleted! ");
+  const deleteBlog = async () => {
+    if (blog && blog._id) {
+      // Dispatch the action to delete the blog
+      await dispatch(deleteBlogById(blog._id));
+
+      // Navigate to "/blogs" after successful deletion
+      navigate("/blogs");
+
+      // Close the dialog
+      handleCloseDialog();
+    } else {
+      console.error("Invalid blog object:", blog);
+    }
+  };
+
+  const updateBlog = (blog: any) => {
+    navigate(`/blogs/${blog._id}/edit`);
   };
 
   return (
@@ -54,7 +101,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             <>
               <Avatar
                 alt="Author Avatar"
-                src={blog.author.avatarUrl}
+                src={author.profilePic}
                 sx={{ width: 26, height: 26 }}
               />
               <Typography
@@ -62,7 +109,7 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
                 fontWeight="500"
                 sx={{ padding: "0px", marginLeft: 1, color: "#242424" }}
               >
-                {blog.author.name || "Raveena"}
+                {author.firstName + " " + author.lastName || "Raveena"}
               </Typography>
             </>
           }
@@ -71,7 +118,13 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
         <CardContent sx={{ padding: "0px" }}>
           <Stack direction={"row"} sx={{ alignItems: "center" }}>
             <Typography
-              sx={{ marginBottom: "10px", cursor: "pointer" }}
+              sx={{
+                marginBottom: "10px",
+                cursor: "pointer",
+                ":hover": {
+                  textDecoration: "underline", // Add your desired hover effect
+                },
+              }}
               variant="h3"
               fontWeight="bold"
               onClick={handleCardClick}
@@ -79,10 +132,16 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
               {blog.title}
             </Typography>
             {isAuthor(blog) && (
-              <RemoveCircleIcon
-                sx={{ marginLeft: "10px" }}
-                onClick={deleteBlog}
-              />
+              <>
+                <RemoveCircleIcon
+                  sx={{ marginLeft: "10px" }}
+                  onClick={() => handleClickOpenDialog(blog)}
+                />
+                <EditIcon
+                  sx={{ marginLeft: "10px" }}
+                  onClick={() => updateBlog(blog)}
+                />
+              </>
             )}
           </Stack>
 
@@ -91,8 +150,8 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
             variant="inherit"
             color="text.secondary"
           >
-            {blog.content.length > 150
-              ? `${stripHtmlTags(blog.content.slice(0, 150))}...`
+            {blog.content && blog.content.length > 150
+              ? `${stripHtmlTags(blog.content)}...`
               : stripHtmlTags(blog.content)}
           </Typography>
         </CardContent>
@@ -111,6 +170,40 @@ const BlogCard = ({ blog }: { blog: Blog }) => {
           </Stack>
         </CardActions>
       </Card>
+      {/* Success Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText
+            sx={{ fontSize: "18px" }}
+            id="alert-dialog-description"
+          >
+            Are you sure you want to delete this blog permanently?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ fontSize: "18px" }}>
+          <Button
+            onClick={() => {
+              deleteBlog();
+              handleCloseDialog();
+              navigate("/blogs");
+            }}
+          >
+            Yes
+          </Button>
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+            }}
+          >
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

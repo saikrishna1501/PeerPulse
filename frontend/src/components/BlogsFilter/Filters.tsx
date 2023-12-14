@@ -10,90 +10,75 @@ import {
   ListItemIcon,
   ListItemText,
   Checkbox,
+  Typography,
+  Stack,
+  Button,
 } from "@mui/material";
 import theme from "../../theme/theme";
 
-const Filters = () => {
+interface Props {
+  onFilterChange?: (filtername: string, value: boolean) => void;
+}
+const Filters = ({ onFilterChange }: Props) => {
   const [pastWeek, setPastWeek] = useState(false);
-  const [pastMonth, setPastMonth] = useState(false);
-  const [postUpvotes, setPostUpvotes] = useState(false);
+  const [resetFilters, setResetFilters] = useState(false);
+
+  // Handler
+  const handleResetFilters = () => {
+    setResetFilters(!resetFilters);
+    onFilterChange!("ResetFilters", !resetFilters);
+  };
 
   const handlePastWeekChange = () => {
     setPastWeek(!pastWeek);
-    // Perform any additional actions when Past 1 week changes
+    onFilterChange!("Last7Days", !pastWeek);
   };
 
-  const handlePastMonthChange = () => {
-    setPastMonth(!pastMonth);
-    // Perform any additional actions when Past 1 month changes
-  };
-
-  const handlePostUpvotesChange = () => {
-    setPostUpvotes(!postUpvotes);
-    // Perform any additional actions when Post > 10 upvotes changes
-  };
+  // Define filterOptions array
+  const filterOptions = [
+    {
+      label: "Last 7 Days",
+      onChange: handlePastWeekChange,
+      checked: pastWeek,
+    },
+    {
+      label: "Reset",
+      onChange: handleResetFilters,
+      checked: resetFilters,
+    },
+  ];
 
   return (
-    <Card
-      sx={{
-        flex: 1.5,
-        textAlign: "center",
-        height: "300px",
-        top: 100,
-        display: { xs: "none", sm: "block" },
-        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)", // Box shadow for a subtle effect
-        borderRadius: theme.shape.borderRadius * 2, // Rounded corners
-      }}
-    >
-      <CardContent>
-        <List>
-          <ListItem>
-            <ListItemButton>
-              <ListItemIcon>
-                <FilterIcon sx={{ width: 30, height: 30 }} />
-              </ListItemIcon>
-              <ListItemText primary="Filters" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePastWeekChange}>
-              <Checkbox checked={pastWeek} />
-              <ListItemText
-                primary="Last 7 Days"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePastMonthChange}>
-              <Checkbox checked={pastMonth} color="primary" />
-              <ListItemText
-                primary="Past 1 month"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton onClick={handlePostUpvotesChange}>
-              <Checkbox checked={postUpvotes} color="primary" />
-              <ListItemText
-                primary="Post > 10 upvotes"
-                sx={{
-                  fontSize: "1.5rem",
-                  fontFamily: theme.typography.fontFamily,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </CardContent>
-    </Card>
+    <List sx={{ position: "sticky", top: 180 }}>
+      <Typography
+        sx={{
+          fontSize: "20px",
+          fontWeight: "600",
+          paddingBottom: "10px",
+          marginBottom: "10px",
+          borderBottom: "1px solid #F2F2F2",
+        }}
+      >
+        Search Criteria
+      </Typography>
+
+      <Stack direction="column" spacing={1}>
+        {filterOptions.map((option) => (
+          <Button
+            onClick={option.onChange}
+            sx={{
+              backgroundColor: "rgba(0, 0, 0, 0.08)",
+              width: "100px",
+              borderRadius: "10px",
+              color: "black",
+            }}
+            color="primary"
+          >
+            {option.label}
+          </Button>
+        ))}
+      </Stack>
+    </List>
   );
 };
 

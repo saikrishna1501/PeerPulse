@@ -49,6 +49,15 @@ const slice = createSlice({
     }
 })
 
+export const getAllUsers = () => ({
+    type: apiCallBegan.type,
+    payload: {
+        url: `/users`,
+        method: 'get',
+        onSuccess: slice.actions.usersReceived.type,
+        onError: apiCallFailure.type
+    }
+});
 export const loadUsers = (pageNumber: number, pageSize: number) => ({
     type: apiCallBegan.type,
     payload: {

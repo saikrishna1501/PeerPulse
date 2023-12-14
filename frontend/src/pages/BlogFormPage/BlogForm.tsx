@@ -1,15 +1,43 @@
-// MyEditor.js
 import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useForm } from "react-hook-form";
-
-import { Container, TextField, Button, Alert, Snackbar } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  Alert,
+  Snackbar,
+  Autocomplete,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewBlog } from "../../store/blogs";
+import { createNewBlog, updateBlog } from "../../store/blogs";
 import { useNavigate } from "react-router-dom";
+import Blog from "../../models/blogs";
+import { options } from "./Tags";
 
-const BlogForm = () => {
+interface Props {
+  blog?: Blog;
+}
+
+const BlogForm = ({ blog }: Props) => {
+  // Alert Dialog
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   // Store Config
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,21 +82,31 @@ const BlogForm = () => {
     formState: { errors },
   } = useForm();
 
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
   const onSubmit = () => {
-    dispatch(
-      createNewBlog({
-        title: titleContent,
-        content: editorContent,
-        author,
-      })
-    );
-    navigate("/blogs");
+    const blogData = {
+      title: titleContent,
+      content: editorContent,
+      author,
+      tag: selectedTags,
+    };
+
+    if (blog) {
+      dispatch(updateBlog(blog?._id, blogData));
+    } else {
+      dispatch(createNewBlog(blogData));
+    }
+
+    // Open the success dialog
+    handleClickOpenDialog();
   };
 
   const editorContent = watch("content");
   const titleContent = watch("title");
 
   const onEditorStateChange = (editorState: any) => {
+    console.log("EditorState" + editorState);
     setValue("content", editorState);
   };
 
@@ -79,7 +117,12 @@ const BlogForm = () => {
   useEffect(() => {
     register("title", { required: true });
     register("content", { required: true });
-  }, [register]);
+    if (blog) {
+      setValue("title", blog.title || "");
+      setValue("content", blog.content || "");
+      setSelectedTags(blog.tag || []);
+    }
+  }, [register, blog]);
 
   return (
     <Container maxWidth="lg" className="container" ref={containerRef}>
@@ -114,10 +157,57 @@ const BlogForm = () => {
           <Alert severity="error">{"Enter valid content"}</Alert>
         )}
 
-        <Button type="submit" variant="contained" color="primary">
+        <Autocomplete
+          multiple
+          id="tags"
+          options={options}
+          value={selectedTags}
+          onChange={(_, newValue) => setSelectedTags(newValue)}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip label={option} {...getTagProps({ index })} />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField {...params} label="Tags" placeholder="Select Tags" />
+          )}
+        />
+
+        <Button
+          sx={{ marginTop: "20px" }}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
           Submit
         </Button>
       </form>
+      {/* Success Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText
+            sx={{ fontSize: "18px" }}
+            id="alert-dialog-description"
+          >
+            Blog submitted successfully!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              handleCloseDialog();
+              navigate("/blogs");
+            }}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
