@@ -7,7 +7,9 @@ import getLanguageObject from "../../utils/getLanguageObject";
 export const LandingHeader = () => {
   const [modal, setModal] = React.useState(false);
   const [resetStyles, setResetStyles] = useState(false);
-  const languageSelector = useSelector((state:any)=> state.language.selectedLanguage);
+  const languageSelector = useSelector(
+    (state: any) => state.language.selectedLanguage
+  );
   const choosenLanguage: any = getLanguageObject(languageSelector);
 
   return (
@@ -17,11 +19,12 @@ export const LandingHeader = () => {
           <div className="landing-container">
             <div className="landing-content">
               <h3>
-                {choosenLanguage.LandingPage1}<br />
+                {choosenLanguage.LandingPage1}
+                <br />
                 {choosenLanguage.LandingPage2}
               </h3>
               <h6>
-              {choosenLanguage.LandingPage3}{" "}
+                {choosenLanguage.LandingPage3}{" "}
                 <strong> {choosenLanguage.LandingPage4}</strong>
               </h6>
               <SignupButton />

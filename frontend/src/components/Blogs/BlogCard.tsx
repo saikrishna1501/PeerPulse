@@ -60,6 +60,9 @@ const BlogCard = ({ blog, author }: Props) => {
   const handleCardClick = () => {
     // Navigate to /blogs/:id when the CardContent is clicked
     navigate(`/blogs/${blog!._id}`);
+
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const isAuthor = (blog: any) => {

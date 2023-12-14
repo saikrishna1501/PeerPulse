@@ -2,11 +2,11 @@ import { Container } from "@mui/material";
 import React, { useState } from "react";
 import backgroundImage from "../../../src/assets/housingHeader.jpeg";
 import { motion } from "framer-motion";
- 
+
 export const HousingHeader = () => {
   const [modal, setModal] = React.useState(false);
   const [resetStyles, setResetStyles] = useState(false);
- 
+
   return (
     <>
       <div
@@ -24,11 +24,9 @@ export const HousingHeader = () => {
               className="main-content"
             >
               <h3>
-              Dorms to Dreams: Elevate Living <br />
+                Dorms to Dreams: Elevate Living <br />
               </h3>
-              <h6>
-              Home is where every comfort is. Come, lets explore..!!!
-              </h6>
+              <h6>Home is where every comfort is. Come, lets explore..!!!</h6>
             </motion.div>
           </div>
         </Container>

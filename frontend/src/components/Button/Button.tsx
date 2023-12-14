@@ -15,7 +15,10 @@ const MyButton = ({ text, url, className, isArrow, color }: Props) => {
 
   color = !!color ? color : "#6161FF";
 
-  const navigateTo = (route: string) => () => navigate(route);
+  const navigateTo = (route: string) => () => {
+    navigate(route);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <Button
       onClick={navigateTo(url)}

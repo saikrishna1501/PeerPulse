@@ -71,7 +71,7 @@ export const getBlogByIdAndPopulateComments = async (blogId) => {
       return blog;
   } catch (error) {
       console.error("Error fetching blog:", error);
-      throw error;
+      throw error;ç
   }
 };
 
@@ -85,6 +85,30 @@ export const getBlogsByTag = async (tag) => {
       throw error;
   }
 };
+
+export const handleUpvote = async (blogId, userId) => {
+  try {
+    const blog = await getBlogByIdAndPopulateComments(blogId);
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    const hasUpvoted = blog.upvotes.users.some((upvoteUserId) => upvoteUserId.equals(userId));
+
+    if (!hasUpvoted) {
+      blog.upvotes.users.push(userId);
+      blog.upvotes.count += 1;
+      await blog.save();
+      return blog.upvotes.count;
+    } else {
+      throw new Error('User has already upvoted this blog');
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export const patchBlogById = async (blogId, updateData) => {
   try {

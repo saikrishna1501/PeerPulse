@@ -2,11 +2,11 @@ import { Container } from "@mui/material";
 import React, { useState } from "react";
 import backgroundImage from "../../../src/assets/events-header.jpeg";
 import { motion } from "framer-motion";
- 
+
 export const EventHeader = () => {
   const [modal, setModal] = React.useState(false);
   const [resetStyles, setResetStyles] = useState(false);
- 
+
   return (
     <>
       <div

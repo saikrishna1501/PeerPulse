@@ -7,7 +7,6 @@ import FiltersComponent from "./FiltersComponent";
 import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { HousingHeader } from "./HousingHeader";
 
-
 interface FiltersState {
   upto1K: boolean;
   upto3K: boolean;
@@ -36,9 +35,9 @@ const HousingPage: React.FC = () => {
   const [filters, setFilters] = useState<FiltersState>({
     upto1K: false,
     upto3K: false,
-  upto5K: false,
-  price5k: false,
-  more5K: false,
+    upto5K: false,
+    price5k: false,
+    more5K: false,
     apartments: false,
     condos: false,
     houses: false,
@@ -67,39 +66,39 @@ const HousingPage: React.FC = () => {
 
   const applyFilters = (query: string, filterOptions: FiltersState) => {
     let result = housing.filter((housing: Housing) => {
-      const queryCheck = housing.location.toLowerCase().includes(query.toLowerCase());
+      const queryCheck = housing.location
+        .toLowerCase()
+        .includes(query.toLowerCase());
       const priceCheck =
-
-        (!filterOptions.upto1K || (housing.price >= 500 && housing.price <= 1000))   ||
-        (!filterOptions.upto3K || (housing.price >= 1001 && housing.price <= 3000)) ||
-        (!filterOptions.upto5K || (housing.price >= 3001 && housing.price <= 5000)) ||
-        (!filterOptions.more5K || housing.price > 5000);
+        !filterOptions.upto1K ||
+        (housing.price >= 500 && housing.price <= 1000) ||
+        !filterOptions.upto3K ||
+        (housing.price >= 1001 && housing.price <= 3000) ||
+        !filterOptions.upto5K ||
+        (housing.price >= 3001 && housing.price <= 5000) ||
+        !filterOptions.more5K ||
+        housing.price > 5000;
 
       const typeCheck =
-        (!filterOptions.apartments || housing.type.includes('Apartment')) &&
-        (!filterOptions.condos || housing.type.includes('Condo')) &&
-        (!filterOptions.houses || housing.type.includes('House'));
+        (!filterOptions.apartments || housing.type.includes("Apartment")) &&
+        (!filterOptions.condos || housing.type.includes("Condo")) &&
+        (!filterOptions.houses || housing.type.includes("House"));
 
       const bedsCheck =
-        (!filterOptions.one || housing.beds.toString().includes('1')) &&
-        (!filterOptions.two || housing.beds.toString().includes('2')) &&
-        (!filterOptions.three || housing.beds.toString().includes('3')) &&
-        (!filterOptions.fourPlus || housing.beds.toString().includes('4+'));
-
+        (!filterOptions.one || housing.beds.toString().includes("1")) &&
+        (!filterOptions.two || housing.beds.toString().includes("2")) &&
+        (!filterOptions.three || housing.beds.toString().includes("3")) &&
+        (!filterOptions.fourPlus || housing.beds.toString().includes("4+"));
 
       const amenitiesCheck =
-        (!filterOptions.laundry || housing.amenities1.includes('laundry')) &&
-        (!filterOptions.dishwasher || housing.amenities2.includes('Dishwasher')) &&
-        (!filterOptions.ac || housing.amenities3.includes('AC')) &&
-        (!filterOptions.parking || housing.amenities4.includes('Parking'));
-
-      return queryCheck && priceCheck && typeCheck && bedsCheck && amenitiesCheck;
-
-
+        (!filterOptions.laundry || housing.amenities1.includes("laundry")) &&
+        (!filterOptions.dishwasher ||
+          housing.amenities2.includes("Dishwasher")) &&
+        (!filterOptions.ac || housing.amenities3.includes("AC")) &&
+        (!filterOptions.parking || housing.amenities4.includes("Parking"));
     });
     setFilteredHousing(result);
   };
-
 
   const handleFilterChange = (name: string, checked: boolean) => {
     const newFilters = { ...filters, [name]: checked };
@@ -117,7 +116,7 @@ const HousingPage: React.FC = () => {
 
   return (
     <>
-    <HousingHeader/>
+      <HousingHeader />
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={2}>
