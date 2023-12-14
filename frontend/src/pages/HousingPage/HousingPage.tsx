@@ -5,14 +5,15 @@ import { Housing } from "../../models/housing";
 import HousingCard from "./HousingCard";
 import FiltersComponent from "./FiltersComponent";
 import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
+import { HousingHeader } from "./HousingHeader";
 
 
 interface FiltersState {
-  price: boolean;
-  price1k3k: boolean;
-  price3k5k: boolean;
+  upto1K: boolean;
+  upto3K: boolean;
+  upto5K: boolean;
   price5k: boolean;
-  priceMore5k: boolean;
+  more5K: boolean;
   apartments: boolean;
   condos: boolean;
   houses: boolean;
@@ -33,11 +34,11 @@ const HousingPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState<FiltersState>({
-    price: false,
-  price1k3k: false,
-  price3k5k: false,
+    upto1K: false,
+    upto3K: false,
+  upto5K: false,
   price5k: false,
-  priceMore5k: false,
+  more5K: false,
     apartments: false,
     condos: false,
     houses: false,
@@ -114,22 +115,7 @@ const HousingPage: React.FC = () => {
 
   return (
     <>
-        <Typography
-        variant="h3"
-        align="center"
-        sx={{
-          background: "linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), #3f51b5",
-          height: "50vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#fff",
-          transition: "opacity 0.5s ease-in-out",
-        }}
-      ><h1>Looking for Cozy and Affordable Place?</h1>
-      <br></br>
-      <h3>Feel feel to explore...!!!</h3>
-      </Typography>
+    <HousingHeader/>
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={2}>
