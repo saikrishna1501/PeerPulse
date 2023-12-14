@@ -8,6 +8,7 @@ import { Housing } from "../../models/housing";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { blueGrey } from "@mui/material/colors";
+import { HousingHeader } from "./HousingHeader";
 
 const HousingDetailsPage: React.FC = () => {
   const { housingId } = useParams<{ housingId: string }>();
@@ -59,7 +60,9 @@ const HousingDetailsPage: React.FC = () => {
   
 
   return (
+    
     <Paper sx={{ padding: 2 }}>
+      
       <div style={{ position: "relative" }}>
         <img
           src={housing.images[currentImageIndex]}

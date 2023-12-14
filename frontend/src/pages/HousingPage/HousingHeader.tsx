@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import React, { useState } from "react";
-import backgroundImage from "../../../src/assets/housing-header.jpg";
+import backgroundImage from "../../../src/assets/housingHeader.jpeg";
 import { motion } from "framer-motion";
 
 export const HousingHeader = () => {
@@ -21,15 +21,12 @@ export const HousingHeader = () => {
                 type: "tween",
                 padding: resetStyles ? 0 : 20,
               }}
-              className="event-content"
+              className="main-content"
             >
               <h3>
-                Live the American dream <br />
+                Dorms to Dreams: Elevate Living <br />
               </h3>
-              <h6>
-                Your housing needs find fulfillment here, where every space is a
-                possibility.{" "}
-              </h6>
+              <h6>Home is where every comfort is. Come, lets explore..!!!</h6>
             </motion.div>
           </div>
         </Container>

@@ -1,6 +1,5 @@
 import { createTheme, responsiveFontSizes } from "@mui/material";
 import { blue, green, purple, red, yellow } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
 
 const theme = createTheme({
   palette: {

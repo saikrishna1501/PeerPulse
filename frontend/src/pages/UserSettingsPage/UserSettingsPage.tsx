@@ -1,10 +1,9 @@
 import { Box, Button, Grid, Paper, TextField, styled } from "@mui/material"
-import React, { useEffect } from "react"
+import React from "react"
 import ProfilePictureUpload from "./ProfilePictureUploadComponent.tsx/ProfilePictureUpload"
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../store/users";
 import { updateAuthDetails } from "../../store/auth";
-import User from "../../models/users";
 import { toast } from "react-toastify";
 
 const formSxStyles = {

@@ -8,6 +8,7 @@ import FiltersComponent from "../../components/Events/FiltersComponent";
 import { Button, Container, Grid, Paper, TextField } from "@mui/material";
 import EventForm from "../../components/Events/EventForm";
 import axios from "axios";
+import { EventHeader } from "../../components/Events/EventHeader";
 
 interface FiltersState {
   meetAndGreet: boolean;
@@ -23,14 +24,12 @@ interface FiltersState {
 
 const EventsPage: React.FC = () => {
   // to filter events
-  //const [filteredEvents, setFilteredEvents] = useState<Event[]>(events);
   const [events, setEvents] = useState<Event[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   //to know if the author and current user are same
   const currentUserId = useSelector((state: any) => state.auth.user._id);
-  //const dispatch = useDispatch();
 
   //to open create event dialog
   const [isCreateEventFormOpen, setIsCreateEventFormOpen] = useState(false);
@@ -56,8 +55,6 @@ const EventsPage: React.FC = () => {
   };
 
   useEffect(() => {
-    //dispatch(loadEvents());
-
     fetchEvents();
   }, []);
 
@@ -143,7 +140,8 @@ const EventsPage: React.FC = () => {
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={2}>
+        <EventHeader />
+        <Grid container spacing={2} marginTop={6}>
           <Grid item xs={12} sm={2}>
             <Paper
               elevation={3}

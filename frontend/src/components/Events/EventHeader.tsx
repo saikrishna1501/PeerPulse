@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import React, { useState } from "react";
-import backgroundImage from "../../../src/assets/events-header.jpg";
+import backgroundImage from "../../../src/assets/events-header.jpeg";
 import { motion } from "framer-motion";
 
 export const EventHeader = () => {

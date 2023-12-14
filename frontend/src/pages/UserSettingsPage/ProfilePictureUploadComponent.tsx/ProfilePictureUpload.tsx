@@ -1,5 +1,3 @@
-import { Button, TextField } from "@mui/material";
-import { read } from "fs";
 import { useState } from "react";
 import defaultProfilePictureLink from '../../../assets/images/profile-picture.png';
 import { useTheme } from '@mui/material/styles';
@@ -13,8 +11,7 @@ type Props = {
 
 function ProfilePictureUpload({ src, formUpdateHandler, name }: Props) {
     const [isHovered, setIsHovered] = useState(false);
-    const theme = useTheme();
-    // src = src ? `url(data:image/jpeg;base64,${btoa(src)};)` : `url(${defaultProfilePictureLink})`;
+   
     src = src ? `url(${src})` : `url(${defaultProfilePictureLink})`;
     let profilePictureSx = {
         borderRadius: "50%",
