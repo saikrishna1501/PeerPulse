@@ -1,6 +1,8 @@
 # Peer Pulse
 This platform serves as a comprehensive hub for students to access information about events, find off-campus housing, and engage in discussions with their peers.
 
+Note: This repository is a clone of my private repository in my college account - https://github.com/gaddam-sai-krishna-reddy
+
 ## Introduction
 Peer Pulse is a web-based solution designed to enhance the university experience by providing a single point of access for various student needs. This is the first phase of development, focusing on establishing a solid foundation with a domain-driven design and the initial API schemas.
 
